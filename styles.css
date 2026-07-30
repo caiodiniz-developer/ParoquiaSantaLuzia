@@ -2553,7 +2553,8 @@ footer .dev a:hover {
 
 .eventos-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  justify-content: center;
   align-items: stretch;
   gap: 2rem;
   margin-top: 2rem;
@@ -2561,10 +2562,42 @@ footer .dev a:hover {
 
 .evento-imagem {
   width: 100%;
-  height: auto;
+  height: 100%;
   border-radius: 0.75rem;
   object-fit: cover;
   display: block;
+}
+
+@media (max-width: 900px) {
+  .eventos-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .eventos-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 0 1rem;
+  }
+
+  .evento-card,
+  .evento-card-imagem {
+    max-width: 340px;
+  }
+
+  .evento-card-imagem {
+    min-height: 0;
+  }
+
+  .evento-card-texto h3 {
+    font-size: 1rem;
+  }
+
+  .evento-card-texto p {
+    font-size: 0.8rem;
+  }
 }
 
 .eventos-footer {

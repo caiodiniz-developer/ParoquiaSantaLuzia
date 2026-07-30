@@ -808,43 +808,57 @@ document.addEventListener("keydown", function (event) {
 });
 
 var eventosData = {
-  "visita-reliquia": {
-    badge: "Doe Agora",
-    titulo: "Doe para a Paróquia Santa Luzia",
-    imagem: "assets/doacao.jpeg",
+  "aprender-a-orar": {
+    badge: "Oficinas de Oração",
+    titulo: "Aprender a Orar para Aprender a Viver",
+    imagem: "assets/aprenda a orar.jpeg",
     texto: [
-      "A sua doação fortalece a missão da Paróquia Santa Luzia.",
-      "Contribua para a manutenção de nossas celebrações, serviços sociais e espaços de oração.",
-      "Doe com fé e amor, fazendo a diferença na vida da comunidade.",
-      "Sua generosidade é um gesto de esperança e cuidado para todos.",
-      "Entre em contato para saber como ajudar e ser parte desta obra de amor.",
+      "As <strong>Oficinas de Oração e Vida</strong> são um caminho de fé que transforma corações e ensina a arte de orar como uma conversa de amizade com Deus.",
+      "Nas oficinas você irá manusear a Bíblia, orar com ela e sentir a presença de Deus, Seu consolo e Sua paz.",
+      "Aprenda a lidar com tristezas e ansiedades, a conciliar as relações na família, no trabalho e na comunidade.",
+      "Inscrições gratuitas na secretaria da paróquia, pelo WhatsApp (19) 99792-3845 ou pelo site oficinasdeoracaoevida.org.br",
+      "<strong>Compareça dia 03/08 para mais informações e venha viver essa experiência transformadora!</strong>",
     ],
-    bencao: "Que Deus abençoe sua entrega e seu coração generoso.",
-    destaques: [
-      { icone: "calendario", titulo: "Ação", valor: "Doe hoje mesmo" },
-    ],
-  },
-  "semana-santa": {
-    badge: "São Francisco de Assis",
-    titulo: "Peregrinação de São Francisco de Assis",
-    imagem: "assets/peregrinacao sao francisco.jpeg",
-    texto: [
-      "Venha participar da <strong>Peregrinação de São Francisco de Assis</strong>.",
-      "Um momento de oração, bênçãos e encontro com a espiritualidade franciscana.",
-      "A imagem peregrina e a Cruz de São Damião estarão presentes em nossa paróquia.",
-      "Convidamos você e sua família a viver essa experiência de fé e fraternidade.",
-      "<strong>Participe e traga sua comunidade!</strong>",
-    ],
-    bencao: "Que São Francisco nos inspire a viver na paz e na simplicidade.",
+    bencao: "Que a oração transforme seu coração e ilumine sua caminhada.",
     destaques: [
       {
         icone: "calendario",
-        titulo: "Data",
-        valor: "Confira a programação nas redes",
+        titulo: "Início",
+        valor: "Segunda-feira, 03/08 • 16 encontros semanais",
+      },
+      {
+        icone: "relogio",
+        titulo: "Horário e Local",
+        valor: "Segundas, 15h às 17h • Paróquia Santa Luzia - Jd. dos Oliveiras",
       },
     ],
   },
-  "cirio-pascal": {
+  "programacao-juc": {
+    badge: "Juventude",
+    titulo: "Programação de Agosto - JUC",
+    imagem: "assets/programacao juc.jpeg",
+    texto: [
+      "Confira a agenda de agosto dos <strong>Jovens Unidos em Cristo</strong>.",
+      "Dia <strong>07/08</strong>: Missa com a Banda do JUC, às 19h30, na Comunidade São Nicolau de Flüe.",
+      "Dia <strong>15/08</strong>: Visita ao Instituto Amor e Vida, às 9h, com ponto de encontro na Paróquia Santa Luzia.",
+      "Um mês de louvor, serviço e comunhão entre os jovens da nossa paróquia.",
+      "<strong>Participe e traga seus amigos!</strong>",
+    ],
+    bencao: "Que a juventude da nossa paróquia seja sempre luz e esperança.",
+    destaques: [
+      {
+        icone: "calendario",
+        titulo: "07/08",
+        valor: "Missa com a Banda do JUC • 19h30 • Comunidade São Nicolau de Flüe",
+      },
+      {
+        icone: "relogio",
+        titulo: "15/08",
+        valor: "Visita ao Instituto Amor e Vida • 9h • Saída da Paróquia Santa Luzia",
+      },
+    ],
+  },
+  peregrinacao: {
     badge: "Peregrinação",
     titulo: "Peregrinação da Paróquia",
     imagem: "assets/peregrinacao.jpeg",
@@ -861,32 +875,6 @@ var eventosData = {
         icone: "calendario",
         titulo: "Informações",
         valor: "Acompanhe nossas redes sociais",
-      },
-    ],
-  },
-  "festa-junina": {
-    badge: "Festa Junina",
-    titulo: "Festa Junina da Paróquia Santa Luzia",
-    imagem: "assets/festa junina.jpeg",
-    texto: [
-      "Venha celebrar nossa tradicional <strong>Festa Junina</strong> com muita alegria e fé.",
-      "Teremos barracas típicas, comidas saborosas, música e brincadeiras para toda a família.",
-      "Participe desse encontro de comunidade e fortaleça os laços paroquiais.",
-      "Sua presença será uma bênção para nossa paróquia.",
-      "<strong>Traga a família e viva essa festa de gratidão e união.</strong>",
-    ],
-    bencao:
-      "Que esta festa traga alegria, comunhão e muitas bênçãos para todos.",
-    destaques: [
-      {
-        icone: "calendario",
-        titulo: "Datas",
-        valor: "30, 31/05 • 06, 07, 13 e 14/06",
-      },
-      {
-        icone: "relogio",
-        titulo: "Local",
-        valor: "Rua René Fernandes, 71",
       },
     ],
   },
