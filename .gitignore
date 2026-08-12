@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.env
+.env.local
+*.local
+
+# Banco de desenvolvimento (SQLite) e uploads locais
+server/prisma/dev.db
+server/prisma/dev.db-journal
+server/uploads/
+server/dist/

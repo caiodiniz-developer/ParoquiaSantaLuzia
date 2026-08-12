@@ -1,0 +1,47 @@
+// Desenvolvimento: SQLite num arquivo local.
+//
+// Existe para voce rodar o projeto inteiro sem criar conta em lugar nenhum.
+// Os modelos sao IDENTICOS aos do schema.prisma -- so o datasource muda.
+// Mexeu num, mexa no outro.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Evento {
+  id        String @id @default(uuid())
+  titulo    String
+  tipo      String @default("GERAL")
+
+  resumo    String @default("")
+  descricao String @default("")
+  bencao    String @default("")
+
+  coverUrl String
+  videoUrl String?
+  galeria  String @default("[]")
+
+  comecaEm     DateTime
+  terminaEm    DateTime?
+  local        String    @default("")
+  inscricaoUrl String?
+
+  destaque Boolean @default(false)
+  ativo    Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([ativo, comecaEm])
+}
+
+model Setting {
+  chave     String   @id
+  valor     String
+  updatedAt DateTime @updatedAt
+}

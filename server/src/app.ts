@@ -1,0 +1,92 @@
+import express from "express";
+import cors from "cors";
+import multer from "multer";
+import { env } from "./env.js";
+import { ErroHttp } from "./erros.js";
+import { PASTA_LOCAL, usandoDiscoLocal } from "./storage.js";
+import { rotasDeAutenticacao } from "./rotas/auth.rotas.js";
+import { rotasDeEvento } from "./rotas/evento.rotas.js";
+import { rotasDeConfig } from "./rotas/config.rotas.js";
+
+export function criarApp() {
+  const app = express();
+
+  app.use(
+    cors({
+      /**
+       * Lista fechada, com a barra final ja normalizada no env.ts.
+       *
+       * O `!origem` libera requisicao sem cabecalho Origin -- que e o caso do
+       * curl e dos monitores de uptime que mantem o Render acordado. Isso nao
+       * abre brecha: navegador sempre manda Origin.
+       */
+      origin(origem, callback) {
+        if (!origem || env.origensPermitidas.includes(origem.replace(/\/+$/, ""))) {
+          callback(null, true);
+          return;
+        }
+        callback(new Error(`Origem nao permitida: ${origem}`));
+      },
+    }),
+  );
+
+  app.use(express.json({ limit: "1mb" }));
+
+  // Só em desenvolvimento: em producao os arquivos moram no Supabase, porque
+  // o disco do Render e apagado a cada deploy.
+  if (usandoDiscoLocal) {
+    app.use("/uploads", express.static(PASTA_LOCAL));
+  }
+
+  // O Render derruba a instancia gratuita depois de 15 minutos parada. Esta
+  // rota e barata e serve para um monitor externo manter tudo acordado.
+  app.get("/api/saude", (_req, res) => {
+    res.json({ ok: true, ambiente: env.NODE_ENV, agora: new Date().toISOString() });
+  });
+
+  app.use("/api/auth", rotasDeAutenticacao);
+  app.use("/api/eventos", rotasDeEvento);
+  app.use("/api/config", rotasDeConfig);
+
+  app.use((_req, res) => {
+    res.status(404).json({ erro: "Rota nao encontrada." });
+  });
+
+  // Tratador central. Tem que ter os quatro parametros: e a assinatura pela
+  // qual o Express reconhece um middleware de erro.
+  app.use(
+    (
+      erro: unknown,
+      _req: express.Request,
+      res: express.Response,
+      _next: express.NextFunction,
+    ) => {
+      if (erro instanceof ErroHttp) {
+        res.status(erro.status).json({ erro: erro.message });
+        return;
+      }
+
+      if (erro instanceof multer.MulterError) {
+        const mensagem =
+          erro.code === "LIMIT_FILE_SIZE"
+            ? "Imagem muito grande. O limite e 8 MB por arquivo."
+            : "Nao foi possivel receber os arquivos.";
+        res.status(400).json({ erro: mensagem });
+        return;
+      }
+
+      if (erro instanceof Error && erro.message.startsWith("Origem nao permitida")) {
+        res.status(403).json({ erro: erro.message });
+        return;
+      }
+
+      // Erro inesperado: log completo no servidor, mensagem generica para
+      // fora. Detalhe de stack em resposta HTTP e informacao de graca para
+      // quem estiver sondando.
+      console.error("Erro nao tratado:", erro);
+      res.status(500).json({ erro: "Erro interno no servidor." });
+    },
+  );
+
+  return app;
+}

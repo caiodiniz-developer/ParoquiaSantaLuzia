@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    {
+      "comment": "Toda rota vai para o index.html, senao abrir /admin direto daria 404. A negacao de /api e proposital: sem ela, um VITE_API_URL esquecido faria /api/eventos devolver a propria pagina HTML com status 200, e o erro apareceria como 'JSON invalido' em vez de 'API nao configurada'.",
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
+    }
+  ]
+}

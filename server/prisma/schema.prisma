@@ -1,0 +1,66 @@
+// Producao: Postgres do Supabase.
+//
+// Este arquivo e o schema.dev.prisma tem MODELOS IDENTICOS -- so o datasource
+// muda. Se voce mexer num, mexa no outro. E por causa do SQLite do
+// desenvolvimento que `tipo` e String em vez de enum e `galeria` e texto em
+// vez de array: o SQLite nao tem nenhum dos dois.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  // Conexao pelo pooler do Supabase (porta 6543). O Render abre e fecha
+  // processos o tempo todo; sem pooler o Postgres esgota as conexoes.
+  url       = env("DATABASE_URL")
+  // Migracao precisa de conexao direta (porta 5432): o pooler nao aceita os
+  // comandos de DDL que o Prisma emite.
+  directUrl = env("DIRECT_URL")
+}
+
+model Evento {
+  id        String @id @default(uuid())
+  titulo    String
+  tipo      String @default("GERAL")
+
+  // Frase curta que aparece no card da home.
+  resumo    String @default("")
+  // Texto completo do modal. Paragrafos separados por quebra de linha.
+  descricao String @default("")
+  // Frase de encerramento em destaque no modal.
+  bencao    String @default("")
+
+  coverUrl String
+  // Video opcional que toca ao passar o mouse sobre o card. A capa continua
+  // obrigatoria: ela e o poster do video e o que aparece no celular, onde nao
+  // existe "passar o mouse".
+  videoUrl String?
+  // Array de URLs serializado em JSON. Ver comentario do topo.
+  galeria  String @default("[]")
+
+  // Um evento se ordena por data, nao a mao: nao existe campo de posicao aqui.
+  comecaEm     DateTime
+  terminaEm    DateTime?
+  local        String    @default("")
+  inscricaoUrl String?
+
+  destaque Boolean @default(false)
+  // `ativo` esconde do site sem apagar o registro: evento adiado nao some,
+  // fica invisivel e volta com um clique.
+  ativo    Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // A listagem publica sempre filtra por ativo e ordena por comecaEm.
+  @@index([ativo, comecaEm])
+}
+
+// Tabela generica de chave/valor. Cada ajuste novo do painel vira uma linha,
+// nao uma migracao de banco.
+model Setting {
+  chave     String   @id
+  valor     String
+  updatedAt DateTime @updatedAt
+}

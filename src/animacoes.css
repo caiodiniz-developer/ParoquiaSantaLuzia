@@ -1,0 +1,720 @@
+/* ===========================================================================
+   Camada de animação.
+   ---------------------------------------------------------------------------
+   Complementa styles.css, sem reescrever nada dele. Segue a linguagem que o
+   site já tinha: dourado var(--accent), verde var(--primary), easing
+   cubic-bezier(0.16, 1, 0.3, 1) e elevação de poucos pixels.
+
+   Uma regra vale para o arquivo inteiro: NENHUMA animação usa `transform`
+   direto num elemento `.reveal`. O styles.css marca `.visible` com
+   `transform: ... !important`, então qualquer transform no próprio elemento
+   revelado seria ignorado. Por isso animamos os FILHOS.
+
+   O bloco de prefers-reduced-motion no fim desliga tudo. Não é enfeite: em
+   site de paróquia há muita gente idosa, e movimento demais causa enjoo real
+   em quem tem sensibilidade vestibular.
+   =========================================================================== */
+
+/* ===========================================================================
+   1. PROFUNDIDADE — camadas que andam mais devagar que o scroll
+   ---------------------------------------------------------------------------
+   O deslocamento vem de src/hooks/useParallaxDeCamadas.js e chega aqui como
+   as variáveis --parallax-y (imagens) e --luz-y (halos das seções). O JS só
+   calcula o número; quem decide o que fazer com ele é este arquivo.
+
+   A divisão é proposital: se o hook não rodar — preferência de menos
+   movimento, navegador antigo, erro qualquer — a variável cai no padrão 0px e
+   a página fica exatamente como sempre foi. Nenhuma tela fica quebrada por
+   causa de uma animação que não carregou.
+   =========================================================================== */
+
+/* O alvo é o quadro interno, nunca o .reveal-left/.reveal-right em volta: o
+   styles.css zera o transform de todo elemento .visible com !important, então
+   um parallax aplicado ali seria silenciosamente ignorado. */
+.santa-img-wrap .img-frame,
+.padroeira-img .img-wrap {
+  /* translate3d, e não translateY: a versão 3D já pede a camada de composição
+     ao navegador. Um `will-change: transform` por cima seria redundante e
+     ainda deixaria a camada reservada para sempre, gastando memória de vídeo
+     em aparelho fraco. */
+  transform: translate3d(0, var(--parallax-y, 0px), 0);
+}
+
+/* Halo dourado atravessando a seção devagar, como luz entrando por um vitral.
+   Fica atrás do conteúdo porque os .container ganham z-index 1 logo abaixo. */
+.santa-section::after,
+.comunidades-section::after,
+.liturgia-section::after,
+.horarios-section::after,
+.padroeira-section::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(760px, 80%);
+  height: 70%;
+  pointer-events: none;
+  background: radial-gradient(closest-side, rgba(201, 168, 76, 0.14), rgba(201, 168, 76, 0));
+  /* Deslocar com transform, e não com background-position: assim o navegador
+     recompõe uma camada pronta a cada quadro em vez de repintar um gradiente
+     do tamanho da tela. É a diferença entre suave e engasgado em celular
+     simples. */
+  transform: translate3d(-50%, calc(-50% + var(--luz-y, 0px)), 0);
+}
+
+/* Sobre o verde escuro dos Horários a luz precisa ser mais presente, e nasce
+   do lado oposto ao brilho fixo que o styles.css já põe em ::before. */
+.horarios-section::after {
+  left: 78%;
+  background: radial-gradient(closest-side, rgba(201, 168, 76, 0.22), rgba(201, 168, 76, 0));
+}
+
+/* O círculo decorativo da seção de doação também ganha deriva própria. */
+.doe-section::before {
+  transform: translate3d(0, var(--luz-y, 0px), 0);
+}
+
+/* Estas duas seções não recortavam o que passa das bordas. Precisam recortar
+   agora que existe uma camada se deslocando dentro delas — nada do conteúdo
+   real chega perto das bordas, então o recorte não esconde nada. */
+.santa-section,
+.comunidades-section {
+  overflow: hidden;
+}
+
+.comunidades-section,
+.padroeira-section {
+  position: relative;
+}
+
+/* O conteúdo sobe para cima do halo. Sem isto, o ::after — que é um elemento
+   posicionado — pintaria por cima do texto, porque conteúdo em fluxo normal é
+   desenhado antes de qualquer elemento posicionado. */
+.santa-section > .container,
+.comunidades-section > .container,
+.comunidades-section > .carousel-wrapper,
+.liturgia-section > .container,
+.horarios-section > .container,
+.padroeira-section > .container,
+.doe-section > .container-sm {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===========================================================================
+   2. COSTURA ENTRE AS SEÇÕES
+   ---------------------------------------------------------------------------
+   O styles.css já sangrava um verde bem claro no topo de duas seções. Aqui a
+   mesma ideia se estende às outras, para a página inteira parecer uma coisa
+   contínua e não uma pilha de blocos: cada seção clara começa com o eco da
+   anterior, e cada seção escura abre com um fio dourado.
+   =========================================================================== */
+
+.comunidades-section,
+.eventos-section,
+.contato-section,
+.padroeira-section {
+  background-image: linear-gradient(
+    to bottom,
+    rgba(26, 92, 42, 0.05),
+    rgba(26, 92, 42, 0) 240px
+  );
+}
+
+.stats-bar,
+.horarios-section,
+.redes-section {
+  box-shadow: inset 0 1px 0 rgba(201, 168, 76, 0.35);
+}
+
+/* Uma luz atravessa a faixa verde de estatísticas de tempos em tempos. O ciclo
+   é longo (16s) e o brilho passa em pouco mais de um terço dele: luz constante
+   viraria pisca-pisca e cansaria a vista. */
+.stats-bar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -30%;
+  width: 30%;
+  background: linear-gradient(100deg, transparent, rgba(201, 168, 76, 0.14), transparent);
+  transform: skewX(-14deg);
+  animation: luzAtravessaFaixa 16s ease-in-out 3s infinite;
+  pointer-events: none;
+}
+
+@keyframes luzAtravessaFaixa {
+  0% {
+    left: -30%;
+  }
+  38%,
+  100% {
+    left: 120%;
+  }
+}
+
+/* ===========================================================================
+   3. REVELAÇÃO ENCADEADA (.cascata)
+   ---------------------------------------------------------------------------
+   Os filhos do bloco entram em sequência, e não todos de uma vez. É o que dá
+   o ritmo de leitura: o olho acompanha uma coisa de cada vez.
+
+   Usa `animation` e não `transition` por um motivo concreto: vários destes
+   filhos (.redes-links a, .pix-info-card, .btn-whatsapp, .h-icon) já têm
+   `transition: all` no styles.css para o próprio hover. Uma declaração de
+   `transition` aqui substituiria a deles e os hovers passariam a acontecer
+   secos. Animação não encosta na propriedade transition.
+
+   E o keyframe só declara o estado inicial: sem quadro final, o valor de
+   chegada de `transform` é o que a cascata mandar naquele instante — inclusive
+   o do :hover. Um `to { transform: none }` com fill congelaria o transform e
+   mataria a elevação dos cartões para sempre.
+   =========================================================================== */
+
+/* Fora da cascata: quem já é .reveal tem revelação própria, e cruz, divisor e
+   citação já têm animação dedicada mais abaixo. Animar duas vezes o mesmo
+   elemento dá esmaecimento duplo.
+
+   A lista de exclusão vem encadeada em :not() simples, e não como
+   :not(:is(...)), porque :is() dentro de :not() só existe a partir do Safari
+   14. Num iPad antigo a regra inteira seria descartada. */
+.cascata
+  > *:not(.reveal):not(.reveal-left):not(.reveal-right):not(.reveal-scale):not(.reveal-rotate):not(.gold-divider):not(.section-cross):not(.texto-revelado) {
+  opacity: 0;
+}
+
+.visible.cascata
+  > *:not(.reveal):not(.reveal-left):not(.reveal-right):not(.reveal-scale):not(.reveal-rotate):not(.gold-divider):not(.section-cross):not(.texto-revelado),
+.visible
+  .cascata
+  > *:not(.reveal):not(.reveal-left):not(.reveal-right):not(.reveal-scale):not(.reveal-rotate):not(.gold-divider):not(.section-cross):not(.texto-revelado) {
+  opacity: 1;
+  animation: entraEmCascata 0.95s cubic-bezier(0.16, 1, 0.3, 1) var(--atraso, 0s) backwards;
+}
+
+@keyframes entraEmCascata {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/* 70ms entre um filho e o outro: o suficiente para o olho perceber a ordem,
+   pouco o bastante para não parecer que a página está carregando devagar. */
+.cascata > *:nth-child(1) {
+  --atraso: 0.05s;
+}
+.cascata > *:nth-child(2) {
+  --atraso: 0.12s;
+}
+.cascata > *:nth-child(3) {
+  --atraso: 0.19s;
+}
+.cascata > *:nth-child(4) {
+  --atraso: 0.26s;
+}
+.cascata > *:nth-child(5) {
+  --atraso: 0.33s;
+}
+.cascata > *:nth-child(6) {
+  --atraso: 0.4s;
+}
+.cascata > *:nth-child(7) {
+  --atraso: 0.47s;
+}
+/* Do oitavo em diante todos entram juntos: mais que isso e a última linha
+   demoraria tempo demais para aparecer. */
+.cascata > *:nth-child(n + 8) {
+  --atraso: 0.54s;
+}
+
+/* ===========================================================================
+   4. AS CITAÇÕES ACENDEM PALAVRA POR PALAVRA
+   ---------------------------------------------------------------------------
+   Só nas três citações do site (versículo de Santa Luzia, oração à padroeira e
+   a passagem de Coríntios). O ritmo imita quem lê uma oração em voz alta.
+   45ms por palavra: uma citação de trinta palavras leva cerca de 1,3s, o que
+   é contemplativo sem virar espera.
+   =========================================================================== */
+
+.texto-revelado .palavra {
+  display: inline-block;
+  opacity: 0;
+}
+
+.visible .texto-revelado .palavra,
+.texto-revelado.visible .palavra {
+  opacity: 1;
+  animation: acendePalavra 1s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--i, 0) * 45ms) backwards;
+}
+
+@keyframes acendePalavra {
+  from {
+    opacity: 0;
+    transform: translateY(0.4em);
+  }
+}
+
+/* ===========================================================================
+   5. HERO — luz e profundidade
+   ---------------------------------------------------------------------------
+   O deslocamento das quatro camadas (fundo, luz, partículas e texto) é feito
+   em useEfeitosDeScroll.js, que já era o único listener de scroll da página.
+   Aqui fica só a aparência da camada de luz.
+   =========================================================================== */
+
+.hero-luz {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at 50% 40%,
+    rgba(201, 168, 76, 0.22),
+    rgba(201, 168, 76, 0.07) 30%,
+    rgba(201, 168, 76, 0) 62%
+  );
+  /* Só a opacidade respira. O `transform` é território do JavaScript, e uma
+     animação CSS sobre a mesma propriedade venceria o estilo em linha e
+     anularia o parallax sem avisar. */
+  animation: luzRespira 16s ease-in-out infinite;
+  will-change: opacity, transform;
+}
+
+@keyframes luzRespira {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* As partículas viram pontos de luz de verdade, não bolinhas. */
+.particle {
+  box-shadow: 0 0 6px rgba(201, 168, 76, 0.35);
+}
+
+/* ===========================================================================
+   6. COMUNIDADES sem esteira
+   ---------------------------------------------------------------------------
+   Estado usado quando o sistema pede menos movimento. O componente já deixa de
+   duplicar a lista; aqui a esteira para e a faixa passa a rolar no dedo — do
+   contrário, parar a animação esconderia seis das nove comunidades sem
+   nenhuma forma de alcançá-las.
+   =========================================================================== */
+
+.carousel-wrapper.sem-esteira {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.carousel-wrapper.sem-esteira .carousel-track {
+  animation: none;
+}
+
+/* ===== A cruz: Santa Luzia é a santa da luz ===== */
+
+.reveal .section-cross,
+.reveal-left .section-cross,
+.reveal-right .section-cross,
+.reveal-scale .section-cross {
+  opacity: 0;
+  transform: scale(0.6) rotate(-14deg);
+  transition:
+    opacity 0.7s ease 0.1s,
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+}
+
+.visible .section-cross {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+  animation: brilhoDaCruz 4.5s ease-in-out 1.2s infinite;
+}
+
+@keyframes brilhoDaCruz {
+  0%,
+  100% {
+    text-shadow: 0 0 0 rgba(201, 168, 76, 0);
+  }
+  50% {
+    text-shadow:
+      0 0 14px rgba(201, 168, 76, 0.55),
+      0 0 26px rgba(201, 168, 76, 0.25);
+  }
+}
+
+/* ===== O divisor dourado se desenha da esquerda para a direita ===== */
+
+.reveal .gold-divider,
+.reveal-left .gold-divider,
+.reveal-right .gold-divider,
+.reveal-scale .gold-divider {
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.35s;
+}
+
+.visible .gold-divider {
+  transform: scaleX(1);
+}
+
+/* ===== Hero: brilho que atravessa o botão ===== */
+
+.hero-cta {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-cta::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: skewX(-18deg);
+  animation: brilhoAtravessa 5s ease-in-out 2.5s infinite;
+}
+
+@keyframes brilhoAtravessa {
+  0% {
+    left: -60%;
+  }
+  /* O brilho passa rápido e depois espera: um brilho contínuo viraria
+     pisca-pisca e cansaria a vista. */
+  22%,
+  100% {
+    left: 130%;
+  }
+}
+
+.hero-cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 40px rgba(201, 168, 76, 0.5);
+}
+
+/* A seta do "EXPLORE" desce e volta, convidando a rolar. */
+.hero-scroll svg {
+  animation: setaDesce 2.2s ease-in-out infinite;
+}
+
+@keyframes setaDesce {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.65;
+  }
+  50% {
+    transform: translateY(9px);
+    opacity: 1;
+  }
+}
+
+/* ===== Números da barra de estatísticas ===== */
+
+.stat-number {
+  transition: text-shadow 0.5s ease;
+}
+
+.stats-grid:hover .stat-number {
+  text-shadow: 0 0 18px rgba(201, 168, 76, 0.4);
+}
+
+/* ===== Imagens: aproximação bem lenta (efeito Ken Burns) ===== */
+
+.santa-img-wrap .img-frame,
+.padroeira-img .img-wrap {
+  overflow: hidden;
+}
+
+.santa-img-wrap .img-frame img,
+.padroeira-img .img-wrap img {
+  transition: transform 8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.santa-img-wrap:hover .img-frame img,
+.padroeira-img:hover .img-wrap img {
+  transform: scale(1.07);
+}
+
+/* ===== Cartões: elevação com borda dourada ===== */
+
+.evento-card,
+.liturgia-card,
+.community-card,
+.horario-card {
+  will-change: transform;
+}
+
+/* O styles.css já eleva e amplia estes cartões. Repetimos o `transform`
+   idêntico ao original de propósito: a única mudança pretendida é o contorno
+   dourado no box-shadow, e omitir o transform aqui apagaria o scale(1.02) que
+   já existia. */
+.evento-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow:
+    0 20px 50px rgba(26, 92, 42, 0.18),
+    0 0 0 1px rgba(201, 168, 76, 0.45);
+}
+
+.liturgia-card {
+  transition:
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.45s ease;
+}
+
+.liturgia-card:hover {
+  transform: translateY(-5px);
+  box-shadow:
+    0 16px 40px rgba(15, 58, 26, 0.16),
+    0 0 0 1px rgba(201, 168, 76, 0.35);
+}
+
+.community-card:hover {
+  transform: translateY(-10px);
+  box-shadow:
+    0 25px 60px rgba(26, 92, 42, 0.16),
+    0 0 0 1px rgba(201, 168, 76, 0.35);
+}
+
+.horario-card .h-icon {
+  display: inline-block;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.horario-card:hover .h-icon {
+  transform: scale(1.18) rotate(6deg);
+}
+
+/* ===== Caixa do PIX: contorno dourado que respira ===== */
+
+.pix-box {
+  position: relative;
+}
+
+.pix-box::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  border: 1px solid rgba(201, 168, 76, 0.5);
+  animation: contornoRespira 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes contornoRespira {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.pix-copy-btn {
+  transition:
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.25s ease;
+}
+
+.pix-copy-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Confirmação de "Copiado!" com um pulso curto. */
+.pix-copy-btn.copied {
+  animation: pulsoDeConfirmacao 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes pulsoDeConfirmacao {
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+/* ===== Redes sociais ===== */
+
+/* O hover do link em si (elevação, escala e sombra) já vem do styles.css.
+   Aqui só acrescentamos o ícone crescendo junto. */
+.redes-links a svg {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.redes-links a:hover svg {
+  transform: scale(1.18);
+}
+
+/* ===== Navbar e rodapé ===== */
+
+.logo-link img {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.logo-link:hover img {
+  transform: rotate(-6deg) scale(1.08);
+}
+
+/* O sublinhado dourado da navbar não está aqui: o styles.css já o faz, e
+   centraliza com translateX(-50%). Reescrevê-lo com `left` deslocaria o traço
+   para a esquerda. */
+
+footer img {
+  animation: logoRespira 5s ease-in-out infinite;
+}
+
+@keyframes logoRespira {
+  0%,
+  100% {
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 2px 16px rgba(201, 168, 76, 0.45));
+  }
+}
+
+/* O hover do botão "voltar ao topo" também já vem pronto do styles.css. */
+
+/* ===========================================================================
+   Quem pediu menos movimento, recebe menos movimento.
+   Mantemos as transições de cor e as revelações de opacidade (que não causam
+   desconforto) e cortamos tudo que se move ou fica em laço infinito.
+   =========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  /* O styles.css pede rolagem suave para o site inteiro. Quem tem sensibilidade
+     vestibular sente exatamente isso: a página deslizando sozinha. */
+  html {
+    scroll-behavior: auto;
+  }
+
+  .visible .section-cross,
+  .hero-cta::after,
+  .hero-scroll svg,
+  .hero-luz,
+  .particle,
+  .stats-bar::after,
+  .carousel-track,
+  /* Este ja existia no styles.css e tinha escapado: o selo "Sede da Paroquia"
+     pulsa sem parar. */
+  .card-badge,
+  .pix-box::before,
+  footer img,
+  .pix-copy-btn.copied {
+    animation: none !important;
+  }
+
+  /* A luz do hero fica, parada, num brilho médio: ela é parte da identidade da
+     página, o que incomoda é a pulsação. */
+  .hero-luz {
+    opacity: 0.7;
+  }
+
+  /* A foto do hero entrava com uma aproximação de oito segundos. Sem transição
+     ela já nasce no tamanho final: mesma composição, sem o movimento. */
+  .hero-bg {
+    transition: none;
+  }
+
+  /* O ponto mais importante deste bloco. Todo o scroll reveal do site desliza
+     60 a 80px antes de aparecer, em quase cem elementos. Zerando o transform
+     nos dois estados sobra só o esmaecimento, que é o que a WCAG 2.3.3 pede:
+     o conteúdo continua aparecendo, mas nada mais anda pela tela.
+     Vem depois do styles.css, então vence o `transform: !important` do
+     .visible por ordem de cascata. */
+  .reveal,
+  .reveal-left,
+  .reveal-right,
+  .reveal-scale,
+  .reveal-rotate,
+  .visible {
+    transform: none !important;
+  }
+
+  /* Sem parallax nenhum: o hook nem chega a instalar o listener, e aqui as
+     camadas largam a promoção para a GPU que não vão mais usar. */
+  .santa-img-wrap .img-frame,
+  .padroeira-img .img-wrap,
+  .doe-section::before,
+  .santa-section::after,
+  .comunidades-section::after,
+  .liturgia-section::after,
+  .horarios-section::after,
+  .padroeira-section::after {
+    transform: none;
+  }
+
+  .santa-section::after,
+  .comunidades-section::after,
+  .liturgia-section::after,
+  .horarios-section::after,
+  .padroeira-section::after {
+    /* O transform acima também zerou a centralização; devolve pelo posicionamento. */
+    left: 10%;
+    top: 15%;
+  }
+
+  .horarios-section::after {
+    left: 60%;
+  }
+
+  /* Encadeamento e citações: o conteúdo aparece inteiro, sem escalonamento e
+     sem deslocamento. Continua legível, que é o que importa. A exclusão dos
+     .reveal se repete aqui para não adiantar a revelação de quem tem a sua
+     própria — o fade de opacidade continua valendo, ele não incomoda. */
+  .cascata
+    > *:not(.reveal):not(.reveal-left):not(.reveal-right):not(.reveal-scale):not(.reveal-rotate),
+  .texto-revelado .palavra {
+    opacity: 1 !important;
+    animation: none !important;
+    transform: none !important;
+  }
+
+  /* A cruz e o divisor não estão na regra acima (são exceções da cascata), mas
+     também não podem ficar deslocados quando a animação some. */
+  .cascata > .gold-divider,
+  .cascata > .section-cross {
+    transform: none !important;
+  }
+
+  .reveal .section-cross,
+  .reveal-left .section-cross,
+  .reveal-right .section-cross,
+  .reveal-scale .section-cross {
+    opacity: 1;
+    transform: none;
+  }
+
+  .reveal .gold-divider,
+  .reveal-left .gold-divider,
+  .reveal-right .gold-divider,
+  .reveal-scale .gold-divider {
+    transform: scaleX(1);
+  }
+
+  .santa-img-wrap:hover .img-frame img,
+  .padroeira-img:hover .img-wrap img,
+  .liturgia-card:hover,
+  .redes-links a:hover svg,
+  .logo-link:hover img,
+  .horario-card:hover .h-icon,
+  .pix-copy-btn:hover,
+  .hero-cta:hover {
+    transform: none;
+  }
+
+  /* Antes estes dois guardavam a elevação do hover, só sem a ampliação. Não dá
+     mais para manter só um: o cartão de evento é um .reveal, então o
+     `transform: none !important` lá de cima já o alcança, e o de comunidade
+     não — ficariam se comportando diferente sem motivo. Os dois param, que é
+     também o que a WCAG 2.3.3 pede (ela trata exatamente de movimento
+     disparado por interação). O realce do hover continua existindo pela sombra
+     e pelo contorno dourado. */
+  .evento-card:hover,
+  .community-card:hover {
+    transform: none !important;
+  }
+}
