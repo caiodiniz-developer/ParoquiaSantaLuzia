@@ -209,11 +209,21 @@ Variáveis:
 
 ### 3. Vercel (site)
 
-Importe o repositório na raiz (Vite é detectado sozinho). Uma variável:
-`VITE_API_URL` = a URL do Render, sem barra no final.
+Importe o repositório na raiz. Uma variável: `VITE_API_URL` = a URL do Render,
+sem barra no final.
 
-O `vercel.json` já manda toda rota para o `index.html`, senão abrir
-`/admin` direto daria 404.
+Sobre o `vercel.json` — ele é validado por um schema estrito, e **qualquer chave
+a mais faz o deploy falhar antes do build**, com "Invalid request". Não dá para
+deixar comentário dentro dele; por isso a explicação está aqui:
+
+```json
+"rewrites": [{ "source": "/((?!api/).*)", "destination": "/index.html" }]
+```
+
+Toda rota vai para o `index.html`, senão abrir `/admin` direto daria 404. O
+`(?!api/)` exclui a API de propósito: sem ele, um `VITE_API_URL` esquecido faria
+`/api/eventos` devolver a própria página HTML com status 200, e o erro apareceria
+como "JSON inválido" em vez de "API não configurada".
 
 ## Dois avisos sobre o plano grátis
 

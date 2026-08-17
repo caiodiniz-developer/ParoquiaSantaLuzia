@@ -6,6 +6,17 @@
 const RAIZ = (import.meta.env.VITE_API_URL || "").replace(/\/+$/, "");
 const BASE = `${RAIZ}/api`;
 
+/**
+ * Em desenvolvimento o proxy do Vite sempre existe. Numa build de producao sem
+ * VITE_API_URL, porem, nao ha API nenhuma para chamar.
+ *
+ * Isto existe para o site poder ir ao ar ANTES da API: em vez de mostrar
+ * "nao conseguimos carregar os eventos" -- que o visitante le como site
+ * quebrado --, a secao de eventos mostra o estado silencioso de "nenhum evento
+ * agendado". O site fica no ar inteiro e digno enquanto o servidor nao sobe.
+ */
+export const apiConfigurada = import.meta.env.DEV || Boolean(RAIZ);
+
 const CHAVE_TOKEN = "paroquia.admin.token";
 
 export function lerToken() {
@@ -42,6 +53,17 @@ export class ErroDaApi extends Error {
 }
 
 async function lerMensagemDeErro(resposta) {
+  // Resposta de erro que nao e JSON quer dizer que quem respondeu nao foi a
+  // API: ou VITE_API_URL nao esta configurada, ou o endereco esta errado, ou o
+  // servidor ainda nao subiu. Sem esta checagem a tela mostraria "Erro 404",
+  // que nao diz a ninguem o que fazer.
+  const tipo = resposta.headers.get("content-type") || "";
+  if (!tipo.includes("application/json")) {
+    return RAIZ
+      ? `Nao consegui falar com a API em ${RAIZ}. Confira se o servidor esta no ar.`
+      : "A API nao esta configurada. Defina VITE_API_URL com o endereco do servidor.";
+  }
+
   try {
     const corpo = await resposta.json();
     return corpo?.erro || corpo?.mensagem || `Erro ${resposta.status}`;

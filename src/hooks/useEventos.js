@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { eventos as apiEventos } from "../lib/api.js";
+import { eventos as apiEventos, apiConfigurada } from "../lib/api.js";
 
 /**
  * Carrega eventos da API.
@@ -17,6 +17,14 @@ export function useEventos({ escopo = "proximos", limite, incluirInativos = fals
 
   const carregar = useCallback(
     async (sinal) => {
+      // Sem API configurada nao ha o que buscar. Sai como "lista vazia", nao
+      // como erro -- ver o comentario de `apiConfigurada` em lib/api.js.
+      if (!apiConfigurada) {
+        setLista([]);
+        setCarregando(false);
+        return;
+      }
+
       setCarregando(true);
       setErro(null);
 
