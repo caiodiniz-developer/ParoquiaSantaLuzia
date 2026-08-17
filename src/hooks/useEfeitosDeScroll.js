@@ -22,6 +22,12 @@ export function useEfeitosDeScroll(idsDasSecoes) {
     // As camadas do hero sao buscadas uma unica vez. Procurar no DOM dentro de
     // medir() custaria cinco querySelector por quadro de scroll.
     const heroFundo = document.querySelector(".hero-bg");
+    // Pode nao existir: o <video> so entra no DOM quando a paroquia tiver
+    // colocado o arquivo E o aparelho/conexao/preferencia permitirem. Nos casos
+    // em que existe, ele esta no DOM desde a primeira renderizacao do Hero
+    // (nasce sem `src`, quem carrega e um efeito depois) -- por isso esta busca
+    // unica no inicio o encontra, sem precisar procurar de novo a cada quadro.
+    const heroVideo = document.querySelector(".hero-video");
     const heroLuz = document.querySelector(".hero-luz");
     const heroParticulas = document.querySelector(".hero-particles");
     const heroConteudo = document.querySelector(".hero-content");
@@ -55,7 +61,13 @@ export function useEfeitosDeScroll(idsDasSecoes) {
       // quem se afasta de uma vela. So mexe enquanto o hero esta em tela.
       const alturaDaTela = window.innerHeight;
       if (!menosMovimento.matches && y < alturaDaTela) {
-        if (heroFundo) heroFundo.style.transform = `scale(1.05) translateY(${y * 0.3}px)`;
+        const fundo = `scale(1.05) translateY(${y * 0.3}px)`;
+        if (heroFundo) heroFundo.style.transform = fundo;
+        // Exatamente o mesmo deslocamento da foto, e nao um proprio: os dois
+        // ocupam a mesma profundidade da cena. Qualquer diferenca apareceria
+        // como um deslizamento entre a foto e o video durante a transicao de
+        // opacidade entre eles.
+        if (heroVideo) heroVideo.style.transform = fundo;
         if (heroLuz) heroLuz.style.transform = `translate3d(0, ${y * 0.14}px, 0)`;
         if (heroParticulas) {
           heroParticulas.style.transform = `translate3d(0, ${y * 0.45}px, 0)`;

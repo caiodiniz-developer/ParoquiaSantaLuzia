@@ -256,12 +256,200 @@
 }
 
 /* ===========================================================================
-   5. HERO — luz e profundidade
+   5. HERO — a luz do vitral
    ---------------------------------------------------------------------------
-   O deslocamento das quatro camadas (fundo, luz, partículas e texto) é feito
-   em useEfeitosDeScroll.js, que já era o único listener de scroll da página.
-   Aqui fica só a aparência da camada de luz.
+   Santa Luzia é a padroeira da luz, e o hero é onde essa metáfora precisa
+   acontecer literalmente: a página acende. São quatro camadas empilhadas
+   sobre a foto de fundo, cada uma com um papel:
+
+     .hero-vitral   as poças de cor que a luz deixa ao atravessar o vidro
+     .hero-raios    os feixes em si, varrendo devagar como o sol da manhã
+     .hero-luz      o halo central, que respira
+     .particle      a poeira suspensa no ar, que é o que torna um feixe visível
+
+   Três regras valem para as quatro:
+
+   1. Só `opacity` e `transform` são animados. As duas são resolvidas pelo
+      compositor, sem repintar nada. Um `filter: blur` animado numa camada do
+      tamanho da tela — a tentação óbvia aqui — obrigaria o navegador a
+      recalcular o desfoque a cada quadro e derrubaria o framerate no celular
+      simples que boa parte da comunidade usa.
+   2. Nenhum `will-change`. Estas camadas ocupam a tela inteira; deixá-las
+      promovidas para a GPU custaria dezenas de megabytes de memória de vídeo
+      presos para sempre, inclusive muito depois de o hero sair de vista. As
+      animações já usam translate3d, e o navegador promove sozinho enquanto
+      elas rodam — e devolve a memória quando terminam.
+   3. Nenhuma anima `transform` em elemento que o JavaScript também move. O
+      deslocamento das camadas por scroll é escrito em estilo inline por
+      useEfeitosDeScroll.js, e uma animação CSS sobre a mesma propriedade
+      venceria o inline e anularia o parallax sem avisar. Por isso .hero-luz
+      só respira em opacidade, e .hero-raios — que o JavaScript não toca —
+      pode varrer em transform.
+
+   O truque das duas animações. Cada camada acende uma vez ao carregar e depois
+   respira para sempre, e as duas coisas mexem em `opacity`. Elas convivem
+   porque, quando duas animações disputam a mesma propriedade, vence a ÚLTIMA
+   da lista: a de respirar entra por último, mas com um atraso igual à duração
+   da de acender, e durante esse atraso ela não vale nada (fill-mode none).
+   Enquanto isso o `both` da primeira segura o valor. Os dois quadros de troca
+   têm a mesma opacidade, então a passagem de uma para a outra é invisível.
    =========================================================================== */
+
+/* ----- Vídeo de fundo (só existe quando a paróquia colocar o arquivo) ----- */
+
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* A foto de fundo é desfocada e bem escura porque é cenário. Filmagem de
+     verdade da igreja merece ser vista: escurecemos só o quanto o texto branco
+     precisa para continuar legível, e não desfocamos nada. Um blur aqui seria
+     recalculado a cada quadro do vídeo — a conta mais cara que existe. */
+  filter: brightness(0.46) saturate(0.92);
+  /* Nasce invisível. A .hero-bg atrás é o poster: enquanto o vídeo não estiver
+     desenhando quadros de verdade, o que se vê é exatamente o hero de hoje. */
+  opacity: 0;
+  /* Entrada longa de propósito: assim a foto não "some", ela vira vídeo. */
+  transition: opacity 1.6s ease-in-out;
+}
+
+.hero-video.tocando {
+  opacity: 1;
+}
+
+/* ----- Vitral: as poças de luz colorida ----- */
+
+.hero-vitral {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  /* Dourado do vitral em cima, um verde de folha à direita e uma poça quente
+     embaixo, no chão da composição. Os três bem abertos e bem fracos: o que
+     se percebe não é a mancha, é o ambiente ficar mais quente. */
+  background:
+    radial-gradient(58% 44% at 24% 16%, rgba(201, 168, 76, 0.2), rgba(201, 168, 76, 0) 72%),
+    radial-gradient(46% 40% at 81% 32%, rgba(124, 186, 142, 0.13), rgba(124, 186, 142, 0) 74%),
+    radial-gradient(72% 46% at 60% 98%, rgba(201, 168, 76, 0.14), rgba(201, 168, 76, 0) 70%);
+  opacity: 0.5;
+  animation:
+    vitralAcende 4s ease-out 0.3s both,
+    vitralRespira 34s ease-in-out 4.3s infinite;
+}
+
+@keyframes vitralAcende {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
+
+/* 34 segundos. É lento a ponto de ninguém conseguir apontar o que mudou —
+   e é esse o objetivo: a pessoa sente que a página está viva sem ver a
+   animação acontecendo. */
+@keyframes vitralRespira {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+
+/* ----- Raios: os feixes que atravessam o vitral ----- */
+
+.hero-raios {
+  position: absolute;
+  /* Bem maior que a tela. O feixe varre e gira; se a camada tivesse o tamanho
+     exato do hero, a borda dela entraria em cena como uma linha reta. */
+  top: -25%;
+  left: -30%;
+  width: 160%;
+  height: 150%;
+  z-index: 1;
+  pointer-events: none;
+  /* Cada período traz dois feixes de intensidades diferentes, e não um só
+     repetido: com um feixe idêntico a cada intervalo o olho acha a régua na
+     hora e a luz vira listra de papel de parede. */
+  background: repeating-linear-gradient(
+    112deg,
+    rgba(201, 168, 76, 0) 0%,
+    rgba(201, 168, 76, 0) 5.5%,
+    rgba(201, 168, 76, 0.065) 6.4%,
+    rgba(201, 168, 76, 0.15) 7.6%,
+    rgba(201, 168, 76, 0.065) 8.6%,
+    rgba(201, 168, 76, 0) 9.6%,
+    rgba(201, 168, 76, 0) 12.5%,
+    rgba(201, 168, 76, 0.045) 13.4%,
+    rgba(201, 168, 76, 0.095) 14.2%,
+    rgba(201, 168, 76, 0) 15.4%,
+    rgba(201, 168, 76, 0) 19%
+  );
+  /* A luz entra por cima e se dissipa antes de chegar ao chão, como no fundo
+     de uma nave. Onde a máscara não existir (navegador antigo), o feixe
+     simplesmente vai até embaixo — mais fraco, nunca quebrado. */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 4%,
+    rgba(0, 0, 0, 0.5) 46%,
+    rgba(0, 0, 0, 0) 84%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 4%,
+    rgba(0, 0, 0, 0.5) 46%,
+    rgba(0, 0, 0, 0) 84%
+  );
+  /* 0,55 no repouso e não 0,38: medi as duas. Com 0,38 os feixes desapareciam
+     por completo sobre a parte clara da fachada e só existiam no pico da
+     respiração — ou seja, o efeito estava lá no código e não na tela. */
+  opacity: 0.55;
+  animation:
+    raiosVarrem 64s ease-in-out infinite alternate,
+    raiosAcendem 3.6s ease-out 0.6s both,
+    raiosRespiram 27s ease-in-out 4.2s infinite;
+}
+
+/* `alternate`, e não um laço que volta ao início. Casar o fim com o começo
+   exigiria deslocar exatamente um período do gradiente — e o período de um
+   repeating-linear-gradient em porcentagem é medido na linha do gradiente, não
+   na largura do elemento, então a conta não fecha e sobraria um salto visível
+   a cada volta. Indo e voltando em 64s para cada lado, não existe emenda: o
+   sol nasce, atravessa e volta, e ninguém percebe a inversão. */
+@keyframes raiosVarrem {
+  from {
+    transform: translate3d(-3.5%, 0, 0) rotate(-1.1deg);
+  }
+  to {
+    transform: translate3d(3.5%, 0, 0) rotate(1.1deg);
+  }
+}
+
+@keyframes raiosAcendem {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.55;
+  }
+}
+
+@keyframes raiosRespiram {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ----- O halo central, que já existia ----- */
 
 .hero-luz {
   position: absolute;
@@ -274,11 +462,18 @@
     rgba(201, 168, 76, 0.07) 30%,
     rgba(201, 168, 76, 0) 62%
   );
-  /* Só a opacidade respira. O `transform` é território do JavaScript, e uma
-     animação CSS sobre a mesma propriedade venceria o estilo em linha e
-     anularia o parallax sem avisar. */
-  animation: luzRespira 16s ease-in-out infinite;
-  will-change: opacity, transform;
+  animation:
+    luzAcende 3s ease-out both,
+    luzRespira 16s ease-in-out 3s infinite;
+}
+
+@keyframes luzAcende {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.55;
+  }
 }
 
 @keyframes luzRespira {
@@ -291,9 +486,92 @@
   }
 }
 
-/* As partículas viram pontos de luz de verdade, não bolinhas. */
+/* ----- Poeira suspensa ----- */
+
+/* O styles.css declara `animation: gentleFloat 6s ...` no atalho. Aqui trocamos
+   só o nome e o ritmo, em propriedades separadas — a duração e o atraso de cada
+   grão continuam vindo do estilo inline sorteado no Hero.jsx, que tem
+   precedência sobre as duas. `linear` porque poeira no ar não acelera nem
+   freia: ela é levada. */
 .particle {
   box-shadow: 0 0 6px rgba(201, 168, 76, 0.35);
+  animation-name: poeiraSuspensa;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes poeiraSuspensa {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.85);
+  }
+  /* Aparece e desaparece dentro do próprio percurso, nunca na borda da tela:
+     grão que some no meio do ar é poeira saindo do facho de luz. Grão que some
+     ao encostar na borda é um retângulo denunciando o recorte. */
+  14% {
+    opacity: var(--brilho, 0.4);
+  }
+  50% {
+    transform: translate3d(var(--deriva-x, 0px), -46vh, 0) scale(1.12);
+  }
+  82% {
+    opacity: var(--brilho, 0.4);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(calc(var(--deriva-x, 0px) * 1.9), -92vh, 0) scale(0.9);
+  }
+}
+
+/* ----- Halo e véu atrás do título ----- */
+
+/* Duas funções numa camada só. O escuro é o que garante contraste do texto
+   branco sobre qualquer fundo — inclusive sobre um vídeo claro, no dia em que
+   houver um, sem depender de sorte no enquadramento. O dourado por cima é a
+   luz batendo no que está escrito.
+
+   Vive num pseudo-elemento de .hero-content, e não numa camada solta, porque
+   assim ele herda o deslocamento e o esmaecimento que o parallax escreve no
+   pai: o véu acompanha o texto ao sair de cena em vez de ficar boiando. */
+.hero-content::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  top: 48%;
+  width: 135%;
+  height: 120%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  background:
+    radial-gradient(closest-side, rgba(201, 168, 76, 0.15), rgba(201, 168, 76, 0) 70%),
+    radial-gradient(closest-side, rgba(0, 0, 0, 0.38), rgba(0, 0, 0, 0) 78%);
+  opacity: 0.65;
+  animation:
+    haloAcende 3.4s ease-out 0.2s both,
+    haloRespira 19s ease-in-out 3.6s infinite;
+}
+
+@keyframes haloAcende {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.65;
+  }
+}
+
+/* 19s contra 16s da .hero-luz, 27s dos raios e 34s do vitral. Os quatro
+   períodos são primos entre si de propósito: se fossem múltiplos, as camadas
+   voltariam a coincidir de tempos em tempos e a respiração viraria pulso. */
+@keyframes haloRespira {
+  0%,
+  100% {
+    opacity: 0.65;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 /* ===========================================================================
@@ -440,14 +718,16 @@
   transform: scale(1.07);
 }
 
-/* ===== Cartões: elevação com borda dourada ===== */
+/* ===== Cartões: elevação com borda dourada =====
 
-.evento-card,
-.liturgia-card,
-.community-card,
-.horario-card {
-  will-change: transform;
-}
+   Aqui havia um `will-change: transform` nestes quatro seletores. Foi removido:
+   só as comunidades são 18 cartões na tela, e `will-change` estático mantém
+   cada um como camada de composição reservada na GPU o tempo todo, mesmo
+   parado — memória de vídeo gasta à toa justamente no celular fraco.
+
+   `will-change` serve para avisar o navegador pouco ANTES de uma animação
+   começar, não para ficar declarado para sempre. Numa transição de :hover o
+   navegador promove a camada sozinho, no momento certo. */
 
 /* O styles.css já eleva e amplia estes cartões. Repetimos o `transform`
    idêntico ao original de propósito: a única mudança pretendida é o contorno
@@ -595,6 +875,9 @@ footer img {
   .hero-cta::after,
   .hero-scroll svg,
   .hero-luz,
+  .hero-vitral,
+  .hero-raios,
+  .hero-content::before,
   .particle,
   .stats-bar::after,
   .carousel-track,
@@ -607,11 +890,37 @@ footer img {
     animation: none !important;
   }
 
-  /* A luz do hero fica, parada, num brilho médio: ela é parte da identidade da
-     página, o que incomoda é a pulsação. */
+  /* As camadas de luz FICAM, paradas, num brilho médio. Elas são a identidade
+     da página — Santa Luzia é a santa da luz —, e apagá-las entregaria a quem
+     pediu menos movimento um site visualmente mais pobre do que o dos outros.
+     O que incomoda quem tem sensibilidade vestibular é a pulsação e a varredura,
+     não o brilho. Então tiramos o movimento e mantemos a composição, congelada
+     no meio do caminho entre o repouso e o pico de cada respiração. */
   .hero-luz {
     opacity: 0.7;
   }
+
+  .hero-vitral {
+    opacity: 0.72;
+  }
+
+  .hero-raios {
+    opacity: 0.6;
+    /* A varredura zerou junto com a animação; sem isto o retângulo
+       superdimensionado ficaria assimétrico na tela. */
+    transform: none;
+  }
+
+  .hero-content::before {
+    /* Este é o véu que garante o contraste do texto. Ele é o único que fica no
+       valor CHEIO: legibilidade não é enfeite e não pode depender de em que
+       ponto da respiração a página parou. */
+    opacity: 1;
+  }
+
+  /* O vídeo de fundo nem chega a ser montado — quem decide é o
+     VideoDeFundoDoHero.jsx, com o mesmo hook de preferência —, então não há
+     nada para desligar aqui. Fica registrado para quem procurar. */
 
   /* A foto do hero entrava com uma aproximação de oito segundos. Sem transição
      ela já nasce no tamanho final: mesma composição, sem o movimento. */
