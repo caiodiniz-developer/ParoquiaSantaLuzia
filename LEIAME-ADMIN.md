@@ -188,12 +188,23 @@ Pegue em Settings → API a URL e a chave **`service_role`** (não a `anon`).
 
 ### 2. Render (API)
 
-Novo Web Service apontando para este repositório, **Root Directory `server`**:
+Existe um `render.yaml` na raiz. No Render: **New → Blueprint**, aponte para
+este repositório e ele monta o serviço sozinho (root `server`, build, start,
+health check em `/api/saude` e região Virginia, a gratuita mais perto do
+Brasil). O `AUTH_SECRET` é gerado automaticamente.
 
-- Build: `npm install && npm run build && npm run banco:prod`
-- Start: `npm start`
+Ele vai pedir só os valores que não podem morar no repositório: `DATABASE_URL`,
+`DIRECT_URL`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `CORS_ORIGINS`,
+`ADMIN_EMAIL` e `ADMIN_PASSWORD`.
 
-Variáveis:
+**A ordem importa:** o `CORS_ORIGINS` precisa do domínio da Vercel, e o
+`VITE_API_URL` da Vercel precisa da URL do Render. Suba o Render primeiro com
+um `CORS_ORIGINS` provisório, pegue a URL, configure a Vercel, e então volte e
+corrija o `CORS_ORIGINS` com o domínio final.
+
+Se preferir criar na mão em vez do Blueprint, é Web Service com **Root
+Directory `server`**, build `npm ci && npm run build && npm run banco:prod` e
+start `npm start`. As variáveis são estas:
 
 | Variável | Valor |
 |---|---|

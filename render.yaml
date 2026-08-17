@@ -1,0 +1,94 @@
+# Blueprint do Render para a API da Paróquia Santa Luzia.
+#
+# Como usar: no Render, "New" > "Blueprint", aponte para este repositório. Ele
+# lê este arquivo e monta o serviço sozinho. Depois é só preencher, no painel,
+# as variáveis marcadas abaixo com `sync: false` — são as que não podem ficar
+# escritas num arquivo do repositório.
+
+services:
+  - type: web
+    name: paroquia-santa-luzia-api
+    runtime: node
+    plan: free
+
+    # Virginia é a região gratuita mais próxima do Brasil. O Render não tem
+    # data center na América do Sul; Oregon ou Frankfurt somam uns 100ms a
+    # cada requisição para quem acessa de Campinas.
+    region: virginia
+
+    # A API vive numa subpasta. Sem isto o Render tentaria buildar o site
+    # React que está na raiz.
+    rootDir: server
+
+    # `npm ci` e não `npm install`: instala exatamente o que está no
+    # package-lock.json. `install` pode resolver uma versão diferente da que
+    # foi testada e quebrar só em produção.
+    #
+    # `banco:prod` roda `prisma db push`, que cria/atualiza as tabelas no
+    # Supabase. Ele usa DIRECT_URL (porta 5432), porque o pooler não aceita os
+    # comandos de DDL que o Prisma emite. Sem `--accept-data-loss`, de
+    # propósito: se um dia o schema encolher, o push falha em vez de apagar
+    # coluna com dado dentro.
+    buildCommand: npm ci && npm run build && npm run banco:prod
+    startCommand: npm start
+
+    # O Render considera o deploy saudável quando esta rota responde. Ela é
+    # barata e não toca no banco.
+    healthCheckPath: /api/saude
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+
+      # Fixado para não mudar sozinho quando o Render trocar o padrão. O
+      # projeto foi testado no Node 22+.
+      - key: NODE_VERSION
+        value: "22"
+
+      # Assina o token de sessão do painel. O Render gera um valor aleatório
+      # forte na criação e nunca o mostra no repositório.
+      #
+      # Trocar este valor derruba todas as sessões abertas — o que é
+      # exatamente o que se quer se a senha vazar.
+      - key: AUTH_SECRET
+        generateValue: true
+
+      # --- Preencher no painel do Render ---
+      # `sync: false` faz o Render pedir o valor na hora e guardá-lo cifrado.
+
+      # Pooler do Supabase, porta 6543. É o que a aplicação usa: o Render abre
+      # e fecha processos o tempo todo e sem pooler o Postgres esgota conexões.
+      - key: DATABASE_URL
+        sync: false
+
+      # Conexão direta, porta 5432. Só a migração usa.
+      - key: DIRECT_URL
+        sync: false
+
+      - key: SUPABASE_URL
+        sync: false
+
+      # A chave `service_role`, NÃO a `anon`. Dá acesso total ao banco e por
+      # isso só pode existir aqui no servidor — nunca numa variável VITE_*,
+      # que vai inteira para dentro do bundle que o visitante baixa.
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+
+      - key: SUPABASE_BUCKET
+        value: eventos
+
+      # Domínios do site, separados por vírgula e SEM barra no final. Uma
+      # barra sobrando aqui derruba o site inteiro por um caractere invisível
+      # (o código normaliza, mas não conte com isso).
+      #
+      # Inclua o domínio próprio E o .vercel.app, senão os deploys de preview
+      # da Vercel batem em CORS.
+      - key: CORS_ORIGINS
+        sync: false
+
+      # Acesso ao painel /admin. Não existe tabela de usuários: para um painel
+      # de um dono só, é uma tabela a menos para manter.
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
