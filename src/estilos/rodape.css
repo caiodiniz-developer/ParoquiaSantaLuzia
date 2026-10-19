@@ -1,0 +1,21 @@
+footer {
+  position: relative;
+  padding: clamp(4rem, 8vw, 6rem) var(--gutter) 3rem;
+  text-align: center;
+  overflow: hidden;
+  color: rgba(251, 246, 236, 0.6);
+  background:
+    radial-gradient(50% 80% at 50% 0%, rgba(198, 160, 74, 0.12), transparent 70%),
+    var(--noite);
+}
+
+footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(600px, 80%);
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
