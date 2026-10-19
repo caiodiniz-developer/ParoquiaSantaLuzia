@@ -167,3 +167,34 @@
     text-shadow: 0 0 0 rgba(198, 160, 74, 0);
   }
 }
+
+@keyframes flutuar {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0);
+  }
+}
+
+@keyframes brilhoPassa {
+  from {
+    transform: translateX(-120%) skewX(-20deg);
+  }
+  to {
+    transform: translateX(220%) skewX(-20deg);
+  }
+}
+
+@keyframes ouroCorre {
+  to {
+    background-position: 200% center;
+  }
+}
+
+@keyframes girar {
+  to {
+    --angulo: 360deg;
+  }
+}
