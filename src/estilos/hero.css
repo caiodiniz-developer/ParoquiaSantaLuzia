@@ -230,3 +230,15 @@
 .hero-linha > span {
   display: inline-block;
 }
+
+.hero-content h1 .hero-nome {
+  font-style: italic;
+  font-weight: 600;
+  background: var(--ouro-gradiente);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: ouroCorre 6s linear infinite;
+  padding-right: 0.06em;
+}
