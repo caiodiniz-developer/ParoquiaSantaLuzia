@@ -17,3 +17,18 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cpath d='M28 20v16M20 28h16' stroke='%23e8d39a' stroke-width='1.2'/%3E%3C/svg%3E");
   transform: translate3d(0, var(--luz-y, 0px), 0);
 }
+
+.horarios-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  line-height: 1.05;
+  color: #fbf6ec;
+  text-wrap: balance;
+}
+
+.horarios-sub {
+  margin-top: 0.9rem;
+  font-size: 0.98rem;
+  color: rgba(251, 246, 236, 0.65);
+}
