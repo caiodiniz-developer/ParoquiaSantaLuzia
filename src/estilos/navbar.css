@@ -121,3 +121,18 @@
   color: var(--noite);
   background: var(--accent-claro);
 }
+
+.navbar.scrolled .nav-links a {
+  color: #3b4a41;
+}
+
+.navbar.scrolled .nav-links a:hover {
+  color: var(--primary);
+  background: rgba(29, 90, 52, 0.07);
+}
+
+.navbar.scrolled .nav-links a.active {
+  color: #fff;
+  background: var(--primary);
+  box-shadow: 0 6px 18px -8px rgba(29, 90, 52, 0.7);
+}
