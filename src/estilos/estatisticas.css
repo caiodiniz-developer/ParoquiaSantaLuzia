@@ -1,0 +1,6 @@
+.stats-bar {
+  z-index: 3;
+  margin-top: -5rem;
+  padding-bottom: 1rem;
+  background: linear-gradient(180deg, transparent 0 5rem, var(--bg) 5rem);
+}
