@@ -32,3 +32,11 @@ textarea {
   font: inherit;
   color: inherit;
 }
+
+html {
+  scroll-behavior: smooth;
+  /* A navbar flutua por cima do conteúdo: sem isto, clicar em "Liturgia"
+     deixaria o título da seção escondido atrás dela. */
+  scroll-padding-top: 96px;
+  -webkit-text-size-adjust: 100%;
+}
