@@ -164,3 +164,18 @@
   letter-spacing: 0.2em;
   color: var(--accent-claro);
 }
+
+.evento-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 30%), rgba(232, 211, 154, 0.28), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.evento-card:hover .evento-glow {
+  opacity: 1;
+}
