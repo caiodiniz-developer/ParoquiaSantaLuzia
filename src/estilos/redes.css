@@ -1,0 +1,17 @@
+.redes-section {
+  padding: clamp(4.5rem, 9vw, 7rem) 0;
+  text-align: center;
+}
+
+.redes-section h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2rem, 4.4vw, 3rem);
+  line-height: 1.1;
+  color: var(--primary-dark);
+}
+
+.redes-section .sub {
+  margin-top: 0.6rem;
+  color: var(--muted-fg);
+}
