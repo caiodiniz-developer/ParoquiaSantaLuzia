@@ -242,3 +242,13 @@
   animation: ouroCorre 6s linear infinite;
   padding-right: 0.06em;
 }
+
+.hero-content .hero-desc {
+  max-width: 620px;
+  margin: 2rem auto 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.15rem, 2.2vw, 1.45rem);
+  line-height: 1.55;
+  color: rgba(251, 246, 236, 0.75);
+}
