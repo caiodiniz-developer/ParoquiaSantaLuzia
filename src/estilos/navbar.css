@@ -136,3 +136,67 @@
   background: var(--primary);
   box-shadow: 0 6px 18px -8px rgba(29, 90, 52, 0.7);
 }
+
+.hamburger {
+  display: none;
+  position: relative;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  transition: background-color 0.4s ease;
+}
+
+.hamburger span {
+  position: absolute;
+  left: 13px;
+  width: 20px;
+  height: 2px;
+  border-radius: 2px;
+  background: #fff;
+  transition:
+    transform 0.5s var(--ease-out),
+    opacity 0.3s ease,
+    background-color 0.4s ease,
+    width 0.4s var(--ease-out);
+}
+
+.hamburger span:nth-child(1) { top: 16px; }
+.hamburger span:nth-child(2) { top: 22px; width: 14px; }
+.hamburger span:nth-child(3) { top: 28px; }
+
+.navbar.scrolled .hamburger {
+  background: rgba(29, 90, 52, 0.08);
+}
+
+.navbar.scrolled .hamburger span {
+  background: var(--primary-dark);
+}
+
+.hamburger.open span {
+  background: #fff !important;
+}
+
+.hamburger.open span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+  transform: translateX(10px);
+}
+
+.hamburger.open span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Com o menu aberto o vidro da barra sumiria contra o fundo escuro. */
+.navbar:has(.hamburger.open) .inner {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.navbar:has(.hamburger.open) .logo-text {
+  color: #fbf6ec;
+}
