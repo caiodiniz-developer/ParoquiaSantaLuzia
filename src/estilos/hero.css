@@ -207,3 +207,26 @@
   background: currentColor;
   opacity: 0.6;
 }
+
+.hero-content h1 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.7rem, 7.6vw, 6.6rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  color: #fbf6ec;
+  text-wrap: balance;
+}
+
+/* Cada linha é uma máscara: o texto de dentro sobe de baixo dela, como uma
+   página sendo virada. O padding vertical evita cortar os descendentes do
+   "g" e do "p" da Cormorant. */
+.hero-linha {
+  display: block;
+  overflow: hidden;
+  padding: 0.06em 0 0.12em;
+}
+
+.hero-linha > span {
+  display: inline-block;
+}
