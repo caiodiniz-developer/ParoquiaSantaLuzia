@@ -88,3 +88,63 @@
   border-color: rgba(198, 160, 74, 0.6);
   box-shadow: var(--sombra-2), var(--brilho-ouro);
 }
+
+.card-header {
+  position: relative;
+  padding: 1.6rem 1.6rem 1.2rem;
+}
+
+.card-header-inner {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.card-cross {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--muted);
+  color: var(--primary);
+  border: 1px solid rgba(198, 160, 74, 0.35);
+  transition: transform 0.8s var(--ease-mola);
+}
+
+.card-cross svg {
+  width: 20px;
+  height: 20px;
+}
+
+.community-card:hover .card-cross {
+  transform: rotate(90deg);
+}
+
+.card-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.45rem;
+  line-height: 1.12;
+  color: var(--primary-dark);
+  padding-right: 0.5rem;
+}
+
+.card-address {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.35rem;
+  margin-top: 0.45rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--muted-fg);
+}
+
+.card-address svg {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  margin-top: 0.15rem;
+  color: var(--accent-escuro);
+}
