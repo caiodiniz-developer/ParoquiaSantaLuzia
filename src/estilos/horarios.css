@@ -75,3 +75,25 @@
 .horario-card:hover::before {
   opacity: 1;
 }
+
+.horario-card .h-icon {
+  display: grid;
+  place-items: center;
+  width: 68px;
+  height: 68px;
+  margin: 0 auto;
+  border-radius: 50%;
+  border: 1px solid rgba(232, 211, 154, 0.45);
+  background: radial-gradient(circle, rgba(198, 160, 74, 0.18), transparent 70%);
+  font-size: 1.8rem;
+  line-height: 1;
+  color: var(--accent-claro);
+  transition:
+    transform 0.9s var(--ease-mola),
+    box-shadow 0.6s ease;
+}
+
+.horario-card:hover .h-icon {
+  transform: rotate(-15deg) scale(1.08);
+  box-shadow: 0 0 0 8px rgba(232, 211, 154, 0.06), 0 0 30px rgba(232, 211, 154, 0.35);
+}
