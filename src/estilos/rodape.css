@@ -19,3 +19,22 @@ footer::before {
   transform: translateX(-50%);
   background: linear-gradient(90deg, transparent, var(--accent), transparent);
 }
+
+footer img {
+  width: 92px;
+  height: 92px;
+  margin: 0 auto;
+  object-fit: contain;
+  animation: logoRespira 5s ease-in-out infinite;
+  transition: transform 0.8s var(--ease-mola);
+}
+
+footer img:hover {
+  transform: rotate(-8deg) scale(1.06);
+}
+
+@keyframes logoRespira {
+  50% {
+    filter: drop-shadow(0 0 18px rgba(232, 211, 154, 0.5));
+  }
+}
