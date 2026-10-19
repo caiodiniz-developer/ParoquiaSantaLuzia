@@ -126,3 +126,37 @@
   margin-left: 0;
   transform-origin: left;
 }
+
+.padroeira-text .quote {
+  margin-bottom: 2rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.25rem, 2.3vw, 1.55rem);
+  line-height: 1.6;
+  color: rgba(251, 246, 236, 0.82);
+}
+
+.padroeira-text .festa {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.4rem;
+  border-radius: 999px;
+  border: 1px solid rgba(232, 211, 154, 0.4);
+  background: rgba(198, 160, 74, 0.08);
+  font-family: var(--font-label);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--accent-claro);
+}
+
+@media (max-width: 900px) {
+  .padroeira-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .padroeira-img {
+    max-width: 360px;
+  }
+}
