@@ -1,0 +1,23 @@
+.comunidades-section {
+  --fundo-da-secao: var(--bg-alt);
+  padding: var(--secao-y) 0;
+  overflow: hidden;
+  background: var(--bg-alt);
+}
+
+.comunidades-section::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 8%;
+  right: -10%;
+  width: min(680px, 80vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(29, 90, 52, 0.1), transparent 65%);
+  transform: translate3d(0, var(--luz-y, 0px), 0);
+}
+
+.comunidades-subtitle {
+  margin-top: 0.4rem;
+}
