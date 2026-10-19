@@ -102,7 +102,7 @@ export default function Hero() {
             abertura. A quebra que antes era um <br /> agora e o proprio bloco. */}
         <h1>
           <span className="hero-linha">
-            <span>Seja bem-vindo ao site da</span>
+            <span>Seja bem&#8209;vindo ao site da</span>
           </span>
           <span className="hero-linha">
             <span className="hero-nome">Paróquia Santa Luzia!</span>
