@@ -258,3 +258,48 @@
 .community-card:hover .card-footer::before {
   width: 32px;
 }
+
+.community-card.featured {
+  background:
+    radial-gradient(120% 80% at 100% 0%, rgba(198, 160, 74, 0.22), transparent 55%),
+    linear-gradient(160deg, var(--primary) 0%, var(--primary-dark) 70%);
+  border-color: rgba(198, 160, 74, 0.45);
+}
+
+.community-card.featured .card-cross {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--accent-claro);
+  border-color: rgba(232, 211, 154, 0.4);
+}
+
+.community-card.featured .card-name {
+  color: #fbf6ec;
+}
+
+.community-card.featured .card-address {
+  color: rgba(251, 246, 236, 0.7);
+}
+
+.community-card.featured .card-address svg,
+.community-card.featured .card-body-label,
+.community-card.featured .card-footer,
+.community-card.featured:hover .card-footer {
+  color: var(--accent-claro);
+}
+
+.community-card.featured .card-body-label {
+  border-top-color: rgba(232, 211, 154, 0.25);
+}
+
+.community-card.featured .schedule-day {
+  color: #fbf6ec;
+}
+
+.community-card.featured .schedule-item {
+  color: rgba(251, 246, 236, 0.75);
+}
+
+.community-card.featured .card-extra {
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(251, 246, 236, 0.85);
+}
