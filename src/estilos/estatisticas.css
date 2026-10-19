@@ -19,3 +19,16 @@
   border: 1px solid rgba(198, 160, 74, 0.28);
   box-shadow: var(--sombra-3);
 }
+
+.stats-grid::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 30%;
+  height: 100%;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(232, 211, 154, 0.12), transparent);
+  transform: translateX(-120%) skewX(-20deg);
+  animation: brilhoPassa 7s var(--ease-in-out) 2s infinite;
+}
