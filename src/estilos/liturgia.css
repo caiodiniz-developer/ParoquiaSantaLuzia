@@ -126,3 +126,19 @@
 .liturgia-card:hover .liturgia-icon {
   transform: rotate(-12deg) scale(1.08);
 }
+
+.liturgia-card-body {
+  position: relative;
+  max-height: 340px;
+  padding: 1.6rem 1.8rem 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, #000 60%, transparent);
+  mask-image: linear-gradient(180deg, #000 60%, transparent);
+  transition: max-height 1s var(--ease-in-out);
+}
+
+.liturgia-card.expanded .liturgia-card-body {
+  max-height: 5000px;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
