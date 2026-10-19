@@ -59,3 +59,18 @@
 .form-box textarea::placeholder {
   color: #9aa09b;
 }
+
+.form-box input:hover,
+.form-box select:hover,
+.form-box textarea:hover {
+  border-color: #cdbfa6;
+}
+
+.form-box input:focus,
+.form-box select:focus,
+.form-box textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: #fff;
+  box-shadow: 0 0 0 5px rgba(29, 90, 52, 0.12);
+}
