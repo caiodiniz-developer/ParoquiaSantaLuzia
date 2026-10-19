@@ -54,3 +54,40 @@
 .padroeira-img:hover::before {
   transform: translate(-10px, -10px);
 }
+
+.padroeira-img .img-wrap {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: var(--raio-arco);
+  box-shadow: 0 40px 100px -30px rgba(0, 0, 0, 0.8);
+  transform: translate3d(0, var(--parallax-y, 0px), 0);
+  clip-path: inset(100% 0 0 0 round 999px 999px 24px 24px);
+  transition: clip-path 1.6s var(--ease-in-out) 0.1s;
+}
+
+.padroeira-img.visible .img-wrap {
+  clip-path: inset(0 0 0 0 round 999px 999px 24px 24px);
+}
+
+.padroeira-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.2);
+  transition: transform 2.2s var(--ease-out);
+}
+
+.padroeira-img.visible img {
+  transform: scale(1);
+}
+
+.padroeira-img:hover img {
+  transform: scale(1.05);
+}
+
+.padroeira-img .overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(8, 22, 14, 0.6), transparent 50%);
+}
