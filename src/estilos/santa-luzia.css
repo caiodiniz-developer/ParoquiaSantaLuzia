@@ -1,0 +1,17 @@
+.santa-section {
+  padding: var(--secao-y) 0;
+  overflow: hidden;
+}
+
+.santa-section::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 18%;
+  left: -12%;
+  width: min(760px, 90vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(198, 160, 74, 0.16), transparent 65%);
+  transform: translate3d(0, var(--luz-y, 0px), 0);
+}
