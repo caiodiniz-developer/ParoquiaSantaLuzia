@@ -1,0 +1,21 @@
+/* ===========================================================================
+   REVELAÇÃO NO SCROLL
+   ---------------------------------------------------------------------------
+   useRevelacaoScroll acrescenta `.visible` quando o elemento entra na tela.
+   A entrada é uma ANIMAÇÃO e não uma transição por um motivo concreto: o
+   atraso de `.delay-N` só deve valer para a entrada. Com transição, o mesmo
+   atraso passaria a valer para o hover do cartão para sempre, e ele demoraria
+   meio segundo para reagir ao mouse.
+
+   O keyframe só declara o ponto de partida. Sem quadro final, o valor de
+   chegada é o do próprio elemento — inclusive o transform do :hover e o do
+   parallax —, então nada fica congelado depois da entrada.
+   =========================================================================== */
+
+.reveal,
+.reveal-left,
+.reveal-right,
+.reveal-scale,
+.reveal-rotate {
+  opacity: 0;
+}
