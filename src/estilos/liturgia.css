@@ -45,3 +45,36 @@
     grid-template-columns: 1fr;
   }
 }
+
+.liturgia-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--raio-lg);
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: var(--sombra-1);
+  transition:
+    transform 0.7s var(--ease-out),
+    box-shadow 0.7s var(--ease-out),
+    border-color 0.5s ease;
+}
+
+.liturgia-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), rgba(198, 160, 74, 0.12), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.liturgia-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(198, 160, 74, 0.55);
+  box-shadow: var(--sombra-2);
+}
+
+.liturgia-card:hover::after {
+  opacity: 1;
+}
