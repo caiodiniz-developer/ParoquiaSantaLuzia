@@ -95,3 +95,24 @@ body::after {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--accent-escuro);
 }
+
+.container {
+  width: 100%;
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.container-sm {
+  width: 100%;
+  max-width: 860px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Toda seção ganha o mesmo respiro vertical e vira contexto de empilhamento:
+   os halos decorativos (::before/::after) ficam presos dentro dela. */
+section {
+  position: relative;
+  isolation: isolate;
+}
