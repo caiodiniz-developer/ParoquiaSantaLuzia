@@ -1,3 +1,4 @@
 /* Folha de estilos do site, montada a partir dos modulos abaixo. */
 @import "./tokens.css";
 @import "./base.css";
+@import "./tipografia.css";

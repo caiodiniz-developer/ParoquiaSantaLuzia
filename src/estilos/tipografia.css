@@ -1,0 +1,22 @@
+.section-cross {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: var(--accent);
+  font-size: 1.5rem;
+  line-height: 1;
+  margin-bottom: 1.1rem;
+}
+
+.section-cross::before,
+.section-cross::after {
+  content: "";
+  width: clamp(28px, 6vw, 56px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent));
+}
+
+.section-cross::after {
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
