@@ -104,3 +104,25 @@
   font-size: clamp(1.5rem, 2.6vw, 1.85rem);
   line-height: 1.1;
 }
+
+.liturgia-icon {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(232, 211, 154, 0.45);
+  color: var(--accent-claro);
+  transition: transform 0.9s var(--ease-mola);
+}
+
+.liturgia-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.liturgia-card:hover .liturgia-icon {
+  transform: rotate(-12deg) scale(1.08);
+}
