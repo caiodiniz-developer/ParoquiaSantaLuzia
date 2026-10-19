@@ -32,3 +32,12 @@
   --border: #e3d8c6;
   --linha-clara: rgba(255, 255, 255, 0.12);
 }
+
+:root {
+  /* Cormorant para títulos: a elegância de um livro litúrgico. Cinzel fica
+     só para os rótulos em versalete, e Manrope dá leitura limpa no corpo. */
+  --font-display: "Cormorant Garamond", "Times New Roman", serif;
+  --font-heading: var(--font-display);
+  --font-label: "Cinzel", "Times New Roman", serif;
+  --font-body: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
