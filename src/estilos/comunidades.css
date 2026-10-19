@@ -49,3 +49,19 @@
     transform: translate3d(-50%, 0, 0);
   }
 }
+
+.carousel-wrapper.sem-esteira {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-mask-image: none;
+  mask-image: none;
+  padding-inline: var(--gutter);
+}
+
+.carousel-wrapper.sem-esteira .carousel-track {
+  animation: none;
+}
+
+.carousel-wrapper.sem-esteira .community-card {
+  scroll-snap-align: start;
+}
