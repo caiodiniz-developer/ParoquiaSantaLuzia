@@ -191,3 +191,40 @@
   -webkit-mask-image: none;
   mask-image: none;
 }
+
+.card-body-label {
+  padding-top: 1rem;
+  margin-bottom: 0.6rem;
+  border-top: 1px dashed var(--border);
+  font-family: var(--font-label);
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-escuro);
+}
+
+.schedule-day {
+  margin-top: 0.7rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.schedule-item {
+  font-size: 0.84rem;
+  line-height: 1.6;
+  color: var(--muted-fg);
+}
+
+.card-extra {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border-left: 2px solid var(--accent);
+  border-radius: 0 12px 12px 0;
+  background: rgba(198, 160, 74, 0.1);
+  font-size: 0.8rem;
+  font-style: italic;
+  line-height: 1.6;
+  color: #4a4636;
+}
