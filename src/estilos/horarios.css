@@ -111,3 +111,15 @@
   line-height: 1.85;
   color: rgba(251, 246, 236, 0.72);
 }
+
+@media (max-width: 980px) {
+  .horarios-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .horarios-grid {
+    grid-template-columns: 1fr;
+  }
+}
