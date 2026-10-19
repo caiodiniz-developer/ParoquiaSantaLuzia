@@ -17,7 +17,7 @@ const CAMADAS = [
   { seletor: ".santa-img-wrap .img-frame", velocidade: 0.07, variavel: "--parallax-y" },
   { seletor: ".padroeira-img .img-wrap", velocidade: 0.06, variavel: "--parallax-y" },
 
-  // Halos de luz das secoes (o ::after de cada uma, em animacoes.css).
+  // Halos de luz das secoes (o ::before de cada uma, em src/estilos).
   { seletor: ".santa-section", velocidade: 0.1, variavel: "--luz-y" },
   { seletor: ".comunidades-section", velocidade: 0.1, variavel: "--luz-y" },
   { seletor: ".liturgia-section", velocidade: 0.1, variavel: "--luz-y" },
@@ -33,7 +33,7 @@ const MARGEM_DE_ANTECEDENCIA = "40% 0px 40% 0px";
 
 /**
  * Escreve o deslocamento de cada camada numa variavel CSS. O JavaScript so
- * calcula o numero; quem decide o que fazer com ele e o animacoes.css.
+ * calcula o numero; quem decide o que fazer com ele sao os modulos de src/estilos.
  *
  * A divisao importa por um motivo pratico: se este hook nao rodar (preferencia
  * de menos movimento, navegador antigo, erro de rede), a variavel cai no valor

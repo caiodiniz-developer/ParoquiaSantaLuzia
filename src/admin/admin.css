@@ -1,5 +1,5 @@
 /* Painel administrativo. Reaproveita as variaveis de cor e as fontes do site
-   (definidas em styles.css) para nao parecer um sistema de outra empresa.
+   (definidas em src/estilos/tokens.css) para nao parecer um sistema de outra empresa.
    Todas as classes levam o prefixo `adm-`: o painel e o site dividem a mesma
    folha de estilos global, e sem prefixo um `.card` do painel pegaria os
    cartoes das comunidades. */

@@ -24,7 +24,7 @@ const FONTES = __FONTES_DO_VIDEO_DO_HERO__;
  * 3. Bateria e fluidez. Decodificar video em laco num Android de entrada
  *    concorre com a primeira pintura da pagina, que e o que a pessoa veio ver.
  *
- * 769px e nao 768px de proposito: o styles.css usa `max-width: 768px` para
+ * 769px e nao 768px de proposito: a navbar antiga usava `max-width: 768px` para
  * trocar a navbar. Se os dois numeros fossem 768, os dois casariam ao mesmo
  * tempo numa tela de exatamente 768px.
  */
