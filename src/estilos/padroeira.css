@@ -91,3 +91,38 @@
   inset: 0;
   background: linear-gradient(0deg, rgba(8, 22, 14, 0.6), transparent 50%);
 }
+
+.padroeira-text .section-cross {
+  justify-content: flex-start;
+}
+
+.padroeira-text .section-cross::before {
+  display: none;
+}
+
+.padroeira-text h2 {
+  margin-bottom: 0.4rem;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.3rem, 4.8vw, 3.8rem);
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  color: #fbf6ec;
+  text-wrap: balance;
+}
+
+.padroeira-text h2 span {
+  font-style: italic;
+  font-weight: 600;
+  background: var(--ouro-gradiente);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: ouroCorre 6s linear infinite;
+}
+
+.padroeira-text .gold-divider {
+  margin-left: 0;
+  transform-origin: left;
+}
