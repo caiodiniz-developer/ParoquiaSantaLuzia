@@ -160,3 +160,9 @@
     max-width: 360px;
   }
 }
+
+/* O JSX zera a margem de cima do divisor inline; sem este respiro o filete
+   encosta nos descendentes do "rogai por nós". */
+.padroeira-text .gold-divider[style] {
+  margin-top: 1.6rem !important;
+}
