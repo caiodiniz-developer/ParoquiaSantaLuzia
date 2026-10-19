@@ -28,3 +28,16 @@
 .hero.loaded .hero-bg {
   transform: scale(1.05);
 }
+
+.hero-video {
+  width: 106%;
+  height: 106%;
+  object-fit: cover;
+  filter: brightness(0.5) saturate(1.1);
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+
+.hero-video.tocando {
+  opacity: 1;
+}
