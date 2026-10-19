@@ -3,3 +3,26 @@
   padding: var(--secao-y) 0;
   background: var(--bg-alt);
 }
+
+.form-box {
+  position: relative;
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  padding: clamp(1.8rem, 5vw, 3.2rem);
+  overflow: hidden;
+  border-radius: 32px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: var(--sombra-2);
+}
+
+.form-box::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--ouro-gradiente);
+  background-size: 200% auto;
+  animation: ouroCorre 5s linear infinite;
+}
