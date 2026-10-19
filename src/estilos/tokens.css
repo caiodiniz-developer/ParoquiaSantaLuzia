@@ -1,0 +1,34 @@
+/* ===========================================================================
+   TOKENS
+   ---------------------------------------------------------------------------
+   Toda cor, fonte, raio, sombra e curva de animação do site nasce aqui. Os
+   nomes antigos (--primary, --accent, --muted-fg...) continuam existindo
+   porque o painel /admin também os usa.
+   =========================================================================== */
+
+:root {
+  /* Papel: o fundo do site é um marfim quente, como página de missal. */
+  --bg: #f7f2ea;
+  --bg-alt: #efe7da;
+  --card: #fffdf9;
+  --fg: #17211b;
+
+  /* Verde litúrgico, do mais claro ao quase preto da noite. */
+  --primary: #1d5a34;
+  --primary-dark: #0e2f1c;
+  --noite: #08160e;
+  --noite-2: #0d2216;
+
+  /* Vinho para o Salmo e para os detalhes de destaque. */
+  --secondary: #7a1d22;
+
+  /* Ouro: folha de ouro, não amarelo. */
+  --accent: #c6a04a;
+  --accent-claro: #e8d39a;
+  --accent-escuro: #8e6d24;
+
+  --muted: #f0e9dd;
+  --muted-fg: #5d6560;
+  --border: #e3d8c6;
+  --linha-clara: rgba(255, 255, 255, 0.12);
+}
