@@ -1,0 +1,5 @@
+.contato-section {
+  --fundo-da-secao: var(--bg-alt);
+  padding: var(--secao-y) 0;
+  background: var(--bg-alt);
+}
