@@ -15,3 +15,11 @@
   background: radial-gradient(circle, rgba(198, 160, 74, 0.16), transparent 65%);
   transform: translate3d(0, var(--luz-y, 0px), 0);
 }
+
+.santa-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(2.5rem, 6vw, 6rem);
+  align-items: center;
+  margin-top: clamp(3rem, 6vw, 5rem);
+}
