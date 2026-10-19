@@ -1,0 +1,21 @@
+.doe-section {
+  padding: var(--secao-y) 0;
+  overflow: hidden;
+}
+
+.doe-section::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 25%;
+  left: 50%;
+  width: min(820px, 110vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(198, 160, 74, 0.18), transparent 62%);
+  transform: translate3d(-50%, var(--luz-y, 0px), 0);
+}
+
+.doe-subtitle {
+  margin-top: 0.4rem;
+}
