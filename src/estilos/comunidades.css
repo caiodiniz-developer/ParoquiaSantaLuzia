@@ -175,3 +175,19 @@
 .community-card.featured .card-header {
   padding-top: 2.6rem;
 }
+
+.card-body {
+  position: relative;
+  max-height: 150px;
+  padding: 0 1.6rem;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent);
+  mask-image: linear-gradient(180deg, #000 55%, transparent);
+  transition: max-height 0.9s var(--ease-in-out);
+}
+
+.community-card.expanded .card-body {
+  max-height: 1400px;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
