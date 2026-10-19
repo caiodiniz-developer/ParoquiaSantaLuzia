@@ -20,3 +20,14 @@
 .section-cross::after {
   background: linear-gradient(90deg, var(--accent), transparent);
 }
+
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.4rem, 5.6vw, 4.1rem);
+  line-height: 1.02;
+  letter-spacing: -0.012em;
+  color: var(--primary-dark);
+  text-align: center;
+  text-wrap: balance;
+}
