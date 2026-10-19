@@ -80,3 +80,25 @@
 .santa-img-wrap:hover .img-frame img {
   transform: scale(1.04);
 }
+
+.santa-text p {
+  font-size: 1.04rem;
+  line-height: 1.9;
+  color: #3a463f;
+  text-wrap: pretty;
+}
+
+.santa-text p + p,
+.santa-text .highlight-verse + p {
+  margin-top: 1.4rem;
+}
+
+.santa-text > p:first-child::first-letter {
+  float: left;
+  margin: 0.08em 0.14em 0 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 4.6em;
+  line-height: 0.78;
+  color: var(--accent-escuro);
+}
