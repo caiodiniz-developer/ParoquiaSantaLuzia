@@ -90,3 +90,34 @@
 .navbar.scrolled .logo-text {
   color: var(--primary-dark);
 }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
+  list-style: none;
+}
+
+.nav-links a {
+  position: relative;
+  display: block;
+  padding: 0.55rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.8);
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.nav-links a.active {
+  color: var(--noite);
+  background: var(--accent-claro);
+}
