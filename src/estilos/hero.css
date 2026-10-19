@@ -177,3 +177,11 @@
     transform: translate3d(var(--deriva-x, 0px), -60vh, 0);
   }
 }
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1040px;
+  text-align: center;
+  will-change: transform, opacity;
+}
