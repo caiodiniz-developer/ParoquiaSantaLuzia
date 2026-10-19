@@ -41,3 +41,11 @@
 .hero-video.tocando {
   opacity: 1;
 }
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 70% at 50% 45%, transparent 0%, rgba(8, 22, 14, 0.55) 70%, rgba(8, 22, 14, 0.9) 100%),
+    linear-gradient(180deg, rgba(8, 22, 14, 0.55) 0%, rgba(14, 47, 28, 0.25) 40%, var(--noite) 100%);
+}
