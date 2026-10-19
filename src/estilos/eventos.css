@@ -107,3 +107,21 @@
   line-height: 1.6;
   color: rgba(251, 246, 236, 0.78);
 }
+
+/* Só onde existe hover de verdade. No celular o resumo aparece sempre: lá não
+   há como "passar o mouse" para descobri-lo. */
+@media (hover: hover) {
+  .evento-card-texto p {
+    max-height: 0;
+    opacity: 0;
+    transition:
+      max-height 0.7s var(--ease-out),
+      opacity 0.5s ease;
+  }
+
+  .evento-card:hover .evento-card-texto p,
+  .evento-card:focus-visible .evento-card-texto p {
+    max-height: 6em;
+    opacity: 1;
+  }
+}
