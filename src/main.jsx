@@ -6,6 +6,8 @@ import "./styles.css";
 // Depois do styles.css de proposito: a camada de animacao complementa e, em
 // alguns pontos, precisa vencer o estilo original por ordem de cascata.
 import "./animacoes.css";
+// Novo sistema de design. Vem por ultimo para vencer a cascata.
+import "./estilos/index.css";
 import Site from "./Site.jsx";
 
 // O painel so e baixado por quem abre /admin. O visitante da paroquia nunca
