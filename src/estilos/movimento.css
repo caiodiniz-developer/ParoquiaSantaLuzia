@@ -87,3 +87,12 @@
     filter: blur(6px);
   }
 }
+
+.cascata > *:nth-child(1) { --atraso: 0.06s; }
+.cascata > *:nth-child(2) { --atraso: 0.14s; }
+.cascata > *:nth-child(3) { --atraso: 0.22s; }
+.cascata > *:nth-child(4) { --atraso: 0.3s; }
+.cascata > *:nth-child(5) { --atraso: 0.38s; }
+.cascata > *:nth-child(6) { --atraso: 0.46s; }
+.cascata > *:nth-child(7) { --atraso: 0.54s; }
+.cascata > *:nth-child(n + 8) { --atraso: 0.62s; }
