@@ -96,3 +96,22 @@
 .cascata > *:nth-child(6) { --atraso: 0.46s; }
 .cascata > *:nth-child(7) { --atraso: 0.54s; }
 .cascata > *:nth-child(n + 8) { --atraso: 0.62s; }
+
+.texto-revelado .palavra {
+  display: inline-block;
+  opacity: 0;
+}
+
+.visible .texto-revelado .palavra,
+.texto-revelado.visible .palavra {
+  opacity: 1;
+  animation: acendePalavra 1.1s var(--ease-out) calc(0.25s + var(--i, 0) * 40ms) backwards;
+}
+
+@keyframes acendePalavra {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.5em, 0);
+    filter: blur(5px);
+  }
+}
