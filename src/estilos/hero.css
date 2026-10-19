@@ -185,3 +185,25 @@
   text-align: center;
   will-change: transform, opacity;
 }
+
+.hero-content .hero-subtitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: var(--font-label);
+  font-size: clamp(0.66rem, 1.4vw, 0.8rem);
+  font-weight: 500;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--accent-claro);
+  margin-bottom: 1.8rem;
+}
+
+.hero-content .hero-subtitle::before,
+.hero-content .hero-subtitle::after {
+  content: "";
+  width: clamp(24px, 5vw, 60px);
+  height: 1px;
+  background: currentColor;
+  opacity: 0.6;
+}
