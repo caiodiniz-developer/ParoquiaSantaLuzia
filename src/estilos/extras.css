@@ -167,3 +167,85 @@
     visibility: hidden;
   }
 }
+
+/* Fica o esmaecimento (não incomoda), sai tudo o que desliza, gira, pulsa ou
+   repete em laço. O conteúdo continua aparecendo inteiro. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-iteration-count: 1 !important;
+  }
+
+  .visible,
+  .visible .cascata > *,
+  .visible.cascata > *,
+  .texto-revelado .palavra,
+  .hero .hero-subtitle,
+  .hero .hero-desc,
+  .hero-cta,
+  .hero-linha > span,
+  .navbar {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  .hero-scroll {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+
+  .hero-vitral,
+  .hero-raios,
+  .hero-luz {
+    animation: none !important;
+    opacity: 0.7;
+  }
+
+  .particle,
+  .carousel-track,
+  .hero-cta::after,
+  .stats-grid::after,
+  .hero-scroll::after,
+  .hero-scroll svg,
+  .card-badge,
+  .pix-box::before,
+  .pix-box .pix-icon,
+  .padroeira-section::before,
+  footer img {
+    animation: none !important;
+  }
+
+  .abertura,
+  .luz-do-cursor {
+    display: none !important;
+  }
+
+  .santa-img-wrap .img-frame,
+  .padroeira-img .img-wrap {
+    clip-path: none;
+    transition: none;
+  }
+
+  .santa-img-wrap .img-frame img,
+  .padroeira-img img,
+  .community-card:hover,
+  .evento-card:hover,
+  .liturgia-card:hover,
+  .horario-card:hover {
+    transform: none !important;
+  }
+
+  .reveal .gold-divider,
+  .reveal-left .gold-divider,
+  .reveal-right .gold-divider,
+  .reveal-scale .gold-divider {
+    transform: none;
+  }
+}
