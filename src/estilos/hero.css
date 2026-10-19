@@ -78,3 +78,40 @@
     transform: translate3d(3%, -2%, 0) rotate(4deg) scale(1.06);
   }
 }
+
+.hero-raios {
+  position: absolute;
+  top: -40%;
+  left: 50%;
+  width: 180vmax;
+  height: 180vmax;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: repeating-conic-gradient(
+    from 0deg at 50% 0%,
+    rgba(232, 211, 154, 0) 0deg,
+    rgba(232, 211, 154, 0.09) 3deg,
+    rgba(232, 211, 154, 0) 7deg,
+    rgba(232, 211, 154, 0) 13deg
+  );
+  -webkit-mask-image: radial-gradient(circle at 50% 0%, #000 0%, transparent 55%);
+  mask-image: radial-gradient(circle at 50% 0%, #000 0%, transparent 55%);
+  transform: translateX(-50%) rotate(-6deg);
+  transform-origin: 50% 0%;
+  opacity: 0;
+  animation:
+    raiosAcendem 3.5s ease 0.9s forwards,
+    raiosVarrem 22s ease-in-out 0.9s infinite alternate;
+}
+
+@keyframes raiosAcendem {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes raiosVarrem {
+  to {
+    transform: translateX(-50%) rotate(6deg);
+  }
+}
