@@ -9,3 +9,22 @@
   background: var(--noite);
   color: #fbf6ec;
 }
+
+.hero-bg,
+.hero-video {
+  position: absolute;
+  inset: -3%;
+  will-change: transform;
+}
+
+.hero-bg {
+  background: url("https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-5F44UQeX0bss6xkLio6DwBZrdjuY26.png")
+    center / cover no-repeat;
+  filter: blur(3px) brightness(0.42) saturate(1.15);
+  transform: scale(1.18);
+  transition: transform 3.2s var(--ease-out);
+}
+
+.hero.loaded .hero-bg {
+  transform: scale(1.05);
+}
