@@ -2,11 +2,7 @@ import React, { Suspense, lazy } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import "./styles.css";
-// Depois do styles.css de proposito: a camada de animacao complementa e, em
-// alguns pontos, precisa vencer o estilo original por ordem de cascata.
-import "./animacoes.css";
-// Novo sistema de design. Vem por ultimo para vencer a cascata.
+// Sistema de design do site, dividido em modulos por secao.
 import "./estilos/index.css";
 import Site from "./Site.jsx";
 
