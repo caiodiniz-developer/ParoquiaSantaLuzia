@@ -183,3 +183,9 @@
     margin-top: 0.6rem;
   }
 }
+
+/* O JSX fixa 1.05rem inline em dois valores (herança do layout antigo, feito
+   para a Cinzel). Na Cormorant esse tamanho fica miúdo ao lado do CNPJ. */
+.pix-info-card .value[style] {
+  font-size: 1.45rem !important;
+}
