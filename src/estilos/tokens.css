@@ -65,3 +65,12 @@
   --secao-y: clamp(5rem, 11vw, 9rem);
   --gutter: clamp(1.25rem, 4vw, 2.5rem);
 }
+
+/* Registrada para que o navegador consiga interpolar o ângulo do gradiente
+   cônico. Sem @property o contorno da caixa do PIX pularia de quadro em quadro
+   em vez de girar. Navegador sem suporte vê o contorno parado, sem prejuízo. */
+@property --angulo {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
