@@ -61,3 +61,17 @@
   background: rgba(255, 255, 255, 0.07);
   border-color: rgba(232, 211, 154, 0.55);
 }
+
+.horario-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(300px circle at var(--mx, 50%) var(--my, 0%), rgba(232, 211, 154, 0.16), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.horario-card:hover::before {
+  opacity: 1;
+}
