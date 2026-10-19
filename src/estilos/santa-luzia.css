@@ -128,3 +128,13 @@
   color: var(--accent);
   opacity: 0.45;
 }
+
+@media (max-width: 900px) {
+  .santa-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .santa-img-wrap {
+    max-width: 360px;
+  }
+}
