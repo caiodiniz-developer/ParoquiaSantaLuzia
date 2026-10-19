@@ -433,3 +433,49 @@
   font-size: 0.92rem;
   color: var(--fg);
 }
+
+.evento-modal-video {
+  display: block;
+  width: 100%;
+  margin-top: 1.4rem;
+  border-radius: 14px;
+  background: #000;
+}
+
+.evento-modal-galeria {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 0.5rem;
+  margin-top: 1.4rem;
+}
+
+.evento-modal-galeria img {
+  width: 100%;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: transform 0.5s var(--ease-out);
+}
+
+.evento-modal-galeria img:hover {
+  transform: scale(1.05);
+}
+
+.evento-modal-inscricao {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  padding: 0.95rem 1.8rem;
+  border-radius: 999px;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 14px 30px -12px rgba(29, 90, 52, 0.7);
+  transition: background-color 0.3s ease, transform 0.5s var(--ease-out);
+}
+
+.evento-modal-inscricao:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+}
