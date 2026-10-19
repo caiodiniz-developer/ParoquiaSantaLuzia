@@ -350,3 +350,78 @@
     background-position: 0 200%, 0 0;
   }
 }
+
+/* Tudo nasce escondido e só entra quando o Hero ganha `.loaded`. Os atrasos
+   partem de --abertura, o tempo que a cortina inicial leva para subir. */
+.hero-content .hero-subtitle,
+.hero-content .hero-desc,
+.hero-cta,
+.hero-scroll {
+  opacity: 0;
+}
+
+.hero-linha > span {
+  transform: translate3d(0, 110%, 0) rotate(3deg);
+}
+
+.hero.loaded .hero-subtitle {
+  animation: heroSurge 1.2s var(--ease-out) var(--abertura) forwards;
+}
+
+.hero.loaded .hero-linha > span {
+  animation: heroLinha 1.4s var(--ease-out) calc(var(--abertura) + 0.15s) forwards;
+}
+
+.hero.loaded .hero-linha:nth-child(2) > span {
+  animation-delay: calc(var(--abertura) + 0.3s);
+}
+
+/* O nome dourado tem duas animações; a de entrada não pode apagar a do
+   reflexo, então as duas vão juntas na mesma declaração. */
+.hero.loaded .hero-linha > .hero-nome {
+  animation:
+    heroLinha 1.4s var(--ease-out) calc(var(--abertura) + 0.3s) forwards,
+    ouroCorre 6s linear calc(var(--abertura) + 1.6s) infinite;
+}
+
+.hero.loaded .hero-desc {
+  animation: heroSurge 1.2s var(--ease-out) calc(var(--abertura) + 0.6s) forwards;
+}
+
+.hero.loaded .hero-cta {
+  animation: heroSurge 1.2s var(--ease-out) calc(var(--abertura) + 0.8s) forwards;
+}
+
+.hero.loaded .hero-scroll {
+  animation: heroSurgeCentro 1.2s var(--ease-out) calc(var(--abertura) + 1.2s) forwards;
+}
+
+@keyframes heroLinha {
+  to {
+    transform: none;
+  }
+}
+
+@keyframes heroSurge {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@keyframes heroSurgeCentro {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
