@@ -4,7 +4,7 @@
   min-height: 100svh;
   display: grid;
   place-items: center;
-  padding: 7rem var(--gutter) 9rem;
+  padding: 7rem var(--gutter) 13rem;
   overflow: hidden;
   background: var(--noite);
   color: #fbf6ec;
@@ -446,5 +446,17 @@
 
   .hero-scroll::after {
     height: 32px;
+  }
+}
+
+/* Em telas baixas (notebook de 768px de altura) o indicador encostaria no
+   botão. Ali a própria dobra já convida a rolar. */
+@media (max-height: 760px) {
+  .hero-scroll {
+    display: none;
+  }
+
+  .hero {
+    padding-bottom: 10rem;
   }
 }
