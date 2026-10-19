@@ -144,3 +144,36 @@
     scale: 1.08;
   }
 }
+
+.hero-particles {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: #f3e3b4;
+  box-shadow: 0 0 8px 1px rgba(232, 211, 154, 0.6);
+  animation: poeiraSuspensa linear infinite;
+}
+
+@keyframes poeiraSuspensa {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+  15% {
+    opacity: var(--brilho, 0.4);
+  }
+  85% {
+    opacity: var(--brilho, 0.4);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--deriva-x, 0px), -60vh, 0);
+  }
+}
