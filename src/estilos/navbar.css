@@ -32,3 +32,16 @@
     box-shadow 0.5s ease,
     backdrop-filter 0.5s ease;
 }
+
+.navbar.scrolled {
+  padding-top: 0.7rem;
+  padding-bottom: 0.7rem;
+}
+
+.navbar.scrolled .inner {
+  background: rgba(250, 246, 238, 0.78);
+  border-color: rgba(198, 160, 74, 0.28);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  backdrop-filter: blur(18px) saturate(1.5);
+  box-shadow: 0 14px 40px -18px rgba(8, 22, 14, 0.35);
+}
