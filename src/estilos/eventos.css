@@ -479,3 +479,23 @@
   background: var(--primary-dark);
   transform: translateY(-2px);
 }
+
+@media (max-width: 760px) {
+  .evento-modal-content {
+    overflow-y: auto;
+  }
+
+  .evento-modal-body {
+    grid-template-columns: 1fr;
+    max-height: none;
+  }
+
+  .evento-modal-imagem img {
+    height: auto;
+    max-height: 46vh;
+  }
+
+  .evento-modal-info {
+    overflow: visible;
+  }
+}
