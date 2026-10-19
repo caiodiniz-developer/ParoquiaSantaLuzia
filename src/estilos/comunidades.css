@@ -21,3 +21,31 @@
 .comunidades-subtitle {
   margin-top: 0.4rem;
 }
+
+.carousel-wrapper {
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  padding: 1.5rem 0 2.5rem;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+/* A distância entre cartões vem de margin, e não de gap: com gap a largura
+   total teria um espaço a menos que o número de cartões, e o -50% do laço
+   pararia meio espaço fora do lugar, com um tranco a cada volta. */
+.carousel-track {
+  display: flex;
+  align-items: flex-start;
+  width: max-content;
+  animation: esteira 70s linear infinite;
+}
+
+.carousel-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes esteira {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
