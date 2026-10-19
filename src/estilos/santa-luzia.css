@@ -102,3 +102,29 @@
   line-height: 0.78;
   color: var(--accent-escuro);
 }
+
+.santa-text .highlight-verse {
+  position: relative;
+  margin: 2.2rem 0;
+  padding: 1.8rem 1.8rem 1.8rem 3.4rem;
+  border-left: 2px solid var(--accent);
+  border-radius: 0 var(--raio) var(--raio) 0;
+  background: linear-gradient(90deg, rgba(198, 160, 74, 0.12), rgba(198, 160, 74, 0));
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.35rem, 2.3vw, 1.75rem);
+  line-height: 1.45;
+  color: var(--primary-dark);
+}
+
+.santa-text .highlight-verse::before {
+  content: "\201C";
+  position: absolute;
+  top: -0.15em;
+  left: 0.2em;
+  font-size: 5.5rem;
+  line-height: 1;
+  font-style: normal;
+  color: var(--accent);
+  opacity: 0.45;
+}
