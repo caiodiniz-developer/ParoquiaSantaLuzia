@@ -19,3 +19,23 @@
 .reveal-rotate {
   opacity: 0;
 }
+
+.reveal {
+  --revelar-de: translate3d(0, 56px, 0);
+}
+
+.reveal-left {
+  --revelar-de: translate3d(-72px, 0, 0);
+}
+
+.reveal-right {
+  --revelar-de: translate3d(72px, 0, 0);
+}
+
+.reveal-scale {
+  --revelar-de: translate3d(0, 40px, 0) scale(0.9);
+}
+
+.reveal-rotate {
+  --revelar-de: translate3d(0, 50px, 0) rotate(-4deg);
+}
