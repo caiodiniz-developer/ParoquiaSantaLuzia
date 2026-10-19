@@ -5,7 +5,6 @@ import { rotuloDoTipo } from "../lib/api.js";
 import TituloDeSecao from "./TituloDeSecao.jsx";
 import ModalDeEvento from "./ModalDeEvento.jsx";
 import { IconePlay } from "./Icones.jsx";
-import "./eventos.css";
 
 const MESES = ["JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"];
 
