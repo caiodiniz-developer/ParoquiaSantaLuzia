@@ -3,7 +3,9 @@ import { useEfeitosDeScroll } from "./hooks/useEfeitosDeScroll.js";
 import { useRevelacaoScroll } from "./hooks/useRevelacaoScroll.js";
 import { useParallaxDeCamadas } from "./hooks/useParallaxDeCamadas.js";
 import { usePrefereMenosMovimento } from "./hooks/usePrefereMenosMovimento.js";
+import { useInteracoesDoPonteiro } from "./hooks/useInteracoesDoPonteiro.js";
 
+import Abertura from "./components/Abertura.jsx";
 import Navbar, { SECOES } from "./components/Navbar.jsx";
 import Hero from "./components/Hero.jsx";
 import Estatisticas from "./components/Estatisticas.jsx";
@@ -35,8 +37,14 @@ export default function Site() {
   const menosMovimento = usePrefereMenosMovimento();
   useParallaxDeCamadas(!menosMovimento);
 
+  // Luz do cursor, brilho nos cartoes e botoes magneticos. So com mouse; o
+  // proprio hook confere isso.
+  useInteracoesDoPonteiro(!menosMovimento);
+
   return (
     <>
+      <Abertura />
+      <div className="luz-do-cursor" aria-hidden="true" />
       <div className="scroll-progress" style={{ width: `${progresso}%` }} />
 
       <Navbar rolou={rolou} secaoAtiva={secaoAtiva} />
@@ -54,7 +62,7 @@ export default function Site() {
       <Redes />
       <Rodape />
 
-      <BotaoVoltarAoTopo visivel={mostrarTopo} />
+      <BotaoVoltarAoTopo visivel={mostrarTopo} progresso={progresso} />
     </>
   );
 }
