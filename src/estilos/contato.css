@@ -154,3 +154,41 @@
   font-size: 0.82rem;
   color: var(--muted-fg);
 }
+
+.form-success {
+  display: none;
+  padding: 3rem 0;
+  text-align: center;
+}
+
+.form-success.show {
+  display: block;
+  animation: modalSobe 0.7s var(--ease-out);
+}
+
+.form-success .check {
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 1.4rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #25c264, #1a9a4f);
+  color: #fff;
+  font-size: 2.3rem;
+  box-shadow: 0 0 0 10px rgba(37, 194, 100, 0.12);
+  animation: checkSalta 0.8s var(--ease-mola) 0.1s backwards;
+}
+
+@keyframes checkSalta {
+  from {
+    transform: scale(0) rotate(-45deg);
+  }
+}
+
+.form-success p {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.6rem;
+  color: var(--primary-dark);
+}
