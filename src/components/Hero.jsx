@@ -98,10 +98,15 @@ export default function Hero() {
 
       <div className="hero-content">
         <p className="hero-subtitle">Arquidiocese de Campinas/SP</p>
+        {/* Cada linha e uma mascara: o texto de dentro sobe por baixo dela na
+            abertura. A quebra que antes era um <br /> agora e o proprio bloco. */}
         <h1>
-          Seja bem-vindo ao site da
-          <br />
-          <span>Paróquia Santa Luzia!</span>
+          <span className="hero-linha">
+            <span>Seja bem-vindo ao site da</span>
+          </span>
+          <span className="hero-linha">
+            <span className="hero-nome">Paróquia Santa Luzia!</span>
+          </span>
         </h1>
         <p className="hero-desc">
           Jardim dos Oliveiras - Campinas/SP
