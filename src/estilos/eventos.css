@@ -258,3 +258,42 @@
   font-size: 1.5rem;
   color: var(--primary-dark);
 }
+
+.evento-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(0.75rem, 3vw, 2rem);
+  background: rgba(8, 22, 14, 0.72);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  animation: modalFundo 0.5s ease both;
+}
+
+@keyframes modalFundo {
+  from {
+    opacity: 0;
+  }
+}
+
+.evento-modal-content {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  max-height: 92vh;
+  overflow: hidden;
+  border-radius: var(--raio-lg);
+  background: var(--card);
+  box-shadow: 0 50px 120px -30px rgba(0, 0, 0, 0.6);
+  animation: modalSobe 0.8s var(--ease-out) both;
+}
+
+@keyframes modalSobe {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 40px, 0) scale(0.96);
+  }
+}
