@@ -140,3 +140,30 @@
 .visible .gold-divider::after {
   opacity: 1;
 }
+
+.reveal .section-cross,
+.reveal-left .section-cross,
+.reveal-right .section-cross,
+.reveal-scale .section-cross {
+  opacity: 0;
+}
+
+.visible .section-cross {
+  opacity: 1;
+  animation: cruzAcende 1.6s var(--ease-out) backwards;
+}
+
+@keyframes cruzAcende {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+    text-shadow: 0 0 0 rgba(198, 160, 74, 0);
+  }
+  55% {
+    opacity: 1;
+    text-shadow: 0 0 22px rgba(232, 211, 154, 0.95);
+  }
+  100% {
+    text-shadow: 0 0 0 rgba(198, 160, 74, 0);
+  }
+}
