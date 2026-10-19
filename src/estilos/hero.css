@@ -425,3 +425,26 @@
     transform: translate(-50%, 0);
   }
 }
+
+@media (max-width: 600px) {
+  .hero {
+    padding-bottom: 8rem;
+  }
+
+  .hero-content .hero-subtitle {
+    letter-spacing: 0.24em;
+  }
+
+  .hero-cta {
+    padding: 0.95rem 1.2rem 0.95rem 1.6rem;
+    font-size: 0.9rem;
+  }
+
+  .hero-scroll {
+    bottom: 6rem;
+  }
+
+  .hero-scroll::after {
+    height: 32px;
+  }
+}
