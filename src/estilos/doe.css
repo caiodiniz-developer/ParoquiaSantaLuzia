@@ -19,3 +19,37 @@
 .doe-subtitle {
   margin-top: 0.4rem;
 }
+
+.pix-box {
+  position: relative;
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  padding: clamp(2rem, 5vw, 3.5rem);
+  text-align: center;
+  border-radius: 32px;
+  background: var(--card);
+  box-shadow: var(--sombra-3);
+}
+
+/* O contorno é um gradiente cônico recortado por máscara: só o anel de 1,5px
+   aparece. O ângulo gira graças ao @property --angulo dos tokens. */
+.pix-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1.5px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: conic-gradient(
+    from var(--angulo),
+    rgba(198, 160, 74, 0.15),
+    #e8d39a,
+    rgba(198, 160, 74, 0.15) 30%,
+    rgba(198, 160, 74, 0.15) 70%,
+    #c6a04a,
+    rgba(198, 160, 74, 0.15)
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  animation: girar 8s linear infinite;
+}
