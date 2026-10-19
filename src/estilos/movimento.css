@@ -39,3 +39,16 @@
 .reveal-rotate {
   --revelar-de: translate3d(0, 50px, 0) rotate(-4deg);
 }
+
+.visible {
+  opacity: 1;
+  animation: revelar 1.3s var(--ease-out) var(--atraso-revelar, 0s) backwards;
+}
+
+@keyframes revelar {
+  from {
+    opacity: 0;
+    transform: var(--revelar-de, translate3d(0, 40px, 0));
+    filter: blur(8px);
+  }
+}
