@@ -52,3 +52,12 @@
     filter: blur(8px);
   }
 }
+
+.delay-1 { --atraso-revelar: 0.08s; }
+.delay-2 { --atraso-revelar: 0.16s; }
+.delay-3 { --atraso-revelar: 0.24s; }
+.delay-4 { --atraso-revelar: 0.32s; }
+.delay-5 { --atraso-revelar: 0.4s; }
+.delay-6 { --atraso-revelar: 0.48s; }
+.delay-7 { --atraso-revelar: 0.56s; }
+.delay-8 { --atraso-revelar: 0.64s; }
