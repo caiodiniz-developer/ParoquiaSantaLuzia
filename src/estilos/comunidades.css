@@ -303,3 +303,38 @@
   background: rgba(255, 255, 255, 0.07);
   color: rgba(251, 246, 236, 0.85);
 }
+
+.secretaria-box {
+  position: relative;
+  margin-top: clamp(2rem, 5vw, 3.5rem);
+  padding: clamp(2rem, 5vw, 3.5rem);
+  overflow: hidden;
+  border-radius: var(--raio-lg);
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: var(--sombra-2);
+}
+
+.secretaria-box::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--ouro-gradiente);
+  background-size: 200% auto;
+  animation: ouroCorre 5s linear infinite;
+}
+
+.secretaria-box h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  text-align: center;
+  color: var(--primary-dark);
+}
+
+.secretaria-box .gold-divider {
+  --fundo-da-secao: var(--card);
+}
