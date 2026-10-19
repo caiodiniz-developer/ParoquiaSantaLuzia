@@ -97,3 +97,17 @@
   transform: rotate(-15deg) scale(1.08);
   box-shadow: 0 0 0 8px rgba(232, 211, 154, 0.06), 0 0 30px rgba(232, 211, 154, 0.35);
 }
+
+.horario-card h4 {
+  margin: 1.3rem 0 0.8rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.65rem;
+  color: #fbf6ec;
+}
+
+.horario-card p {
+  font-size: 0.9rem;
+  line-height: 1.85;
+  color: rgba(251, 246, 236, 0.72);
+}
