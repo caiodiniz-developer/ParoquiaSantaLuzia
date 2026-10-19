@@ -115,3 +115,28 @@
     filter: blur(5px);
   }
 }
+
+.reveal .gold-divider,
+.reveal-left .gold-divider,
+.reveal-right .gold-divider,
+.reveal-scale .gold-divider {
+  transform: scaleX(0);
+  transition: transform 1.4s var(--ease-out) 0.35s;
+}
+
+.visible .gold-divider {
+  transform: scaleX(1);
+}
+
+/* O losango só aparece depois que o filete termina de se desenhar. */
+.reveal .gold-divider::after,
+.reveal-left .gold-divider::after,
+.reveal-right .gold-divider::after,
+.reveal-scale .gold-divider::after {
+  opacity: 0;
+  transition: opacity 0.6s ease 1.2s;
+}
+
+.visible .gold-divider::after {
+  opacity: 1;
+}
