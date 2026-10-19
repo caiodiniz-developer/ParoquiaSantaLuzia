@@ -78,3 +78,29 @@
 .liturgia-card:hover::after {
   opacity: 1;
 }
+
+.liturgia-card-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem 1.8rem;
+  overflow: hidden;
+  background:
+    radial-gradient(100% 160% at 100% 0%, rgba(198, 160, 74, 0.25), transparent 55%),
+    linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: #fbf6ec;
+}
+
+.liturgia-card-header.salmo {
+  background:
+    radial-gradient(100% 160% at 100% 0%, rgba(198, 160, 74, 0.25), transparent 55%),
+    linear-gradient(135deg, #8f2a2f 0%, #4e1014 100%);
+}
+
+.liturgia-card-header h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.5rem, 2.6vw, 1.85rem);
+  line-height: 1.1;
+}
