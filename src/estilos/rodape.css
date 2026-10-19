@@ -38,3 +38,28 @@ footer img:hover {
     filter: drop-shadow(0 0 18px rgba(232, 211, 154, 0.5));
   }
 }
+
+footer .rights {
+  margin-top: 1.6rem;
+  font-family: var(--font-label);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(251, 246, 236, 0.75);
+}
+
+footer .dev {
+  margin-top: 0.6rem;
+  font-size: 0.86rem;
+}
+
+footer .dev a {
+  position: relative;
+  color: var(--accent-claro);
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size 0.5s var(--ease-out);
+}
+
+footer .dev a:hover {
+  background-size: 100% 1px;
+}
