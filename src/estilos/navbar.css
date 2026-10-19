@@ -200,3 +200,31 @@
 .navbar:has(.hamburger.open) .logo-text {
   color: #fbf6ec;
 }
+
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  padding: 6rem 1.5rem 3rem;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(198, 160, 74, 0.16), transparent 55%),
+    var(--noite);
+  clip-path: circle(0% at calc(100% - 3rem) 2.6rem);
+  visibility: hidden;
+  transition:
+    clip-path 0.9s var(--ease-in-out),
+    visibility 0s linear 0.9s;
+}
+
+.mobile-menu.open {
+  clip-path: circle(150% at calc(100% - 3rem) 2.6rem);
+  visibility: visible;
+  transition:
+    clip-path 0.9s var(--ease-in-out),
+    visibility 0s;
+}
