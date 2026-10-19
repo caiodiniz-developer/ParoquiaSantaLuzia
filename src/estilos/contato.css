@@ -26,3 +26,36 @@
   background-size: 200% auto;
   animation: ouroCorre 5s linear infinite;
 }
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-box label {
+  display: block;
+  margin-bottom: 0.55rem;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+
+.form-box input,
+.form-box select,
+.form-box textarea {
+  width: 100%;
+  padding: 1rem 1.15rem;
+  border-radius: 14px;
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  font-size: 0.98rem;
+  color: var(--fg);
+  transition:
+    border-color 0.3s ease,
+    background-color 0.3s ease,
+    box-shadow 0.4s var(--ease-out);
+}
+
+.form-box input::placeholder,
+.form-box textarea::placeholder {
+  color: #9aa09b;
+}
