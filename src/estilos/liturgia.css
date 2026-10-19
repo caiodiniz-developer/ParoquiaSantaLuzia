@@ -1,0 +1,17 @@
+.liturgia-section {
+  padding: var(--secao-y) 0;
+  overflow: hidden;
+}
+
+.liturgia-section::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 30%;
+  left: 50%;
+  width: min(900px, 100vw);
+  aspect-ratio: 2 / 1;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(198, 160, 74, 0.13), transparent 65%);
+  transform: translate3d(-50%, var(--luz-y, 0px), 0);
+}
