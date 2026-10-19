@@ -65,3 +65,26 @@
 .carousel-wrapper.sem-esteira .community-card {
   scroll-snap-align: start;
 }
+
+.community-card {
+  position: relative;
+  flex-shrink: 0;
+  width: clamp(290px, 80vw, 350px);
+  margin-right: 1.5rem;
+  overflow: hidden;
+  cursor: pointer;
+  border-radius: 24px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: var(--sombra-1);
+  transition:
+    transform 0.7s var(--ease-out),
+    box-shadow 0.7s var(--ease-out),
+    border-color 0.5s ease;
+}
+
+.community-card:hover {
+  transform: translateY(-10px);
+  border-color: rgba(198, 160, 74, 0.6);
+  box-shadow: var(--sombra-2), var(--brilho-ouro);
+}
