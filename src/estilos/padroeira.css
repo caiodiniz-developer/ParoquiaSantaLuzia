@@ -1,0 +1,29 @@
+.padroeira-section {
+  --fundo-da-secao: var(--noite);
+  padding: var(--secao-y) 0;
+  overflow: hidden;
+  color: #fbf6ec;
+  background:
+    radial-gradient(60% 80% at 25% 50%, rgba(198, 160, 74, 0.14), transparent 65%),
+    var(--noite);
+}
+
+.padroeira-section::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 10%;
+  left: 5%;
+  width: min(600px, 80vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232, 211, 154, 0.14), transparent 65%);
+  transform: translate3d(0, var(--luz-y, 0px), 0);
+  animation: velaTremula 5s ease-in-out infinite;
+}
+
+@keyframes velaTremula {
+  50% {
+    opacity: 0.7;
+  }
+}
