@@ -297,3 +297,28 @@
     transform: translate3d(0, 40px, 0) scale(0.96);
   }
 }
+
+.evento-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(255, 253, 249, 0.92);
+  color: var(--primary-dark);
+  box-shadow: var(--sombra-1);
+  transition:
+    transform 0.6s var(--ease-mola),
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.evento-modal-close:hover {
+  transform: rotate(90deg);
+  background: var(--primary);
+  color: #fff;
+}
