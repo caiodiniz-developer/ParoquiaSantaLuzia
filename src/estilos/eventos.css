@@ -1,0 +1,19 @@
+.eventos-section {
+  --fundo-da-secao: var(--bg-alt);
+  padding: var(--secao-y) 0;
+  background: var(--bg-alt);
+}
+
+.eventos-subtitle {
+  margin-top: 0.4rem;
+}
+
+/* Colunas de largura máxima fixa: com um ou dois eventos os cartões ficam no
+   centro, em vez de esticados até a borda. */
+.eventos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 370px));
+  justify-content: center;
+  gap: clamp(1.2rem, 2.5vw, 2rem);
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+}
