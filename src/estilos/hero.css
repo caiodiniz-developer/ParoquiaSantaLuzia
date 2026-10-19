@@ -49,3 +49,32 @@
     radial-gradient(ellipse 80% 70% at 50% 45%, transparent 0%, rgba(8, 22, 14, 0.55) 70%, rgba(8, 22, 14, 0.9) 100%),
     linear-gradient(180deg, rgba(8, 22, 14, 0.55) 0%, rgba(14, 47, 28, 0.25) 40%, var(--noite) 100%);
 }
+
+.hero-vitral {
+  position: absolute;
+  inset: -10%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(28% 32% at 22% 30%, rgba(122, 29, 34, 0.45), transparent 70%),
+    radial-gradient(24% 30% at 78% 26%, rgba(40, 84, 160, 0.32), transparent 70%),
+    radial-gradient(30% 34% at 64% 72%, rgba(198, 160, 74, 0.28), transparent 70%),
+    radial-gradient(22% 26% at 30% 78%, rgba(29, 90, 52, 0.45), transparent 70%);
+  filter: blur(30px);
+  opacity: 0;
+  animation:
+    vitralAcende 3s ease 0.6s forwards,
+    vitralDeriva 26s ease-in-out 0.6s infinite alternate;
+}
+
+@keyframes vitralAcende {
+  to {
+    opacity: 0.85;
+  }
+}
+
+@keyframes vitralDeriva {
+  to {
+    transform: translate3d(3%, -2%, 0) rotate(4deg) scale(1.06);
+  }
+}
