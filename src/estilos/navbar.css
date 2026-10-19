@@ -277,3 +277,21 @@
   opacity: 1;
   transform: none;
 }
+
+/* 1100px e não 768px: com oito links e o nome da paróquia, a barra começa a
+   espremer bem antes de chegar no tamanho de tablet. */
+@media (max-width: 1100px) {
+  .nav-links {
+    display: none;
+  }
+
+  .hamburger {
+    display: block;
+  }
+}
+
+@media (max-width: 420px) {
+  .navbar .logo-text {
+    font-size: 1.1rem;
+  }
+}
