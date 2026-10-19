@@ -198,3 +198,43 @@
   line-height: 1.5;
   color: #4e1014;
 }
+
+.liturgia-card-footer {
+  display: flex;
+  justify-content: center;
+  padding: 1.2rem 1.8rem 1.7rem;
+}
+
+.liturgia-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(29, 90, 52, 0.35);
+  color: var(--primary);
+  font-family: var(--font-label);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease,
+    border-color 0.4s ease,
+    translate 0.5s var(--ease-out);
+}
+
+.liturgia-btn:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.liturgia-btn svg {
+  transition: transform 0.6s var(--ease-mola);
+}
+
+.liturgia-card.expanded .liturgia-btn svg {
+  transform: rotate(180deg);
+}
