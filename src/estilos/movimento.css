@@ -223,3 +223,21 @@
     animation-range: entry 0% cover 40%;
   }
 }
+
+@supports (animation-timeline: view()) {
+  @keyframes secaoSeAbre {
+    from {
+      clip-path: inset(0 4% round 56px);
+    }
+    to {
+      clip-path: inset(0 0 round 0);
+    }
+  }
+
+  .horarios-section,
+  .padroeira-section {
+    animation: secaoSeAbre linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 90%;
+  }
+}
