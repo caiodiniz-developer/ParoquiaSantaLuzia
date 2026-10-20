@@ -164,3 +164,18 @@
     opacity: 0.7;
   }
 }
+
+.santa-img-wrap .img-frame::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: -30%;
+  left: 50%;
+  width: 160%;
+  aspect-ratio: 1;
+  translate: -50% 0;
+  background: repeating-conic-gradient(from 0deg, rgba(198, 160, 74, 0.12) 0deg 2deg, transparent 2deg 12deg);
+  -webkit-mask-image: radial-gradient(circle, #000 0%, transparent 60%);
+  mask-image: radial-gradient(circle, #000 0%, transparent 60%);
+  animation: aureolaGira 80s linear infinite;
+}
