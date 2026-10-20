@@ -79,3 +79,13 @@
   transform: translate3d(0, 115%, 0) rotate(4deg);
   transform-origin: 0 100%;
 }
+
+.visible .titulo-palavra {
+  animation: palavraSobe 1.15s var(--ease-out) calc(0.15s + var(--p, 0) * 70ms) forwards;
+}
+
+@keyframes palavraSobe {
+  to {
+    transform: none;
+  }
+}
