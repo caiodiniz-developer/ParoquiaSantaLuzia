@@ -89,3 +89,11 @@
     transform: none;
   }
 }
+
+/* O h2 é filho de uma .cascata e ganharia o esmaecimento com desfoque dela.
+   Somado à máscara, ficaria embaçado e lento; aqui a máscara basta. */
+.visible.cascata > .section-title,
+.visible.cascata > .horarios-title {
+  animation: none !important;
+  opacity: 1 !important;
+}
