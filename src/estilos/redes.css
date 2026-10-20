@@ -107,3 +107,11 @@
 .redes-links a:hover svg {
   color: #fff;
 }
+
+.redes-section h3::before {
+  content: "\2720";
+  display: block;
+  margin-bottom: 0.6rem;
+  font-size: 1.4rem;
+  color: var(--accent);
+}
