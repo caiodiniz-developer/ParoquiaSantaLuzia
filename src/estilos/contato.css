@@ -221,3 +221,22 @@
   60% { rotate: -6deg; }
   80% { rotate: 3deg; }
 }
+
+.form-box::after {
+  content: "";
+  position: absolute;
+  top: -40%;
+  right: -30%;
+  width: 70%;
+  aspect-ratio: 1;
+  z-index: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(198, 160, 74, 0.1), transparent 65%);
+  animation: flutuar 8s ease-in-out infinite;
+}
+
+.form-box > * {
+  position: relative;
+  z-index: 1;
+}
