@@ -131,3 +131,26 @@
 .horario-card:nth-child(2) .h-icon { animation-delay: -1.2s; animation-duration: 5.6s; }
 .horario-card:nth-child(3) .h-icon { animation-delay: -2.4s; animation-duration: 4.6s; }
 .horario-card:nth-child(4) .h-icon { animation-delay: -3.6s; animation-duration: 6s; }
+
+.horario-card .h-icon {
+  position: relative;
+}
+
+.horario-card .h-icon::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px dashed rgba(232, 211, 154, 0.5);
+  opacity: 0;
+  scale: 0.8;
+  transition:
+    opacity 0.5s ease,
+    scale 0.7s var(--ease-mola);
+  animation: aureolaGira 14s linear infinite;
+}
+
+.horario-card:hover .h-icon::after {
+  opacity: 1;
+  scale: 1;
+}
