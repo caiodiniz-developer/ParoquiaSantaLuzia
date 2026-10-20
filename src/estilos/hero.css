@@ -460,3 +460,63 @@
     padding-bottom: 10rem;
   }
 }
+
+/* Um halo como o da imagem da santa: dois anéis finos, um tracejado que gira
+   devagar num sentido e um contínuo, em degradê, que gira no outro. */
+.hero-content::before,
+.hero-content::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  width: min(760px, 92vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  translate: -50% -50%;
+}
+
+.hero-content::before {
+  border: 1px dashed rgba(232, 211, 154, 0.22);
+  animation: none;
+}
+
+.hero-content::after {
+  width: min(620px, 78vw);
+  padding: 1px;
+  background: conic-gradient(from 0deg, transparent, rgba(232, 211, 154, 0.55), transparent 40%, transparent 60%, rgba(198, 160, 74, 0.4), transparent);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+
+.hero.loaded .hero-content::before {
+  animation:
+    aureolaAcende 2.4s var(--ease-out) calc(var(--abertura) + 0.4s) forwards,
+    aureolaGira 120s linear infinite;
+}
+
+.hero.loaded .hero-content::after {
+  animation:
+    aureolaAcende 2.4s var(--ease-out) calc(var(--abertura) + 0.7s) forwards,
+    aureolaGira 40s linear infinite reverse;
+}
+
+@keyframes aureolaAcende {
+  from {
+    opacity: 0;
+    scale: 0.6;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes aureolaGira {
+  to {
+    rotate: 360deg;
+  }
+}
