@@ -499,3 +499,40 @@
     overflow: visible;
   }
 }
+
+.eventos-estado {
+  position: relative;
+  padding-top: 7rem;
+}
+
+.eventos-estado::before {
+  content: "\2720";
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  margin-left: -42px;
+  border-radius: 50%;
+  font-size: 2.2rem;
+  font-style: normal;
+  color: var(--accent);
+  background: radial-gradient(circle, rgba(198, 160, 74, 0.18), transparent 70%);
+  border: 1px solid rgba(198, 160, 74, 0.35);
+  animation: flutuar 4s ease-in-out infinite;
+}
+
+.eventos-estado::after {
+  content: "";
+  position: absolute;
+  top: calc(1rem - 10px);
+  left: 50%;
+  width: 104px;
+  height: 104px;
+  margin-left: -52px;
+  border-radius: 50%;
+  border: 1px dashed rgba(198, 160, 74, 0.35);
+  animation: aureolaGira 24s linear infinite;
+}
