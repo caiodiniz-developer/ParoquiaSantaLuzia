@@ -263,3 +263,16 @@
     background-position: -40% 0;
   }
 }
+
+.liturgia-icon {
+  position: relative;
+}
+
+.liturgia-icon::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px dashed rgba(232, 211, 154, 0.45);
+  animation: aureolaGira 18s linear infinite;
+}
