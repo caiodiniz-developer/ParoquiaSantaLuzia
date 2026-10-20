@@ -79,3 +79,15 @@
   transform: rotate(-12deg) scale(1.15);
   color: var(--accent-claro);
 }
+
+.redes-section .visible .redes-links a svg {
+  animation: saltoEmOnda 1s var(--ease-mola) backwards;
+}
+
+.redes-links a:nth-child(1) svg { animation-delay: 0.5s; }
+.redes-links a:nth-child(2) svg { animation-delay: 0.62s; }
+.redes-links a:nth-child(3) svg { animation-delay: 0.74s; }
+
+@keyframes saltoEmOnda {
+  0% { transform: scale(0) rotate(-30deg); }
+}
