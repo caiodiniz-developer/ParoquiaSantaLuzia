@@ -295,3 +295,28 @@
     font-size: 1.1rem;
   }
 }
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 3px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0;
+  transform: translate(-50%, 4px) scale(0);
+  transition:
+    opacity 0.3s ease,
+    transform 0.5s var(--ease-mola);
+}
+
+.nav-links a:hover::after {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+}
+
+.nav-links a.active::after {
+  opacity: 0;
+}
