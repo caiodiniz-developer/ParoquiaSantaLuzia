@@ -426,3 +426,12 @@
 .carousel-wrapper:hover .carousel-track {
   animation-play-state: paused;
 }
+
+.community-card.expanded {
+  border-color: rgba(198, 160, 74, 0.7);
+  box-shadow: var(--sombra-2), var(--brilho-ouro);
+}
+
+.community-card.expanded .card-footer::before {
+  width: 32px;
+}
