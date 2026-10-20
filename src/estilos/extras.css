@@ -249,3 +249,26 @@
     transform: none;
   }
 }
+
+/* O JS escreve --rx/--ry com a posição do mouse sobre o cartão. A inclinação
+   só vale no hover: fora dele o transform volta a none e as variáveis velhas
+   não têm efeito nenhum. */
+.liturgia-card:hover,
+.horario-card:hover,
+.community-card:hover,
+.evento-card:hover {
+  transform:
+    perspective(1100px)
+    rotateX(var(--rx, 0deg))
+    rotateY(var(--ry, 0deg))
+    translate3d(0, -10px, 0);
+}
+
+.pix-info-card:hover,
+.secretaria-grid > div:hover {
+  transform:
+    perspective(900px)
+    rotateX(calc(var(--rx, 0deg) * 0.4))
+    rotateY(calc(var(--ry, 0deg) * 0.4))
+    translate3d(0, -3px, 0);
+}
