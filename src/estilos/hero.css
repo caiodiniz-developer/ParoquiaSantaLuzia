@@ -560,3 +560,55 @@
     text-shadow: 0 0 46px rgba(232, 211, 154, 0.22);
   }
 }
+
+.hero-cta {
+  overflow: visible;
+  isolation: isolate;
+}
+
+.hero-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  border: 1px solid rgba(232, 211, 154, 0.7);
+  opacity: 0;
+}
+
+.hero.loaded .hero-cta::before {
+  animation: pulsoDoBotao 2.8s var(--ease-out) calc(var(--abertura) + 2.4s) infinite;
+}
+
+@keyframes pulsoDoBotao {
+  0% {
+    opacity: 0.9;
+    scale: 1;
+  }
+  100% {
+    opacity: 0;
+    scale: 1.25 1.6;
+  }
+}
+
+/* Com o overflow aberto, o reflexo não pode mais deslizar por transform (ele
+   sairia do botão). Agora ele cobre o botão inteiro, com o mesmo arredondado,
+   e o que anda é a posição do degradê lá dentro. */
+.hero-cta::after {
+  width: auto;
+  inset: 0;
+  border-radius: inherit;
+  transform: none;
+  background: linear-gradient(100deg, transparent 40%, rgba(255, 255, 255, 0.6) 50%, transparent 60%) 150% 0 / 250% 100% no-repeat;
+  animation: reflexoDoBotao 3.6s var(--ease-in-out) 3s infinite;
+}
+
+@keyframes reflexoDoBotao {
+  0% {
+    background-position: 150% 0;
+  }
+  60%,
+  100% {
+    background-position: -50% 0;
+  }
+}
