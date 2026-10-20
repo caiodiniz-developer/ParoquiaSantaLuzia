@@ -45,6 +45,7 @@ export default function Site() {
     <>
       <Abertura />
       <div className="luz-do-cursor" aria-hidden="true" />
+      <div className="cursor-anel" aria-hidden="true" />
       <div className="scroll-progress" style={{ width: `${progresso}%` }} />
 
       <Navbar rolou={rolou} secaoAtiva={secaoAtiva} />
