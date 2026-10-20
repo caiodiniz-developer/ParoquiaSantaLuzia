@@ -241,3 +241,28 @@
     animation-range: entry 0% entry 90%;
   }
 }
+
+@supports (animation-timeline: view()) {
+  @keyframes haloNoScroll {
+    from {
+      scale: 0.7;
+      opacity: 0.4;
+    }
+    50% {
+      scale: 1.1;
+      opacity: 1;
+    }
+    to {
+      scale: 0.8;
+      opacity: 0.5;
+    }
+  }
+
+  .santa-section::before,
+  .comunidades-section::before,
+  .liturgia-section::before,
+  .doe-section::before {
+    animation: haloNoScroll linear both;
+    animation-timeline: view();
+  }
+}
