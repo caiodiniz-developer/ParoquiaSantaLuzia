@@ -1,6 +1,7 @@
 import { Fragment, useState } from "react";
 import { useLiturgia, corLiturgica } from "../hooks/useLiturgia.js";
 import TituloDeSecao from "./TituloDeSecao.jsx";
+import PalavrasMascaradas from "./PalavrasMascaradas.jsx";
 import { Biblia, Musica, Seta } from "./Icones.jsx";
 
 /**
@@ -75,7 +76,9 @@ export default function Liturgia() {
       <div className="container">
         <div className="reveal cascata" style={{ textAlign: "center" }}>
           <div className="section-cross">&#10016;</div>
-          <h2 className="section-title">Liturgia do Dia</h2>
+          <h2 className="section-title">
+            <PalavrasMascaradas>Liturgia do Dia</PalavrasMascaradas>
+          </h2>
           <div className="gold-divider" />
           <p className="liturgia-date">
             {erro ? (
