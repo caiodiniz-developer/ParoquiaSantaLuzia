@@ -91,3 +91,19 @@
 @keyframes saltoEmOnda {
   0% { transform: scale(0) rotate(-30deg); }
 }
+
+.redes-links a[aria-label="Instagram"]::before {
+  background: linear-gradient(45deg, #f09433, #dc2743 50%, #bc1888);
+}
+
+.redes-links a[aria-label="WhatsApp"]::before {
+  background: linear-gradient(135deg, #25c264, #1a9a4f);
+}
+
+.redes-links a[aria-label="Facebook"]::before {
+  background: linear-gradient(135deg, #2d7bf0, #1659c7);
+}
+
+.redes-links a:hover svg {
+  color: #fff;
+}
