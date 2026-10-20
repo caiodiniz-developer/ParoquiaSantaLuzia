@@ -1,3 +1,5 @@
+import PalavrasMascaradas from "./PalavrasMascaradas.jsx";
+
 const CARTOES = [
   { icone: "☩", dia: "Domingo", linhas: ["7h: Missa", "10h: Missa"] },
   {
@@ -23,7 +25,9 @@ export default function Horarios() {
       <div className="container">
         <div className="reveal cascata" style={{ textAlign: "center" }}>
           <div className="section-cross">&#10016;</div>
-          <h2 className="horarios-title">Horários Rápidos - Igreja Matriz</h2>
+          <h2 className="horarios-title">
+            <PalavrasMascaradas>Horários Rápidos - Igreja Matriz</PalavrasMascaradas>
+          </h2>
           <p className="horarios-sub">Rua René Fernandes, n. 71 - Jardim dos Oliveiras</p>
         </div>
 
