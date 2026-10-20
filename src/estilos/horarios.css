@@ -171,3 +171,23 @@
 .horario-card:hover::after {
   scale: 1 1;
 }
+
+.horarios-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 40%, rgba(232, 211, 154, 0.06) 50%, transparent 60%);
+  background-size: 300% 100%;
+  animation: luzNaFaixa 14s linear infinite;
+}
+
+@keyframes luzNaFaixa {
+  from {
+    background-position: 150% 0;
+  }
+  to {
+    background-position: -150% 0;
+  }
+}
