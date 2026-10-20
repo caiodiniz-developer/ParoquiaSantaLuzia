@@ -63,3 +63,22 @@ footer .dev a {
 footer .dev a:hover {
   background-size: 100% 1px;
 }
+
+footer::after {
+  content: "\2720";
+  position: absolute;
+  bottom: -9rem;
+  left: 50%;
+  translate: -50% 0;
+  z-index: 0;
+  font-size: 30rem;
+  line-height: 1;
+  color: rgba(232, 211, 154, 0.035);
+  pointer-events: none;
+  animation: aureolaGira 160s linear infinite;
+}
+
+footer > * {
+  position: relative;
+  z-index: 1;
+}
