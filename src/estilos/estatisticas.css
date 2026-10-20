@@ -94,3 +94,21 @@
   translate: -50% -50%;
   animation: aureolaGira 90s linear infinite;
 }
+
+.stat-number {
+  animation: ouroCorre 8s linear infinite;
+}
+
+.stat-item {
+  position: relative;
+  border-radius: var(--raio);
+  transition: background-color 0.5s ease;
+}
+
+.stat-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.stat-item:hover .stat-number {
+  filter: drop-shadow(0 0 18px rgba(232, 211, 154, 0.45));
+}
