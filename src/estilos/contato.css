@@ -210,3 +210,14 @@
 .form-box select:valid:not(:focus) {
   border-color: rgba(198, 160, 74, 0.55);
 }
+
+.btn-whatsapp:hover svg {
+  animation: balanca 0.8s var(--ease-out);
+}
+
+@keyframes balanca {
+  20% { rotate: -14deg; }
+  40% { rotate: 10deg; }
+  60% { rotate: -6deg; }
+  80% { rotate: 3deg; }
+}
