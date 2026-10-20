@@ -189,3 +189,16 @@
 .pix-info-card .value[style] {
   font-size: 1.45rem !important;
 }
+
+.pix-box {
+  transition: box-shadow 0.8s var(--ease-out), translate 0.8s var(--ease-out);
+}
+
+.pix-box:hover {
+  translate: 0 -4px;
+  box-shadow: var(--sombra-3), 0 0 80px -20px rgba(198, 160, 74, 0.45);
+}
+
+.pix-box:hover::before {
+  animation-duration: 3s;
+}
