@@ -321,3 +321,55 @@
     display: none;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-anel,
+  .hero-content::before,
+  .hero-content::after,
+  .particle::after,
+  .stats-grid::before,
+  .santa-img-wrap::after,
+  .santa-img-wrap .img-frame::after,
+  .padroeira-section::after,
+  footer::after {
+    display: none !important;
+  }
+
+  .titulo-palavra {
+    transform: none !important;
+    animation: none !important;
+  }
+
+  .stats-grid,
+  .liturgia-grid,
+  .horarios-grid,
+  .eventos-grid,
+  .santa-grid,
+  .padroeira-grid,
+  .horarios-section,
+  .padroeira-section,
+  .santa-section::before,
+  .comunidades-section::before,
+  .liturgia-section::before,
+  .doe-section::before {
+    animation: none !important;
+    scale: none !important;
+    clip-path: none !important;
+  }
+
+  .hero-vitral,
+  .hero-luz,
+  .hero-particles,
+  .hero-raios {
+    translate: none !important;
+  }
+
+  .liturgia-card:hover,
+  .horario-card:hover,
+  .community-card:hover,
+  .evento-card:hover,
+  .pix-info-card:hover,
+  .secretaria-grid > div:hover {
+    transform: none !important;
+  }
+}
