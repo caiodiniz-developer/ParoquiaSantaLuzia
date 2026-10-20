@@ -300,3 +300,24 @@
 .cursor-anel.ativa {
   opacity: 1;
 }
+
+.cursor-anel.sobre {
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+  background: rgba(198, 160, 74, 0.1);
+  border-color: rgba(232, 211, 154, 0.9);
+}
+
+.cursor-anel.pressionado {
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  background: rgba(198, 160, 74, 0.3);
+}
+
+@media (hover: none), (pointer: coarse) {
+  .cursor-anel {
+    display: none;
+  }
+}
