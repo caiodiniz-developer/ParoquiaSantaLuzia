@@ -123,3 +123,11 @@
     grid-template-columns: 1fr;
   }
 }
+
+.horario-card .h-icon {
+  animation: flutuar 5s ease-in-out infinite;
+}
+
+.horario-card:nth-child(2) .h-icon { animation-delay: -1.2s; animation-duration: 5.6s; }
+.horario-card:nth-child(3) .h-icon { animation-delay: -2.4s; animation-duration: 4.6s; }
+.horario-card:nth-child(4) .h-icon { animation-delay: -3.6s; animation-duration: 6s; }
