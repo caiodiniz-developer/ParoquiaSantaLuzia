@@ -154,3 +154,20 @@
   opacity: 1;
   scale: 1;
 }
+
+.horario-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 60%;
+  height: 1px;
+  translate: -50% 0;
+  background: linear-gradient(90deg, transparent, var(--accent-claro), transparent);
+  scale: 0 1;
+  transition: scale 0.8s var(--ease-out);
+}
+
+.horario-card:hover::after {
+  scale: 1 1;
+}
