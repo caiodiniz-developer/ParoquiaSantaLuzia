@@ -1,3 +1,5 @@
+import PalavrasMascaradas from "./PalavrasMascaradas.jsx";
+
 /**
  * Cruz + titulo + divisor dourado: o cabecalho que se repetia identico em sete
  * secoes do HTML antigo. `classeDoTitulo` existe porque a secao de Horarios
@@ -15,7 +17,9 @@ export default function TituloDeSecao({
     // subtitulo aparecem em sequencia em vez de todos de uma vez.
     <div className="reveal cascata" style={{ textAlign: "center" }}>
       <div className="section-cross">&#10016;</div>
-      <h2 className={classeDoTitulo}>{titulo}</h2>
+      <h2 className={classeDoTitulo}>
+        <PalavrasMascaradas>{titulo}</PalavrasMascaradas>
+      </h2>
       {comDivisor && <div className="gold-divider" />}
       {subtitulo && <p className={classeDoSubtitulo}>{subtitulo}</p>}
     </div>
