@@ -340,3 +340,26 @@
     transform: translate3d(0, -14px, 0);
   }
 }
+
+.navbar .inner {
+  position: relative;
+  overflow: hidden;
+}
+
+.navbar .inner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 30%;
+  height: 100%;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  opacity: 0;
+  transform: translateX(-120%) skewX(-20deg);
+}
+
+.navbar.scrolled .inner::before {
+  opacity: 1;
+  animation: brilhoPassa 1.6s var(--ease-in-out) 0.2s;
+}
