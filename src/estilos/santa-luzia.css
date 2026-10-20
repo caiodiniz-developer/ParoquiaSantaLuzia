@@ -227,3 +227,7 @@
     transform: translateY(260%);
   }
 }
+
+.santa-text > p:first-child::first-letter {
+  text-shadow: 0 6px 24px rgba(198, 160, 74, 0.35);
+}
