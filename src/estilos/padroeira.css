@@ -203,3 +203,13 @@
     background-position: 0 -1400px, 40px -840px;
   }
 }
+
+.padroeira-text .festa {
+  transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.5s ease;
+}
+
+.padroeira-text .festa:hover {
+  background: rgba(198, 160, 74, 0.16);
+  border-color: rgba(232, 211, 154, 0.75);
+  box-shadow: 0 0 30px -6px rgba(232, 211, 154, 0.45);
+}
