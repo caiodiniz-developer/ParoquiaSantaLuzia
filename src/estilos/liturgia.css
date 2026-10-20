@@ -238,3 +238,28 @@
 .liturgia-card.expanded .liturgia-btn svg {
   transform: rotate(180deg);
 }
+
+.liturgia-card-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(110deg, transparent 30%, rgba(232, 211, 154, 0.22) 50%, transparent 70%);
+  background-size: 250% 100%;
+  background-position: 130% 0;
+  animation: varreCabecalho 7s var(--ease-in-out) infinite;
+}
+
+.liturgia-card-header.salmo::after {
+  animation-delay: 3.5s;
+}
+
+@keyframes varreCabecalho {
+  0%,
+  60% {
+    background-position: 130% 0;
+  }
+  100% {
+    background-position: -40% 0;
+  }
+}
