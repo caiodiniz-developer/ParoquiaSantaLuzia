@@ -303,3 +303,15 @@
     box-shadow: 0 0 0 10px rgba(29, 90, 52, 0);
   }
 }
+
+.liturgia-text p {
+  transition: color 0.4s ease;
+}
+
+.liturgia-text p:hover {
+  color: var(--primary-dark);
+}
+
+.liturgia-text p:hover sup {
+  color: var(--secondary);
+}
