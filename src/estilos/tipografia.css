@@ -62,3 +62,20 @@
   color: var(--muted-fg);
   text-wrap: pretty;
 }
+
+/* Cada palavra mora numa janela do tamanho da linha; ela nasce abaixo da
+   janela e sobe para dentro. O padding vertical evita cortar acentos e as
+   pernas do "g" e do "p" da Cormorant. */
+.titulo-mascara {
+  display: inline-block;
+  overflow: hidden;
+  padding: 0.12em 0.02em 0.16em;
+  margin: -0.12em -0.02em -0.16em;
+  vertical-align: bottom;
+}
+
+.titulo-palavra {
+  display: inline-block;
+  transform: translate3d(0, 115%, 0) rotate(4deg);
+  transform-origin: 0 100%;
+}
