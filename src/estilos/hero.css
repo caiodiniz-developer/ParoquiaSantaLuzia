@@ -612,3 +612,25 @@
     background-position: -50% 0;
   }
 }
+
+.particle::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 248, 225, 0.9), transparent 70%);
+  animation: cintila 3.2s ease-in-out infinite;
+  animation-delay: inherit;
+}
+
+@keyframes cintila {
+  0%,
+  100% {
+    opacity: 0;
+    scale: 0.5;
+  }
+  50% {
+    opacity: 1;
+    scale: 1.4;
+  }
+}
