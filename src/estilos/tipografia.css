@@ -97,3 +97,17 @@
   animation: none !important;
   opacity: 1 !important;
 }
+
+.section-cross:hover {
+  cursor: default;
+}
+
+.section-cross:hover::before,
+.section-cross:hover::after {
+  width: clamp(40px, 8vw, 80px);
+}
+
+.section-cross::before,
+.section-cross::after {
+  transition: width 0.8s var(--ease-out);
+}
