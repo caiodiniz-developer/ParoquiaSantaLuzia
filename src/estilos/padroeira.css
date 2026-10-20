@@ -166,3 +166,18 @@
 .padroeira-text .gold-divider[style] {
   margin-top: 1.6rem !important;
 }
+
+.padroeira-img .overlay {
+  background:
+    radial-gradient(40% 30% at 50% 20%, rgba(255, 214, 140, 0.18), transparent 70%),
+    linear-gradient(0deg, rgba(8, 22, 14, 0.6), transparent 50%);
+  animation: chamaTremula 3.5s ease-in-out infinite;
+}
+
+@keyframes chamaTremula {
+  0%,
+  100% { opacity: 1; }
+  30% { opacity: 0.82; }
+  55% { opacity: 0.95; }
+  75% { opacity: 0.78; }
+}
