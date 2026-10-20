@@ -520,3 +520,29 @@
     rotate: 360deg;
   }
 }
+
+/* Cada camada anda uma distância diferente na direção oposta ao mouse: a mais
+   próxima anda mais. É o mesmo truque do parallax, só que guiado pelo cursor.
+   Usa `translate` para somar com o transform que o scroll já escreve. */
+.hero-vitral,
+.hero-luz,
+.hero-particles,
+.hero-raios {
+  transition: translate 1.2s var(--ease-out);
+}
+
+.hero-vitral {
+  translate: calc(var(--cursor-nx, 0) * -28px) calc(var(--cursor-ny, 0) * -18px);
+}
+
+.hero-luz {
+  translate: calc(var(--cursor-nx, 0) * 22px) calc(var(--cursor-ny, 0) * 16px);
+}
+
+.hero-particles {
+  translate: calc(var(--cursor-nx, 0) * -40px) calc(var(--cursor-ny, 0) * -26px);
+}
+
+.hero-raios {
+  translate: calc(var(--cursor-nx, 0) * 14px) 0;
+}
