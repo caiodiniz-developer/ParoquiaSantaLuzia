@@ -198,3 +198,28 @@
     --angulo: 360deg;
   }
 }
+
+/* Animações guiadas pelo scroll, só onde o navegador sabe fazer (Chrome,
+   Edge). Usam a propriedade `scale` isolada, então não brigam com o transform
+   da revelação nem com o do hover. Onde não há suporte, nada muda. */
+@supports (animation-timeline: view()) {
+  @keyframes aproximaNoScroll {
+    from {
+      scale: 0.93;
+    }
+    to {
+      scale: 1;
+    }
+  }
+
+  .stats-grid,
+  .liturgia-grid,
+  .horarios-grid,
+  .eventos-grid,
+  .santa-grid,
+  .padroeira-grid {
+    animation: aproximaNoScroll linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
+  }
+}
