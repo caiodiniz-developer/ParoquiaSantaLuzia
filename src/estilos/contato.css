@@ -201,3 +201,12 @@
   color: var(--primary);
   translate: 4px 0;
 }
+
+.form-box input:not(:placeholder-shown):not(:focus),
+.form-box textarea:not(:placeholder-shown):not(:focus) {
+  border-color: rgba(198, 160, 74, 0.55);
+}
+
+.form-box select:valid:not(:focus) {
+  border-color: rgba(198, 160, 74, 0.55);
+}
