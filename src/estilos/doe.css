@@ -240,3 +240,21 @@
 .pix-info-card:hover::after {
   opacity: 1;
 }
+
+.pix-quote {
+  position: relative;
+  padding-top: 2.2rem;
+}
+
+.pix-quote::before {
+  content: "\201C";
+  position: absolute;
+  top: -0.4rem;
+  left: 50%;
+  translate: -50% 0;
+  font-size: 4.5rem;
+  line-height: 1;
+  font-style: normal;
+  color: var(--accent);
+  opacity: 0.5;
+}
