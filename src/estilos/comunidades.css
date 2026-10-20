@@ -420,3 +420,9 @@
   position: relative;
   z-index: 1;
 }
+
+/* Antes só pausava com o mouse sobre um cartão; no vão entre dois ela voltava
+   a andar e o cartão escapava de quem ia clicar. */
+.carousel-wrapper:hover .carousel-track {
+  animation-play-state: paused;
+}
