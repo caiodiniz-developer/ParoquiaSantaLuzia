@@ -536,3 +536,13 @@
   border: 1px dashed rgba(198, 160, 74, 0.35);
   animation: aureolaGira 24s linear infinite;
 }
+
+.evento-card-texto h3 {
+  background: linear-gradient(var(--accent-claro), var(--accent-claro)) 0 100% / 0 1px no-repeat;
+  transition: background-size 0.7s var(--ease-out);
+  width: fit-content;
+}
+
+.evento-card:hover .evento-card-texto h3 {
+  background-size: 100% 1px;
+}
