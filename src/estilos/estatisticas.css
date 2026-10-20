@@ -112,3 +112,17 @@
 .stat-item:hover .stat-number {
   filter: drop-shadow(0 0 18px rgba(232, 211, 154, 0.45));
 }
+
+.stat-label::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 1px;
+  margin: 0.7rem auto 0;
+  background: var(--accent);
+  transition: width 0.6s var(--ease-out);
+}
+
+.stat-item:hover .stat-label::after {
+  width: 40px;
+}
