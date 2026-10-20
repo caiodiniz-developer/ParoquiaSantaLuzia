@@ -95,3 +95,7 @@ footer::before {
     background-position: 140% 0, 0 0;
   }
 }
+
+footer .dev a[href="/admin"] {
+  color: rgba(251, 246, 236, 0.7);
+}
