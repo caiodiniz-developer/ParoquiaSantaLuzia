@@ -192,3 +192,12 @@
   font-size: 1.6rem;
   color: var(--primary-dark);
 }
+
+.form-group label {
+  transition: color 0.3s ease, translate 0.4s var(--ease-out);
+}
+
+.form-group:focus-within label {
+  color: var(--primary);
+  translate: 4px 0;
+}
