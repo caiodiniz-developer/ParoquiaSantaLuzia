@@ -555,3 +555,24 @@
 .evento-modal-galeria img:nth-child(3) { animation-delay: 0.16s; }
 .evento-modal-galeria img:nth-child(4) { animation-delay: 0.24s; }
 .evento-modal-galeria img:nth-child(n + 5) { animation-delay: 0.32s; }
+
+.evento-modal-info > * {
+  animation: modalSobe 0.8s var(--ease-out) backwards;
+}
+
+.evento-modal-info > *:nth-child(1) { animation-delay: 0.15s; }
+.evento-modal-info > *:nth-child(2) { animation-delay: 0.22s; }
+.evento-modal-info > *:nth-child(3) { animation-delay: 0.29s; }
+.evento-modal-info > *:nth-child(4) { animation-delay: 0.36s; }
+.evento-modal-info > *:nth-child(n + 5) { animation-delay: 0.43s; }
+
+.evento-modal-imagem img {
+  animation: modalImagem 1.4s var(--ease-out) backwards;
+}
+
+@keyframes modalImagem {
+  from {
+    scale: 1.15;
+    filter: blur(6px);
+  }
+}
