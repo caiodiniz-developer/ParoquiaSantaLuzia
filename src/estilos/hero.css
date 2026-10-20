@@ -546,3 +546,17 @@
 .hero-raios {
   translate: calc(var(--cursor-nx, 0) * 14px) 0;
 }
+
+.hero-content h1 {
+  text-shadow: 0 0 40px rgba(232, 211, 154, 0);
+}
+
+.hero.loaded .hero-content h1 {
+  animation: tituloBrilha 6s ease-in-out calc(var(--abertura) + 2s) infinite;
+}
+
+@keyframes tituloBrilha {
+  50% {
+    text-shadow: 0 0 46px rgba(232, 211, 154, 0.22);
+  }
+}
