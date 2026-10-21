@@ -226,52 +226,66 @@ rotasDeEvento.patch(
       );
     }
 
-    const capa = arquivos.capa?.[0];
-    const coverUrl = capa ? await armazenamento.salvar(capa) : undefined;
+    // Mesmo cuidado do cadastro: se algo falhar depois dos uploads, o que ja
+    // subiu e apagado, e o evento continua exatamente como estava.
+    const enviados: string[] = [];
+    const guardar = async (arquivo: Express.Multer.File) => {
+      const url = await armazenamento.salvar(arquivo);
+      enviados.push(url);
+      return url;
+    };
 
-    /**
-     * Video tem tres estados, nao dois: mandou um novo, nao mexeu, ou pediu
-     * para remover. `undefined` significa "nao mexeu" e `null` "remover" --
-     * por isso o formulario manda a bandeira `removerVideo` explicitamente.
-     */
-    const video = arquivos.video?.[0];
-    const videoUrl = video
-      ? await armazenamento.salvar(video)
-      : req.body.removerVideo === "true"
-        ? null
-        : undefined;
+    try {
+      const capa = arquivos.capa?.[0];
+      const coverUrl = capa ? await guardar(capa) : undefined;
 
-    const novas = await Promise.all(
-      (arquivos.galeria ?? []).map((arquivo) => armazenamento.salvar(arquivo)),
-    );
+      /**
+       * Video tem tres estados, nao dois: mandou um novo, nao mexeu, ou pediu
+       * para remover. `undefined` significa "nao mexeu" e `null` "remover" --
+       * por isso o formulario manda a bandeira `removerVideo` explicitamente.
+       */
+      const video = arquivos.video?.[0];
+      const videoUrl = video
+        ? await guardar(video)
+        : req.body.removerVideo === "true"
+          ? null
+          : undefined;
 
-    const galeria =
-      mantidas === null && novas.length === 0 ? undefined : [...(mantidas ?? anterior.galeria), ...novas];
+      const novas = await Promise.all((arquivos.galeria ?? []).map(guardar));
 
-    /**
-     * `terminaEm` precisa do corpo cru.
-     *
-     * O schema normaliza "" para undefined, o que apaga a diferenca entre
-     * "o formulario nao mandou o campo" e "o usuario limpou a data". Para o
-     * PATCH essa diferenca importa: no primeiro caso a data atual continua, no
-     * segundo ela tem que virar null. A presenca da chave no corpo resolve.
-     */
-    const terminoFoiEnviado = "terminaEm" in req.body;
+      const galeria =
+        mantidas === null && novas.length === 0
+          ? undefined
+          : [...(mantidas ?? anterior.galeria), ...novas];
 
-    const atualizado = await servico.atualizar(req.params.id, {
-      ...analise.data,
-      ...(terminoFoiEnviado && { terminaEm: analise.data.terminaEm ?? null }),
-      coverUrl,
-      videoUrl,
-      galeria,
-    });
+      /**
+       * `terminaEm` precisa do corpo cru.
+       *
+       * O schema normaliza "" para undefined, o que apaga a diferenca entre
+       * "o formulario nao mandou o campo" e "o usuario limpou a data". Para o
+       * PATCH essa diferenca importa: no primeiro caso a data atual continua, no
+       * segundo ela tem que virar null. A presenca da chave no corpo resolve.
+       */
+      const terminoFoiEnviado = "terminaEm" in req.body;
 
-    if (galeria) {
-      const descartadas = anterior.galeria.filter((url) => !galeria.includes(url));
-      await Promise.allSettled(descartadas.map((url) => armazenamento.remover(url)));
+      const atualizado = await servico.atualizar(req.params.id, {
+        ...analise.data,
+        ...(terminoFoiEnviado && { terminaEm: analise.data.terminaEm ?? null }),
+        coverUrl,
+        videoUrl,
+        galeria,
+      });
+
+      if (galeria) {
+        const descartadas = anterior.galeria.filter((url) => !galeria.includes(url));
+        await Promise.allSettled(descartadas.map((url) => armazenamento.remover(url)));
+      }
+
+      res.json(atualizado);
+    } catch (falha) {
+      await Promise.allSettled(enviados.map((url) => armazenamento.remover(url)));
+      throw falha;
     }
-
-    res.json(atualizado);
   }),
 );
 
