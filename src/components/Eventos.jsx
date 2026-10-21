@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { useEventos } from "../hooks/useEventos.js";
 import { useRevelacaoScroll } from "../hooks/useRevelacaoScroll.js";
 import { useEventoDaUrl } from "../hooks/useEventoDaUrl.js";
+import { useConfiguracoes } from "../hooks/useConfiguracoes.js";
 import { rotuloDoTipo } from "../lib/api.js";
 import TituloDeSecao from "./TituloDeSecao.jsx";
 import ModalDeEvento from "./ModalDeEvento.jsx";
@@ -134,7 +135,12 @@ function CardDeEvento({ evento, indice, aoAbrir }) {
 }
 
 export default function Eventos() {
-  const { eventos, carregando, acordando, erro } = useEventos({ escopo: "proximos" });
+  const { eventos: todos, carregando, acordando, erro } = useEventos({ escopo: "proximos" });
+  const { configuracoes } = useConfiguracoes();
+  // O corte e feito aqui, e nao pedindo `limite` a API, para as duas buscas
+  // correrem juntas: com o Render acordando, esperar a configuracao para so
+  // entao pedir os eventos dobraria a espera.
+  const eventos = todos.slice(0, configuracoes.eventosNaHome);
   const { eventoAberto, abrir, fechar } = useEventoDaUrl();
 
   // Os cards chegam depois da primeira renderizacao, entao o observer de
