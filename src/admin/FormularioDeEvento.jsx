@@ -44,6 +44,8 @@ export default function FormularioDeEvento() {
   const navegar = useNavigate();
 
   const [campos, setCampos] = useState(VAZIO);
+  // Retrato do formulario como veio do banco, para saber se houve alteracao.
+  const [iniciais, setIniciais] = useState({ campos: VAZIO, fotos: 0 });
   const [capaNova, setCapaNova] = useState(null);
   const [capaAtual, setCapaAtual] = useState("");
   const [videoNovo, setVideoNovo] = useState(null);
@@ -84,7 +86,7 @@ export default function FormularioDeEvento() {
       .buscar(id)
       .then((evento) => {
         if (!ativo) return;
-        setCampos({
+        const carregados = {
           titulo: evento.titulo,
           tipo: evento.tipo,
           comecaEm: paraCampoDataHora(evento.comecaEm),
@@ -97,7 +99,9 @@ export default function FormularioDeEvento() {
           instagramUrl: evento.instagramUrl || "",
           destaque: evento.destaque,
           ativo: evento.ativo,
-        });
+        };
+        setCampos(carregados);
+        setIniciais({ campos: carregados, fotos: (evento.galeria || []).length });
         setCapaAtual(evento.coverUrl);
         setVideoAtual(evento.videoUrl || "");
         setGaleriaMantida(evento.galeria || []);
@@ -109,6 +113,35 @@ export default function FormularioDeEvento() {
       ativo = false;
     };
   }, [editando, id]);
+
+  const temAlteracoes =
+    JSON.stringify(campos) !== JSON.stringify(iniciais.campos) ||
+    Boolean(capaNova || videoNovo || removerVideo) ||
+    galeriaNova.length > 0 ||
+    galeriaMantida.length !== iniciais.fotos;
+
+  // Fechar a aba ou recarregar com o formulario pela metade pede confirmacao.
+  // Um evento com texto longo e tres fotos escolhidas da trabalho para refazer.
+  useEffect(() => {
+    if (!temAlteracoes || salvando) return undefined;
+    function aoSair(evento) {
+      evento.preventDefault();
+      // Exigido pelo Chrome antigo para mostrar o aviso.
+      evento.returnValue = "";
+    }
+    window.addEventListener("beforeunload", aoSair);
+    return () => window.removeEventListener("beforeunload", aoSair);
+  }, [temAlteracoes, salvando]);
+
+  function sairDoFormulario() {
+    if (
+      temAlteracoes &&
+      !window.confirm("Há alterações que ainda não foram salvas. Sair mesmo assim?")
+    ) {
+      return;
+    }
+    navegar("/admin");
+  }
 
   function alterar(nome, valor) {
     setCampos((atuais) => ({ ...atuais, [nome]: valor }));
@@ -227,7 +260,7 @@ export default function FormularioDeEvento() {
     <>
       <div className="adm-cabecalho-pagina">
         <h2>{editando ? "Editar evento" : "Novo evento"}</h2>
-        <button type="button" className="adm-botao secundario" onClick={() => navegar("/admin")}>
+        <button type="button" className="adm-botao secundario" onClick={sairDoFormulario}>
           Voltar
         </button>
       </div>
@@ -511,7 +544,7 @@ export default function FormularioDeEvento() {
             type="button"
             className="adm-botao secundario"
             disabled={salvando}
-            onClick={() => navegar("/admin")}
+            onClick={sairDoFormulario}
           >
             Cancelar
           </button>
