@@ -208,13 +208,18 @@ rotasDeEvento.patch(
 
     const arquivos = (req.files ?? {}) as ArquivosRecebidos;
 
+    // O formulario manda quais fotos da galeria continuam. As que sumiram da
+    // lista sao removidas do armazenamento depois que o banco confirmar.
+    //
+    // So valem URLs que ja eram deste evento. Sem o filtro, o corpo do PATCH
+    // poderia "manter" qualquer endereco da internet, e o site passaria a
+    // exibir uma imagem que nunca foi enviada pelo painel.
+    const pedidas = esquemaDeGaleriaMantida.parse(req.body.galeriaMantida);
+    const mantidas = pedidas && pedidas.filter((url) => anterior.galeria.includes(url));
+
     // Limite da galeria conferido ANTES de qualquer upload: recusar depois
     // deixaria a capa e o video ja enviados sem dono no armazenamento.
-    const pedidasParaManter = esquemaDeGaleriaMantida.parse(req.body.galeriaMantida);
-    const quantasFicam = pedidasParaManter
-      ? pedidasParaManter.filter((url) => anterior.galeria.includes(url)).length
-      : anterior.galeria.length;
-    const totalNaGaleria = quantasFicam + (arquivos.galeria?.length ?? 0);
+    const totalNaGaleria = (mantidas ?? anterior.galeria).length + (arquivos.galeria?.length ?? 0);
     if (totalNaGaleria > MAXIMO_NA_GALERIA) {
       throw new DadosInvalidos(
         `A galeria aceita ate ${MAXIMO_NA_GALERIA} fotos. Remova ${totalNaGaleria - MAXIMO_NA_GALERIA} antes de enviar novas.`,
@@ -235,15 +240,6 @@ rotasDeEvento.patch(
       : req.body.removerVideo === "true"
         ? null
         : undefined;
-
-    // O formulario manda quais fotos da galeria continuam. As que sumiram da
-    // lista sao removidas do armazenamento depois que o banco confirmar.
-    //
-    // So valem URLs que ja eram deste evento. Sem o filtro, o corpo do PATCH
-    // poderia "manter" qualquer endereco da internet, e o site passaria a
-    // exibir uma imagem que nunca foi enviada pelo painel.
-    const pedidas = esquemaDeGaleriaMantida.parse(req.body.galeriaMantida);
-    const mantidas = pedidas && pedidas.filter((url) => anterior.galeria.includes(url));
 
     const novas = await Promise.all(
       (arquivos.galeria ?? []).map((arquivo) => armazenamento.salvar(arquivo)),
