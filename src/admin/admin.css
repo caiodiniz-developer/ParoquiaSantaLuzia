@@ -159,6 +159,7 @@
 .adm-campo input[type="email"],
 .adm-campo input[type="password"],
 .adm-campo input[type="url"],
+.adm-campo input[type="number"],
 .adm-campo input[type="datetime-local"],
 .adm-campo select,
 .adm-campo textarea {
