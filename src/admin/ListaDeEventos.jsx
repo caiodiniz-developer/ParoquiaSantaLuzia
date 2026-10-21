@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEventos } from "../hooks/useEventos.js";
 import { eventos as apiEventos, rotuloDoTipo } from "../lib/api.js";
 import { dataComHora } from "../lib/datas.js";
@@ -12,6 +12,18 @@ const ABAS = [
 
 export default function ListaDeEventos() {
   const [escopo, setEscopo] = useState("proximos");
+  const local = useLocation();
+  const navegar = useNavigate();
+  // Mensagem que o formulario deixou ao salvar ("Evento publicado!").
+  const [sucesso, setSucesso] = useState(local.state?.aviso || "");
+
+  useEffect(() => {
+    if (!local.state?.aviso) return undefined;
+    // Tira a mensagem do historico: sem isto ela voltaria a cada F5.
+    navegar(local.pathname, { replace: true, state: null });
+    const relogio = setTimeout(() => setSucesso(""), 8000);
+    return () => clearTimeout(relogio);
+  }, [local.state, local.pathname, navegar]);
   const [erro, setErro] = useState("");
   // Guarda o id em operacao para desabilitar so os botoes daquela linha, e nao
   // a lista inteira.
@@ -73,6 +85,7 @@ export default function ListaDeEventos() {
         ))}
       </div>
 
+      {sucesso && <div className="adm-aviso sucesso">{sucesso}</div>}
       {erro && <div className="adm-aviso erro">{erro}</div>}
 
       {carregando && (
