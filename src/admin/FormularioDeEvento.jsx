@@ -16,6 +16,7 @@ const VAZIO = {
   descricao: "",
   bencao: "",
   inscricaoUrl: "",
+  instagramUrl: "",
   destaque: false,
   ativo: true,
 };
@@ -76,6 +77,7 @@ export default function FormularioDeEvento() {
           descricao: evento.descricao || "",
           bencao: evento.bencao || "",
           inscricaoUrl: evento.inscricaoUrl || "",
+          instagramUrl: evento.instagramUrl || "",
           destaque: evento.destaque,
           ativo: evento.ativo,
         });
@@ -318,6 +320,25 @@ export default function FormularioDeEvento() {
             onChange={(e) => alterar("inscricaoUrl", e.target.value)}
             placeholder="https://..."
           />
+        </div>
+
+        <div className="adm-campo">
+          <label htmlFor="instagramUrl">Instagram (opcional)</label>
+          {/* type="text" e nao "url": o campo aceita "@perfil", que o
+              navegador recusaria num input de URL. Quem valida e normaliza e o
+              servidor (linkDoInstagram, em evento.schema.ts). */}
+          <input
+            id="instagramUrl"
+            type="text"
+            inputMode="url"
+            autoComplete="off"
+            value={campos.instagramUrl}
+            onChange={(e) => alterar("instagramUrl", e.target.value)}
+            placeholder="https://www.instagram.com/p/... ou @santaluzia.paroquia"
+          />
+          <p className="adm-dica">
+            Cole o link do post sobre o evento. No site aparece o botão “Ver no Instagram”.
+          </p>
         </div>
 
         <div className="adm-campo">
