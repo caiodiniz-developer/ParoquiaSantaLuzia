@@ -62,7 +62,10 @@ export function criarApp() {
   // Só em desenvolvimento: em producao os arquivos moram no Supabase, porque
   // o disco do Render e apagado a cada deploy.
   if (usandoDiscoLocal) {
-    app.use("/uploads", express.static(PASTA_LOCAL));
+    // O nome de cada arquivo e unico e nunca reaproveitado (ver storage.ts),
+    // entao o navegador pode guardar a foto por muito tempo sem risco de
+    // mostrar uma versao velha.
+    app.use("/uploads", express.static(PASTA_LOCAL, { maxAge: "30d", immutable: true }));
   }
 
   // O Render derruba a instancia gratuita depois de 15 minutos parada. Esta
