@@ -249,6 +249,23 @@ variável do Render derruba o site inteiro por um caractere invisível.
 token responde 404 para evento oculto — igual a um que não existe, para não
 confirmar que o id é válido.
 
+### Rotas da API
+
+| Método | Rota | Sessão | O que faz |
+|---|---|---|---|
+| GET | `/api/saude` | — | responde se a API está no ar (monitor de uptime) |
+| POST | `/api/auth/login` | — | troca e-mail e senha por um token de 12 horas |
+| GET | `/api/auth/eu` | sim | confere o token e diz quando ele expira |
+| GET | `/api/eventos?escopo=proximos|realizados|todos` | opcional | lista; com sessão aceita `incluirInativos=true` |
+| GET | `/api/eventos/:id` | opcional | detalhe; oculto só com sessão |
+| POST | `/api/eventos` | sim | cria (multipart: `capa`, `video`, `galeria`) |
+| PATCH | `/api/eventos/:id` | sim | edita só o que veio; `galeriaMantida` e `removerVideo` controlam arquivos |
+| PATCH | `/api/eventos/:id/ativo` | sim | mostra ou oculta no site |
+| POST | `/api/eventos/:id/duplicar` | sim | cria cópia oculta com arquivos próprios |
+| DELETE | `/api/eventos/:id` | sim | apaga o evento e os arquivos |
+| GET | `/api/config` | — | ajustes do site |
+| PUT | `/api/config` | sim | salva ajustes |
+
 ### Segurança do painel
 
 - **Limite de tentativas** (`server/src/limitador.ts`): 8 senhas erradas seguidas
