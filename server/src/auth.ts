@@ -59,13 +59,23 @@ export function lerToken(token: string): Conteudo | null {
   }
 }
 
+/**
+ * Resumo de tamanho fixo. Comparar os resumos, e nao os textos, faz os dois
+ * lados terem sempre 32 bytes: a checagem de tamanho de `iguaisEmTempoConstante`
+ * deixa de responder mais rapido quando a senha digitada tem outro tamanho, e
+ * o tempo de resposta para de denunciar quantos caracteres a senha tem.
+ */
+function resumo(texto: string) {
+  return crypto.createHash("sha256").update(texto).digest();
+}
+
 /** Confere e-mail e senha do administrador, os dois em tempo constante. */
 export function credenciaisValidas(email: string, senha: string) {
   const emailOk = iguaisEmTempoConstante(
-    Buffer.from(email.trim().toLowerCase()),
-    Buffer.from(env.ADMIN_EMAIL.trim().toLowerCase()),
+    resumo(email.trim().toLowerCase()),
+    resumo(env.ADMIN_EMAIL.trim().toLowerCase()),
   );
-  const senhaOk = iguaisEmTempoConstante(Buffer.from(senha), Buffer.from(env.ADMIN_PASSWORD));
+  const senhaOk = iguaisEmTempoConstante(resumo(senha), resumo(env.ADMIN_PASSWORD));
   // Sem curto-circuito: avaliar os dois sempre mantem o tempo estavel.
   return emailOk && senhaOk;
 }
