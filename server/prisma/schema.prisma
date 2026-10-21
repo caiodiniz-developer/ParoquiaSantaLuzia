@@ -44,6 +44,9 @@ model Evento {
   terminaEm    DateTime?
   local        String    @default("")
   inscricaoUrl String?
+  // Post ou perfil no Instagram sobre o evento. Opcional: aparece como botao
+  // "Ver no Instagram" dentro do evento, no site.
+  instagramUrl String?
 
   destaque Boolean @default(false)
   // `ativo` esconde do site sem apagar o registro: evento adiado nao some,
