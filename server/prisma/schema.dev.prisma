@@ -30,6 +30,7 @@ model Evento {
   terminaEm    DateTime?
   local        String    @default("")
   inscricaoUrl String?
+  instagramUrl String?
 
   destaque Boolean @default(false)
   ativo    Boolean @default(true)
