@@ -47,9 +47,22 @@ const textoOpcional = z
 const SEM_FUSO = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?$/;
 const FUSO_DE_BRASILIA = "-03:00";
 
+/**
+ * O <input type="datetime-local"> aceita ano de ate seis digitos: um "2026"
+ * digitado com um 6 a mais vira o ano 20266, o evento e salvo e some do site
+ * para sempre sem erro nenhum. A faixa corta esse engano na entrada.
+ */
+const ANO_MINIMO = 2000;
+const ANO_MAXIMO = 2100;
+
 const dataHora = z.preprocess(
   (valor) => (typeof valor === "string" && SEM_FUSO.test(valor) ? valor + FUSO_DE_BRASILIA : valor),
-  z.coerce.date({ errorMap: () => ({ message: "Data invalida." }) }),
+  z.coerce
+    .date({ errorMap: () => ({ message: "Data invalida." }) })
+    .refine(
+      (data) => data.getUTCFullYear() >= ANO_MINIMO && data.getUTCFullYear() <= ANO_MAXIMO,
+      { message: `Confira o ano da data: ele precisa estar entre ${ANO_MINIMO} e ${ANO_MAXIMO}.` },
+    ),
 );
 
 /**
