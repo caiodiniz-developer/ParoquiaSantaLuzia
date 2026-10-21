@@ -30,39 +30,49 @@ function CartaoDaLiturgia({
   const [expandido, setExpandido] = useState(false);
 
   return (
-    <div className={`liturgia-card ${variante}${expandido ? " expanded" : ""}`}>
-      <div className={`liturgia-card-header${cabecalhoSalmo ? " salmo" : ""}`}>
-        <div className="liturgia-icon">{icone}</div>
-        <h3>{titulo}</h3>
-      </div>
+    /**
+     * A revelacao no scroll fica numa caixa por fora, de classe FIXA.
+     *
+     * O useRevelacaoScroll poe `.visible` direto no DOM. Se as classes de
+     * revelacao ficassem no proprio cartao, clicar em "Ler mais" mudaria o
+     * className dele (por causa do `expanded`); o React reescreveria a lista
+     * inteira, apagaria o `.visible` e o cartao voltaria a ficar invisivel.
+     */
+    <div className={variante}>
+      <div className={`liturgia-card${expandido ? " expanded" : ""}`}>
+        <div className={`liturgia-card-header${cabecalhoSalmo ? " salmo" : ""}`}>
+          <div className="liturgia-icon">{icone}</div>
+          <h3>{titulo}</h3>
+        </div>
 
-      <div className="liturgia-card-body">
-        <p className="liturgia-reference">{referencia}</p>
-        <div className="liturgia-text">
-          {erro ? (
-            <p style={{ color: "var(--muted-fg)", textAlign: "center" }}>
-              Não foi possível carregar agora. Tente novamente mais tarde.
-            </p>
-          ) : paragrafos.length === 0 ? (
-            <p>Carregando...</p>
-          ) : (
-            paragrafos.map((paragrafo, indice) => <p key={indice}>{comVersiculos(paragrafo)}</p>)
+        <div className="liturgia-card-body">
+          <p className="liturgia-reference">{referencia}</p>
+          <div className="liturgia-text">
+            {erro ? (
+              <p style={{ color: "var(--muted-fg)", textAlign: "center" }}>
+                Não foi possível carregar agora. Tente novamente mais tarde.
+              </p>
+            ) : paragrafos.length === 0 ? (
+              <p>Carregando...</p>
+            ) : (
+              paragrafos.map((paragrafo, indice) => <p key={indice}>{comVersiculos(paragrafo)}</p>)
+            )}
+          </div>
+
+          {refrao !== undefined && (
+            <div className="salmo-refrao">
+              <span className="refrao-label">Refrão:</span>
+              <span className="refrao-text">{refrao || "Indisponível"}</span>
+            </div>
           )}
         </div>
 
-        {refrao !== undefined && (
-          <div className="salmo-refrao">
-            <span className="refrao-label">Refrão:</span>
-            <span className="refrao-text">{refrao || "Indisponível"}</span>
-          </div>
-        )}
-      </div>
-
-      <div className="liturgia-card-footer">
-        <button type="button" className="liturgia-btn" onClick={() => setExpandido((v) => !v)}>
-          <span>{expandido ? "Recolher" : "Ler mais"}</span>
-          <Seta tamanho={16} />
-        </button>
+        <div className="liturgia-card-footer">
+          <button type="button" className="liturgia-btn" onClick={() => setExpandido((v) => !v)}>
+            <span>{expandido ? "Recolher" : "Ler mais"}</span>
+            <Seta tamanho={16} />
+          </button>
+        </div>
       </div>
     </div>
   );
