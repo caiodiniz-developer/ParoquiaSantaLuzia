@@ -53,6 +53,25 @@ export default function ListaDeEventos() {
     }
   }
 
+  const [copiado, setCopiado] = useState(null);
+
+  /**
+   * Copia o link publico do evento (/?evento=ID), pronto para colar na
+   * legenda do Instagram ou no grupo do WhatsApp. O endereco sai da propria
+   * janela: no ar e o dominio do site, em teste e o localhost.
+   */
+  async function copiarLink(evento) {
+    const link = `${window.location.origin}/?evento=${evento.id}`;
+    try {
+      await navigator.clipboard.writeText(link);
+      setCopiado(evento.id);
+      setTimeout(() => setCopiado((atual) => (atual === evento.id ? null : atual)), 2500);
+    } catch {
+      // Sem permissao de area de transferencia: mostra o link para copiar a mao.
+      window.prompt("Copie o link do evento:", link);
+    }
+  }
+
   function alternar(evento) {
     comTratamento(evento.id, () => apiEventos.alternarAtivo(evento.id, !evento.ativo));
   }
@@ -146,6 +165,15 @@ export default function ListaDeEventos() {
                 <Link to={`/admin/${evento.id}`} className="adm-botao secundario pequeno">
                   Editar
                 </Link>
+                <button
+                  type="button"
+                  className="adm-botao secundario pequeno"
+                  disabled={!evento.ativo}
+                  title={evento.ativo ? "Link para colar no Instagram ou no WhatsApp" : "Evento oculto não abre no site"}
+                  onClick={() => copiarLink(evento)}
+                >
+                  {copiado === evento.id ? "Link copiado!" : "Copiar link"}
+                </button>
                 <button
                   type="button"
                   className="adm-botao secundario pequeno"
