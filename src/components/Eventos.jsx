@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useEventos } from "../hooks/useEventos.js";
 import { useRevelacaoScroll } from "../hooks/useRevelacaoScroll.js";
 import { useEventoDaUrl } from "../hooks/useEventoDaUrl.js";
@@ -140,7 +140,13 @@ export default function Eventos() {
   // O corte e feito aqui, e nao pedindo `limite` a API, para as duas buscas
   // correrem juntas: com o Render acordando, esperar a configuracao para so
   // entao pedir os eventos dobraria a espera.
-  const eventos = todos.slice(0, configuracoes.eventosNaHome);
+  //
+  // useMemo porque a lista vai como dependencia do useRevelacaoScroll: um
+  // slice novo a cada render recriaria o observer de revelacao toda hora.
+  const eventos = useMemo(
+    () => todos.slice(0, configuracoes.eventosNaHome),
+    [todos, configuracoes.eventosNaHome],
+  );
   const { eventoAberto, abrir, fechar } = useEventoDaUrl();
 
   // Os cards chegam depois da primeira renderizacao, entao o observer de
