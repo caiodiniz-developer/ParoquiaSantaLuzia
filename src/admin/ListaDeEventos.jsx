@@ -102,6 +102,13 @@ export default function ListaDeEventos() {
                   <span className="adm-etiqueta">{rotuloDoTipo(evento.tipo)}</span>
                   {evento.destaque && <span className="adm-etiqueta destaque">Destaque</span>}
                   {!evento.ativo && <span className="adm-etiqueta oculto">Oculto no site</span>}
+                  {evento.instagramUrl && <span className="adm-etiqueta instagram">Instagram</span>}
+                  {evento.videoUrl && <span className="adm-etiqueta">Vídeo</span>}
+                  {evento.galeria?.length > 0 && (
+                    <span className="adm-etiqueta">
+                      {evento.galeria.length} foto{evento.galeria.length === 1 ? "" : "s"}
+                    </span>
+                  )}
                 </div>
               </div>
 
