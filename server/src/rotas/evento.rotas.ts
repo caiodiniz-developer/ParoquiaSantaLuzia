@@ -201,6 +201,11 @@ rotasDeEvento.patch(
     const analise = esquemaDeEdicao.safeParse(req.body);
     if (!analise.success) throw new DadosInvalidos(primeiraMensagem(analise.error));
 
+    // Primeiro confere se o evento existe: so depois vale gastar banda subindo
+    // arquivo para o armazenamento. Antes, um id errado subia capa e video e
+    // so entao respondia 404, deixando tudo orfao no bucket.
+    const anterior = await servico.buscarPorId(req.params.id);
+
     const arquivos = (req.files ?? {}) as ArquivosRecebidos;
     const capa = arquivos.capa?.[0];
     const coverUrl = capa ? await armazenamento.salvar(capa) : undefined;
@@ -224,7 +229,6 @@ rotasDeEvento.patch(
       (arquivos.galeria ?? []).map((arquivo) => armazenamento.salvar(arquivo)),
     );
 
-    const anterior = await servico.buscarPorId(req.params.id);
     const galeria =
       mantidas === null && novas.length === 0 ? undefined : [...(mantidas ?? anterior.galeria), ...novas];
 
