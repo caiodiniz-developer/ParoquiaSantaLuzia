@@ -46,11 +46,12 @@ const bruto = analise.data;
 const emProducao = bruto.NODE_ENV === "production";
 
 /** Aborta a subida listando TUDO que falta, e nao so a primeira variavel. */
-function exigirEmProducao(faltando: string[]) {
+function exigirEmProducao(
+  faltando: string[],
+  titulo = "Faltam variaveis de ambiente obrigatorias em producao:",
+) {
   if (faltando.length === 0) return;
-  console.error(
-    `Faltam variaveis de ambiente obrigatorias em producao:\n  - ${faltando.join("\n  - ")}`,
-  );
+  console.error(`${titulo}\n  - ${faltando.join("\n  - ")}`);
   process.exit(1);
 }
 
@@ -83,7 +84,7 @@ if (emProducao && bruto.ADMIN_PASSWORD) {
     SENHAS_PROIBIDAS.includes(senha.toLowerCase()) &&
       "ADMIN_PASSWORD e uma senha de exemplo; troque por uma de verdade",
   ].filter((item): item is string => Boolean(item));
-  exigirEmProducao(problemas);
+  exigirEmProducao(problemas, "Configuracao insegura em producao:");
 }
 
 // Em desenvolvimento os valores que faltam ganham padroes, com aviso na tela.
