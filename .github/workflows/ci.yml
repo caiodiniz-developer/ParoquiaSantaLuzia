@@ -1,0 +1,47 @@
+# Confere cada push na main e cada pull request: os testes da API e a build
+# do site. Se algo quebrar, o GitHub avisa antes de o deploy da Vercel ou do
+# Render levar o erro para o ar.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  api:
+    name: API (testes)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+    env:
+      # Os testes rodam no SQLite de desenvolvimento e com o disco local para
+      # as fotos: nada de Supabase nem segredo de verdade no CI.
+      NODE_ENV: test
+      ADMIN_EMAIL: admin@paroquia.local
+      ADMIN_PASSWORD: senha-do-ci-apenas
+      AUTH_SECRET: segredo-do-ci-com-mais-de-16
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+      - run: npm ci
+      - run: npm run banco:dev
+      - run: npx tsc --noEmit
+      - run: npm test
+
+  site:
+    name: Site (build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
