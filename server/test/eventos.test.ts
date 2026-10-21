@@ -158,6 +158,16 @@ describe("eventos", () => {
     assert.ok(!fs.existsSync(arquivo));
   });
 
+  it("grava a capa com a extensao do tipo, nao a do nome enviado", async () => {
+    const form = formularioDeEvento();
+    form.delete("capa");
+    form.append("capa", imagem().blob, "pagina.html");
+    const r = await api.chamar("POST", "/eventos", { token, form });
+    assert.equal(r.status, 201);
+    criados.push(r.json.id);
+    assert.match(r.json.coverUrl, /.png$/);
+  });
+
   it("recusa arquivo que nao e imagem na capa", async () => {
     const form = formularioDeEvento();
     form.delete("capa");
