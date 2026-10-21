@@ -18,12 +18,18 @@ export default function ListaDeEventos() {
   const [sucesso, setSucesso] = useState(local.state?.aviso || "");
 
   useEffect(() => {
-    if (!local.state?.aviso) return undefined;
     // Tira a mensagem do historico: sem isto ela voltaria a cada F5.
-    navegar(local.pathname, { replace: true, state: null });
+    if (local.state?.aviso) navegar(local.pathname, { replace: true, state: null });
+  }, [local.state, local.pathname, navegar]);
+
+  // O timer mora no seu proprio efeito. No efeito de cima ele seria cancelado
+  // logo em seguida: limpar o historico muda local.state e re-executa aquele
+  // efeito, cuja limpeza apagaria o relogio antes de ele disparar.
+  useEffect(() => {
+    if (!sucesso) return undefined;
     const relogio = setTimeout(() => setSucesso(""), 8000);
     return () => clearTimeout(relogio);
-  }, [local.state, local.pathname, navegar]);
+  }, [sucesso]);
   const [erro, setErro] = useState("");
   // Guarda o id em operacao para desabilitar so os botoes daquela linha, e nao
   // a lista inteira.
