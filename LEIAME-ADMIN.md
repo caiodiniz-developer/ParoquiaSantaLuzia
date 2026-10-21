@@ -37,8 +37,26 @@ npm install
 npm run dev               # http://localhost:5173
 ```
 
-Entre em <http://localhost:5173/admin> com `admin@paroquia.local` / `admin123`
-(os padrões de desenvolvimento, avisados no console ao subir a API).
+Entre em <http://localhost:5173/admin> com o `ADMIN_EMAIL` e o `ADMIN_PASSWORD`
+do seu `server/.env`. Se você apagar essas duas linhas, valem os padrões de
+desenvolvimento `admin@paroquia.local` / `admin123`, avisados no console ao
+subir a API.
+
+**Puxou uma versão nova do código?** Rode `npm run banco:dev` de novo dentro de
+`server/`: ele acrescenta ao `dev.db` as colunas novas (como o `instagramUrl`)
+sem apagar os eventos que já estão lá. Em produção não precisa fazer nada — o
+build do Render já roda o `banco:prod`.
+
+### Testes
+
+```bash
+cd server
+npm test        # 33 testes: login, bloqueio, eventos, Instagram, galeria, config
+```
+
+Os testes sobem a API numa porta livre, usam o `dev.db` e apagam tudo o que
+criam (eventos e fotos). O GitHub roda os mesmos testes e a build do site a
+cada push na `main` (`.github/workflows/ci.yml`).
 
 ## Como o padre usa
 
