@@ -18,9 +18,28 @@ import { env } from "./env.js";
 
 export const PASTA_LOCAL = path.resolve(process.cwd(), "uploads");
 
-/** Nome unico e sem acento/espaco, preservando a extensao original. */
-function nomeDeArquivo(nomeOriginal: string) {
-  const extensao = path.extname(nomeOriginal).toLowerCase().slice(0, 10) || ".bin";
+/**
+ * Extensao a partir do TIPO do arquivo, que o fileFilter das rotas ja conferiu
+ * contra a lista de aceitos -- e nunca a partir do nome enviado.
+ *
+ * Com a extensao do nome, um "foto.html" mandado como image/png seria gravado
+ * como .html, e o servidor de arquivos o entregaria como pagina da web, no
+ * dominio da API. Aqui um tipo inesperado vira .bin, que nenhum navegador
+ * executa.
+ */
+const EXTENSOES: Record<string, string> = {
+  "image/jpeg": ".jpg",
+  "image/png": ".png",
+  "image/webp": ".webp",
+  "image/avif": ".avif",
+  "image/gif": ".gif",
+  "video/mp4": ".mp4",
+  "video/webm": ".webm",
+};
+
+/** Nome unico e sem acento/espaco, com a extensao certa para o tipo. */
+function nomeDeArquivo(tipo: string) {
+  const extensao = EXTENSOES[tipo] ?? ".bin";
   return `${Date.now()}-${crypto.randomBytes(6).toString("hex")}${extensao}`;
 }
 
@@ -38,7 +57,7 @@ interface Armazenamento {
 const armazenamentoLocal: Armazenamento = {
   async salvar(arquivo) {
     await fs.mkdir(PASTA_LOCAL, { recursive: true });
-    const nome = nomeDeArquivo(arquivo.originalname);
+    const nome = nomeDeArquivo(arquivo.mimetype);
     // rename falha entre discos diferentes; copy+unlink funciona sempre.
     await fs.copyFile(arquivo.path, path.join(PASTA_LOCAL, nome));
     await fs.unlink(arquivo.path).catch(() => {});
@@ -58,7 +77,7 @@ function criarArmazenamentoSupabase(config: NonNullable<typeof env.supabase>): A
 
   return {
     async salvar(arquivo) {
-      const nome = nomeDeArquivo(arquivo.originalname);
+      const nome = nomeDeArquivo(arquivo.mimetype);
       // O multer gravou em disco temporario; lemos so na hora de subir e
       // liberamos em seguida.
       const conteudo = await fs.readFile(arquivo.path);
