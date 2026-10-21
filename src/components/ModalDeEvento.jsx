@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { rotuloDoTipo } from "../lib/api.js";
 import { dataComHora } from "../lib/datas.js";
-import { Calendario, Fechar, Local, Relogio } from "./Icones.jsx";
+import { Calendario, Fechar, Instagram, Local, Relogio } from "./Icones.jsx";
 
 export default function ModalDeEvento({ evento, aoFechar }) {
   // ESC fecha e o fundo para de rolar. O listener e registrado so enquanto o
@@ -96,15 +96,30 @@ export default function ModalDeEvento({ evento, aoFechar }) {
               </div>
             )}
 
-            {evento.inscricaoUrl && (
-              <a
-                className="evento-modal-inscricao"
-                href={evento.inscricaoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Fazer inscrição
-              </a>
+            {(evento.inscricaoUrl || evento.instagramUrl) && (
+              <div className="evento-modal-acoes">
+                {evento.inscricaoUrl && (
+                  <a
+                    className="evento-modal-inscricao"
+                    href={evento.inscricaoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Fazer inscrição
+                  </a>
+                )}
+                {evento.instagramUrl && (
+                  <a
+                    className="evento-modal-instagram"
+                    href={evento.instagramUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Instagram />
+                    Ver no Instagram
+                  </a>
+                )}
+              </div>
             )}
           </div>
         </div>
