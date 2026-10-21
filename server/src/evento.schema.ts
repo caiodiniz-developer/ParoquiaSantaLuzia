@@ -84,6 +84,8 @@ function normalizarInstagram(valor: unknown) {
   if (!texto) return "";
   if (/^@[\w.]{1,30}$/.test(texto)) return `https://www.instagram.com/${texto.slice(1)}/`;
   if (/^(www\.)?instagr(am\.com|\.am)\//i.test(texto)) return `https://${texto}`;
+  // Link antigo com http:// e o mesmo endereco; troca pelo seguro em vez de recusar.
+  if (/^http:\/\/(www\.)?instagr(am\.com|\.am)\//i.test(texto)) return texto.replace(/^http:/i, "https:");
   return texto;
 }
 
