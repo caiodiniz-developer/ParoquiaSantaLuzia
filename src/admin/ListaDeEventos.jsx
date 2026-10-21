@@ -86,6 +86,21 @@ export default function ListaDeEventos() {
     }
   }
 
+  /** Duplica e ja abre a copia: o proximo passo e sempre trocar a data. */
+  async function duplicar(evento) {
+    setErro("");
+    setEmOperacao(evento.id);
+    try {
+      const copia = await apiEventos.duplicar(evento.id);
+      navegar(`/admin/${copia.id}`, {
+        state: { aviso: "Cópia criada e oculta. Ajuste a data e marque “Visível no site”." },
+      });
+    } catch (falha) {
+      setErro(falha.message);
+      setEmOperacao(null);
+    }
+  }
+
   function alternar(evento) {
     comTratamento(evento.id, () => apiEventos.alternarAtivo(evento.id, !evento.ativo));
   }
@@ -202,6 +217,15 @@ export default function ListaDeEventos() {
                   onClick={() => copiarLink(evento)}
                 >
                   {copiado === evento.id ? "Link copiado!" : "Copiar link"}
+                </button>
+                <button
+                  type="button"
+                  className="adm-botao secundario pequeno"
+                  disabled={emOperacao === evento.id}
+                  title="Cria uma cópia oculta para reaproveitar em outra data"
+                  onClick={() => duplicar(evento)}
+                >
+                  Duplicar
                 </button>
                 <button
                   type="button"
