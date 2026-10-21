@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, NavLink, Route, Routes } from "react-router-dom";
 import { autenticacao, lerToken, limparToken, SESSAO_EXPIRADA } from "../lib/api.js";
 import Login from "./Login.jsx";
 import ListaDeEventos from "./ListaDeEventos.jsx";
 import FormularioDeEvento from "./FormularioDeEvento.jsx";
+import Configuracoes from "./Configuracoes.jsx";
 import "./admin.css";
 
 const AVISO_DE_EXPIRACAO = "Sua sessão expirou. Entre de novo para continuar.";
@@ -84,6 +85,12 @@ export default function Admin() {
         <div className="adm-topo-inner">
           <img src="/assets/logo.png" alt="" />
           <h1>Painel · Paróquia Santa Luzia</h1>
+          <nav className="adm-menu">
+            <NavLink to="/admin" end>
+              Eventos
+            </NavLink>
+            <NavLink to="/admin/configuracoes">Configurações</NavLink>
+          </nav>
           <span className="adm-topo-email">{sessao.email}</span>
           <Link to="/" className="adm-botao secundario pequeno" style={{ background: "#fff" }}>
             Ver site
@@ -98,6 +105,8 @@ export default function Admin() {
         <Routes>
           <Route index element={<ListaDeEventos />} />
           <Route path="novo" element={<FormularioDeEvento />} />
+          {/* Antes de ":id", senao "configuracoes" seria lido como id de evento. */}
+          <Route path="configuracoes" element={<Configuracoes />} />
           <Route path=":id" element={<FormularioDeEvento />} />
         </Routes>
       </main>

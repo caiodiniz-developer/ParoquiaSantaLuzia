@@ -551,3 +551,37 @@
     order: -1;
   }
 }
+
+/* Menu do topo do painel. O NavLink marca o item atual com .active. */
+.adm-menu {
+  display: flex;
+  gap: 0.3rem;
+  margin-right: auto;
+}
+
+.adm-menu a {
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.adm-menu a:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.adm-menu a.active {
+  color: var(--primary-dark);
+  background: #fff;
+}
+
+@media (max-width: 640px) {
+  .adm-menu {
+    order: 10;
+    width: 100%;
+    margin-right: 0;
+  }
+}
