@@ -3,7 +3,7 @@ import { Router, type NextFunction, type Request, type Response } from "express"
 import multer from "multer";
 import { autenticar, autenticacaoOpcional } from "../auth.js";
 import { assincrono } from "../assincrono.js";
-import { DadosInvalidos } from "../erros.js";
+import { DadosInvalidos, NaoEncontrado } from "../erros.js";
 import { armazenamento } from "../storage.js";
 import * as servico from "../evento.service.js";
 import {
@@ -110,10 +110,18 @@ rotasDeEvento.get(
   }),
 );
 
+/**
+ * Detalhe de um evento. Sem sessao, evento oculto responde 404 -- igual a um
+ * que nao existe. Responder 403 confirmaria que o id e valido, e "oculto"
+ * costuma ser justamente o evento que ainda nao pode ser divulgado.
+ */
 rotasDeEvento.get(
   "/:id",
+  autenticacaoOpcional,
   assincrono(async (req, res) => {
-    res.json(await servico.buscarPorId(req.params.id));
+    const evento = await servico.buscarPorId(req.params.id);
+    if (!evento.ativo && !req.admin) throw new NaoEncontrado("Evento nao encontrado.");
+    res.json(evento);
   }),
 );
 
