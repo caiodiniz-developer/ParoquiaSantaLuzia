@@ -101,8 +101,18 @@ export default function ModalDeEvento({ evento, aoFechar }) {
 
             {evento.galeria?.length > 0 && (
               <div className="evento-modal-galeria">
-                {evento.galeria.map((url) => (
-                  <img key={url} src={url} alt="" loading="lazy" />
+                {/* Cada miniatura abre a foto inteira numa aba nova: com 90px
+                    ninguem enxerga o rosto de quem estava no retiro. */}
+                {evento.galeria.map((url, indice) => (
+                  <a
+                    key={url}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Abrir foto ${indice + 1} de ${evento.galeria.length} em tamanho real`}
+                  >
+                    <img src={url} alt="" loading="lazy" />
+                  </a>
                 ))}
               </div>
             )}
