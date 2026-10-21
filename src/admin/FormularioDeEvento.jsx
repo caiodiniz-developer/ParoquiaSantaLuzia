@@ -38,6 +38,13 @@ const VAZIO = {
   ativo: true,
 };
 
+/** Meia-noite de hoje: o mesmo corte que o servidor usa para "Próximos". */
+function meiaNoite() {
+  const data = new Date();
+  data.setHours(0, 0, 0, 0);
+  return data;
+}
+
 export default function FormularioDeEvento() {
   const { id } = useParams();
   const editando = Boolean(id);
@@ -238,7 +245,17 @@ export default function FormularioDeEvento() {
       } else {
         await apiEventos.criar(dados, setProgresso);
       }
-      navegar("/admin");
+      // A mensagem diz ONDE o evento foi parar: e a duvida de quem acabou de
+      // salvar ("ja esta no site?").
+      const passado = campos.comecaEm && new Date(campos.terminaEm || campos.comecaEm) < meiaNoite();
+      const aviso = !campos.ativo
+        ? "Evento salvo, mas oculto: ele não aparece no site até você clicar em “Mostrar”."
+        : passado
+          ? "Evento salvo em “Já realizados”, porque a data já passou."
+          : editando
+            ? "Alterações salvas. O site já mostra a versão nova."
+            : "Evento publicado! Ele já aparece em “Próximos Eventos” no site.";
+      navegar("/admin", { state: { aviso } });
     } catch (falha) {
       setErro(falha.message);
       setSalvando(false);
@@ -252,9 +269,7 @@ export default function FormularioDeEvento() {
 
   // Mesma regra do servidor: o corte e a meia-noite de hoje, nao o instante
   // atual -- um evento marcado para hoje mais cedo ainda vale o dia inteiro.
-  const meiaNoiteDeHoje = new Date();
-  meiaNoiteDeHoje.setHours(0, 0, 0, 0);
-  const dataNoPassado = campos.comecaEm && new Date(campos.comecaEm) < meiaNoiteDeHoje;
+  const dataNoPassado = campos.comecaEm && new Date(campos.comecaEm) < meiaNoite();
 
   return (
     <>
