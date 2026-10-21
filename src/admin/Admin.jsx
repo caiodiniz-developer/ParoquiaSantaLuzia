@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
-import { autenticacao, lerToken, limparToken } from "../lib/api.js";
+import { autenticacao, lerToken, limparToken, SESSAO_EXPIRADA } from "../lib/api.js";
 import Login from "./Login.jsx";
 import ListaDeEventos from "./ListaDeEventos.jsx";
 import FormularioDeEvento from "./FormularioDeEvento.jsx";
 import "./admin.css";
 
+const AVISO_DE_EXPIRACAO = "Sua sessão expirou. Entre de novo para continuar.";
+
 export default function Admin() {
   const [sessao, setSessao] = useState(null);
   const [verificando, setVerificando] = useState(true);
+  const [aviso, setAviso] = useState("");
 
   /**
    * O token guardado no navegador pode ter expirado ou ter sido assinado com
@@ -25,7 +28,7 @@ export default function Admin() {
 
     autenticacao
       .eu(controle.signal)
-      .then((dados) => setSessao({ email: dados.email }))
+      .then((dados) => setSessao({ email: dados.email, expiraEm: dados.expiraEm }))
       .catch((falha) => {
         if (falha.name !== "AbortError") limparToken();
       })
@@ -34,13 +37,46 @@ export default function Admin() {
     return () => controle.abort();
   }, []);
 
+  // Qualquer chamada recusada por token vencido traz a pessoa de volta ao
+  // login, com o motivo escrito -- em vez de deixar o painel aberto e mudo.
+  useEffect(() => {
+    function aoExpirar() {
+      setSessao(null);
+      setAviso(AVISO_DE_EXPIRACAO);
+    }
+    window.addEventListener(SESSAO_EXPIRADA, aoExpirar);
+    return () => window.removeEventListener(SESSAO_EXPIRADA, aoExpirar);
+  }, []);
+
+  // Sai sozinho quando o token vence, para ninguem perder um formulario
+  // inteiro descobrindo no "Publicar" que a sessao tinha acabado.
+  useEffect(() => {
+    if (!sessao?.expiraEm) return undefined;
+    const restante = sessao.expiraEm - Date.now();
+    // setTimeout estoura acima de ~24,8 dias; a sessao dura 12h, mas o limite
+    // fica aqui para um AUTH de duracao maior nao virar disparo imediato.
+    if (restante > 2 ** 31 - 1) return undefined;
+    const relogio = setTimeout(() => {
+      limparToken();
+      setSessao(null);
+      setAviso(AVISO_DE_EXPIRACAO);
+    }, Math.max(0, restante));
+    return () => clearTimeout(relogio);
+  }, [sessao]);
+
+  function entrar(dados) {
+    setAviso("");
+    setSessao(dados);
+  }
+
   function sair() {
     limparToken();
+    setAviso("");
     setSessao(null);
   }
 
   if (verificando) return <div className="adm-carregando">Verificando sessão...</div>;
-  if (!sessao) return <Login aoEntrar={setSessao} />;
+  if (!sessao) return <Login aoEntrar={entrar} aviso={aviso} />;
 
   return (
     <div className="adm-corpo">
