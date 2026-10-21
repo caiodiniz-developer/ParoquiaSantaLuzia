@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { eventos as apiEventos, TIPOS_DE_EVENTO } from "../lib/api.js";
 import { paraCampoDataHora } from "../lib/datas.js";
+import PreviaDoCard from "./PreviaDoCard.jsx";
 
 // Precisa bater com o LIMITE_DE_VIDEO do servidor (evento.rotas.ts).
 const LIMITE_DO_VIDEO = 60 * 1024 * 1024;
@@ -247,7 +248,8 @@ export default function FormularioDeEvento() {
       }
       // A mensagem diz ONDE o evento foi parar: e a duvida de quem acabou de
       // salvar ("ja esta no site?").
-      const passado = campos.comecaEm && new Date(campos.terminaEm || campos.comecaEm) < meiaNoite();
+      const passado =
+        campos.comecaEm && new Date(campos.terminaEm || campos.comecaEm) < meiaNoite();
       const aviso = !campos.ativo
         ? "Evento salvo, mas oculto: ele não aparece no site até você clicar em “Mostrar”."
         : passado
@@ -282,289 +284,305 @@ export default function FormularioDeEvento() {
 
       {erro && <div className="adm-aviso erro">{erro}</div>}
 
-      <form className="adm-cartao" onSubmit={salvar}>
-        <div className="adm-campo">
-          <label htmlFor="titulo">Título do evento *</label>
-          <input
-            id="titulo"
-            type="text"
-            required
-            minLength={3}
-            maxLength={160}
-            value={campos.titulo}
-            onChange={(e) => alterar("titulo", e.target.value)}
-            placeholder="Ex.: Festa de Santa Luzia"
-          />
-        </div>
-
-        <div className="adm-linha">
+      <div className="adm-formulario-grade">
+        <form className="adm-cartao" onSubmit={salvar}>
           <div className="adm-campo">
-            <label htmlFor="tipo">Categoria</label>
-            <select
-              id="tipo"
-              value={campos.tipo}
-              onChange={(e) => alterar("tipo", e.target.value)}
-            >
-              {TIPOS_DE_EVENTO.map((tipo) => (
-                <option value={tipo.chave} key={tipo.chave}>
-                  {tipo.rotulo}
-                </option>
-              ))}
-            </select>
-            <p className="adm-dica">Aparece como etiqueta no card do site.</p>
-          </div>
-
-          <div className="adm-campo">
-            <label htmlFor="local">Local</label>
+            <label htmlFor="titulo">Título do evento *</label>
             <input
-              id="local"
+              id="titulo"
               type="text"
-              value={campos.local}
-              onChange={(e) => alterar("local", e.target.value)}
-              placeholder="Ex.: Igreja Matriz - Jd. dos Oliveiras"
+              required
+              minLength={3}
+              maxLength={160}
+              value={campos.titulo}
+              onChange={(e) => alterar("titulo", e.target.value)}
+              placeholder="Ex.: Festa de Santa Luzia"
             />
           </div>
-        </div>
 
-        <div className="adm-linha">
-          <div className="adm-campo">
-            <label htmlFor="comecaEm">Data e hora de início *</label>
-            <input
-              id="comecaEm"
-              type="datetime-local"
-              required
-              value={campos.comecaEm}
-              onChange={(e) => alterar("comecaEm", e.target.value)}
-            />
-            <p className="adm-dica">
-              Passada esta data, o evento sai sozinho da lista "Próximos Eventos" do site.
-            </p>
-            {/* O motivo numero um de "cadastrei e nao apareceu no site" e uma
+          <div className="adm-linha">
+            <div className="adm-campo">
+              <label htmlFor="tipo">Categoria</label>
+              <select
+                id="tipo"
+                value={campos.tipo}
+                onChange={(e) => alterar("tipo", e.target.value)}
+              >
+                {TIPOS_DE_EVENTO.map((tipo) => (
+                  <option value={tipo.chave} key={tipo.chave}>
+                    {tipo.rotulo}
+                  </option>
+                ))}
+              </select>
+              <p className="adm-dica">Aparece como etiqueta no card do site.</p>
+            </div>
+
+            <div className="adm-campo">
+              <label htmlFor="local">Local</label>
+              <input
+                id="local"
+                type="text"
+                value={campos.local}
+                onChange={(e) => alterar("local", e.target.value)}
+                placeholder="Ex.: Igreja Matriz - Jd. dos Oliveiras"
+              />
+            </div>
+          </div>
+
+          <div className="adm-linha">
+            <div className="adm-campo">
+              <label htmlFor="comecaEm">Data e hora de início *</label>
+              <input
+                id="comecaEm"
+                type="datetime-local"
+                required
+                value={campos.comecaEm}
+                onChange={(e) => alterar("comecaEm", e.target.value)}
+              />
+              <p className="adm-dica">
+                Passada esta data, o evento sai sozinho da lista "Próximos Eventos" do site.
+              </p>
+              {/* O motivo numero um de "cadastrei e nao apareceu no site" e uma
                 data no passado -- em geral o ano errado. Avisamos na hora, em
                 vez de deixar a pessoa procurar o evento no site. */}
-            {dataNoPassado && (
-              <p className="adm-aviso atencao" style={{ marginTop: "0.5rem", marginBottom: 0 }}>
-                Esta data já passou. O evento ficará guardado em "Já realizados" e{" "}
-                <strong>não aparecerá</strong> em "Próximos Eventos" no site.
-              </p>
-            )}
+              {dataNoPassado && (
+                <p className="adm-aviso atencao" style={{ marginTop: "0.5rem", marginBottom: 0 }}>
+                  Esta data já passou. O evento ficará guardado em "Já realizados" e{" "}
+                  <strong>não aparecerá</strong> em "Próximos Eventos" no site.
+                </p>
+              )}
+            </div>
+
+            <div className="adm-campo">
+              <label htmlFor="terminaEm">Término (opcional)</label>
+              <input
+                id="terminaEm"
+                type="datetime-local"
+                value={campos.terminaEm}
+                onChange={(e) => alterar("terminaEm", e.target.value)}
+              />
+              <p className="adm-dica">Use em eventos de vários dias, como tríduos e festas.</p>
+            </div>
           </div>
 
           <div className="adm-campo">
-            <label htmlFor="terminaEm">Término (opcional)</label>
+            <label htmlFor="resumo">Resumo do card</label>
             <input
-              id="terminaEm"
-              type="datetime-local"
-              value={campos.terminaEm}
-              onChange={(e) => alterar("terminaEm", e.target.value)}
+              id="resumo"
+              type="text"
+              maxLength={280}
+              value={campos.resumo}
+              onChange={(e) => alterar("resumo", e.target.value)}
+              placeholder="Uma ou duas frases que aparecem por cima da foto"
             />
-            <p className="adm-dica">Use em eventos de vários dias, como tríduos e festas.</p>
+            <p className="adm-dica">{campos.resumo.length}/280 caracteres.</p>
           </div>
-        </div>
 
-        <div className="adm-campo">
-          <label htmlFor="resumo">Resumo do card</label>
-          <input
-            id="resumo"
-            type="text"
-            maxLength={280}
-            value={campos.resumo}
-            onChange={(e) => alterar("resumo", e.target.value)}
-            placeholder="Uma ou duas frases que aparecem por cima da foto"
-          />
-          <p className="adm-dica">{campos.resumo.length}/280 caracteres.</p>
-        </div>
+          <div className="adm-campo">
+            <label htmlFor="descricao">Descrição completa</label>
+            <textarea
+              id="descricao"
+              value={campos.descricao}
+              onChange={(e) => alterar("descricao", e.target.value)}
+              placeholder={
+                "Texto que aparece quando o visitante clica no card.\n\nDeixe uma linha em branco para separar parágrafos."
+              }
+            />
+          </div>
 
-        <div className="adm-campo">
-          <label htmlFor="descricao">Descrição completa</label>
-          <textarea
-            id="descricao"
-            value={campos.descricao}
-            onChange={(e) => alterar("descricao", e.target.value)}
-            placeholder={"Texto que aparece quando o visitante clica no card.\n\nDeixe uma linha em branco para separar parágrafos."}
-          />
-        </div>
+          <div className="adm-campo">
+            <label htmlFor="bencao">Frase de bênção (opcional)</label>
+            <input
+              id="bencao"
+              type="text"
+              maxLength={300}
+              value={campos.bencao}
+              onChange={(e) => alterar("bencao", e.target.value)}
+              placeholder="Ex.: Que a oração transforme seu coração."
+            />
+          </div>
 
-        <div className="adm-campo">
-          <label htmlFor="bencao">Frase de bênção (opcional)</label>
-          <input
-            id="bencao"
-            type="text"
-            maxLength={300}
-            value={campos.bencao}
-            onChange={(e) => alterar("bencao", e.target.value)}
-            placeholder="Ex.: Que a oração transforme seu coração."
-          />
-        </div>
+          <div className="adm-campo">
+            <label htmlFor="inscricaoUrl">Link de inscrição (opcional)</label>
+            <input
+              id="inscricaoUrl"
+              type="url"
+              value={campos.inscricaoUrl}
+              onChange={(e) => alterar("inscricaoUrl", e.target.value)}
+              placeholder="https://..."
+            />
+          </div>
 
-        <div className="adm-campo">
-          <label htmlFor="inscricaoUrl">Link de inscrição (opcional)</label>
-          <input
-            id="inscricaoUrl"
-            type="url"
-            value={campos.inscricaoUrl}
-            onChange={(e) => alterar("inscricaoUrl", e.target.value)}
-            placeholder="https://..."
-          />
-        </div>
-
-        <div className="adm-campo">
-          <label htmlFor="instagramUrl">Instagram (opcional)</label>
-          {/* type="text" e nao "url": o campo aceita "@perfil", que o
+          <div className="adm-campo">
+            <label htmlFor="instagramUrl">Instagram (opcional)</label>
+            {/* type="text" e nao "url": o campo aceita "@perfil", que o
               navegador recusaria num input de URL. Quem valida e normaliza e o
               servidor (linkDoInstagram, em evento.schema.ts). */}
-          <input
-            id="instagramUrl"
-            type="text"
-            inputMode="url"
-            autoComplete="off"
-            value={campos.instagramUrl}
-            onChange={(e) => alterar("instagramUrl", e.target.value)}
-            placeholder="https://www.instagram.com/p/... ou @santaluzia.paroquia"
+            <input
+              id="instagramUrl"
+              type="text"
+              inputMode="url"
+              autoComplete="off"
+              value={campos.instagramUrl}
+              onChange={(e) => alterar("instagramUrl", e.target.value)}
+              placeholder="https://www.instagram.com/p/... ou @santaluzia.paroquia"
+            />
+            <p className="adm-dica">
+              Cole o link do post sobre o evento. No site aparece o botão “Ver no Instagram”.
+            </p>
+          </div>
+
+          <div className="adm-campo">
+            <label>Imagem de capa {editando ? "" : "*"}</label>
+            <div className="adm-area-imagem">
+              {previaDaCapa && (
+                <img className="adm-previa" src={previaDaCapa} alt="Prévia da capa" />
+              )}
+              <input type="file" accept="image/*" onChange={escolherCapa} />
+              <p className="adm-dica">
+                JPG, PNG ou WEBP, até 8 MB. {editando && "Escolha um arquivo só se quiser trocar."}
+              </p>
+            </div>
+          </div>
+
+          <div className="adm-campo">
+            <label>Vídeo (opcional)</label>
+            <div className="adm-area-imagem">
+              {previaDoVideo && (
+                <video className="adm-previa" src={previaDoVideo} controls muted playsInline />
+              )}
+              <input type="file" accept="video/mp4,video/webm" onChange={escolherVideo} />
+              <p className="adm-dica">
+                MP4 ou WEBM, até 60 MB. No site, o vídeo toca sozinho quando o visitante passa o
+                mouse sobre o card e para quando ele tira — sem som, como manda o navegador.
+              </p>
+
+              {previaDoVideo && (
+                <button
+                  type="button"
+                  className="adm-botao perigo pequeno"
+                  style={{ marginTop: "0.6rem" }}
+                  onClick={() => {
+                    setVideoNovo(null);
+                    setRemoverVideo(true);
+                  }}
+                >
+                  Remover vídeo
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="adm-campo">
+            <label>Galeria de fotos (opcional)</label>
+            <div className="adm-area-imagem">
+              <input type="file" accept="image/*" multiple onChange={adicionarNaGaleria} />
+              <p className="adm-dica">
+                {galeriaMantida.length + galeriaNova.length} de {MAXIMO_NA_GALERIA} fotos. Aparecem
+                dentro do evento, no site.
+              </p>
+
+              {(galeriaMantida.length > 0 || galeriaNova.length > 0) && (
+                <div className="adm-galeria">
+                  {galeriaMantida.map((url) => (
+                    <div className="adm-galeria-item" key={url}>
+                      <img src={url} alt="" />
+                      <button
+                        type="button"
+                        className="adm-galeria-remover"
+                        aria-label="Remover foto"
+                        onClick={() =>
+                          setGaleriaMantida((atuais) => atuais.filter((item) => item !== url))
+                        }
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+
+                  {galeriaNova.map((item, indice) => (
+                    <div className="adm-galeria-item" key={item.previa}>
+                      <img src={item.previa} alt="" />
+                      <button
+                        type="button"
+                        className="adm-galeria-remover"
+                        aria-label="Remover foto"
+                        onClick={() =>
+                          setGaleriaNova((atuais) => atuais.filter((_, i) => i !== indice))
+                        }
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="adm-linha">
+            <label className="adm-marcador">
+              <input
+                type="checkbox"
+                checked={campos.destaque}
+                onChange={(e) => alterar("destaque", e.target.checked)}
+              />
+              <span>
+                <strong>Destacar</strong>
+                Fica no topo da lista de próximos eventos.
+              </span>
+            </label>
+
+            <label className="adm-marcador">
+              <input
+                type="checkbox"
+                checked={campos.ativo}
+                onChange={(e) => alterar("ativo", e.target.checked)}
+              />
+              <span>
+                <strong>Visível no site</strong>
+                Desmarque para esconder sem apagar o cadastro.
+              </span>
+            </label>
+          </div>
+
+          {salvando && progresso > 0 && (
+            <div className="adm-progresso">
+              <span style={{ width: `${progresso}%` }} />
+            </div>
+          )}
+
+          <div style={{ display: "flex", gap: "0.6rem", marginTop: "1.5rem" }}>
+            <button type="submit" className="adm-botao" disabled={salvando}>
+              {salvando
+                ? progresso > 0 && progresso < 100
+                  ? `Enviando... ${progresso}%`
+                  : "Salvando..."
+                : editando
+                  ? "Salvar alterações"
+                  : "Publicar evento"}
+            </button>
+            <button
+              type="button"
+              className="adm-botao secundario"
+              disabled={salvando}
+              onClick={sairDoFormulario}
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
+
+        <aside>
+          <PreviaDoCard
+            titulo={campos.titulo}
+            tipo={campos.tipo}
+            resumo={campos.resumo}
+            comecaEm={campos.comecaEm}
+            capa={previaDaCapa}
           />
-          <p className="adm-dica">
-            Cole o link do post sobre o evento. No site aparece o botão “Ver no Instagram”.
-          </p>
-        </div>
-
-        <div className="adm-campo">
-          <label>Imagem de capa {editando ? "" : "*"}</label>
-          <div className="adm-area-imagem">
-            {previaDaCapa && <img className="adm-previa" src={previaDaCapa} alt="Prévia da capa" />}
-            <input type="file" accept="image/*" onChange={escolherCapa} />
-            <p className="adm-dica">
-              JPG, PNG ou WEBP, até 8 MB. {editando && "Escolha um arquivo só se quiser trocar."}
-            </p>
-          </div>
-        </div>
-
-        <div className="adm-campo">
-          <label>Vídeo (opcional)</label>
-          <div className="adm-area-imagem">
-            {previaDoVideo && (
-              <video className="adm-previa" src={previaDoVideo} controls muted playsInline />
-            )}
-            <input type="file" accept="video/mp4,video/webm" onChange={escolherVideo} />
-            <p className="adm-dica">
-              MP4 ou WEBM, até 60 MB. No site, o vídeo toca sozinho quando o visitante passa o
-              mouse sobre o card e para quando ele tira — sem som, como manda o navegador.
-            </p>
-
-            {previaDoVideo && (
-              <button
-                type="button"
-                className="adm-botao perigo pequeno"
-                style={{ marginTop: "0.6rem" }}
-                onClick={() => {
-                  setVideoNovo(null);
-                  setRemoverVideo(true);
-                }}
-              >
-                Remover vídeo
-              </button>
-            )}
-          </div>
-        </div>
-
-        <div className="adm-campo">
-          <label>Galeria de fotos (opcional)</label>
-          <div className="adm-area-imagem">
-            <input type="file" accept="image/*" multiple onChange={adicionarNaGaleria} />
-            <p className="adm-dica">
-              {galeriaMantida.length + galeriaNova.length} de {MAXIMO_NA_GALERIA} fotos. Aparecem
-              dentro do evento, no site.
-            </p>
-
-            {(galeriaMantida.length > 0 || galeriaNova.length > 0) && (
-              <div className="adm-galeria">
-                {galeriaMantida.map((url) => (
-                  <div className="adm-galeria-item" key={url}>
-                    <img src={url} alt="" />
-                    <button
-                      type="button"
-                      className="adm-galeria-remover"
-                      aria-label="Remover foto"
-                      onClick={() =>
-                        setGaleriaMantida((atuais) => atuais.filter((item) => item !== url))
-                      }
-                    >
-                      ×
-                    </button>
-                  </div>
-                ))}
-
-                {galeriaNova.map((item, indice) => (
-                  <div className="adm-galeria-item" key={item.previa}>
-                    <img src={item.previa} alt="" />
-                    <button
-                      type="button"
-                      className="adm-galeria-remover"
-                      aria-label="Remover foto"
-                      onClick={() =>
-                        setGaleriaNova((atuais) => atuais.filter((_, i) => i !== indice))
-                      }
-                    >
-                      ×
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="adm-linha">
-          <label className="adm-marcador">
-            <input
-              type="checkbox"
-              checked={campos.destaque}
-              onChange={(e) => alterar("destaque", e.target.checked)}
-            />
-            <span>
-              <strong>Destacar</strong>
-              Fica no topo da lista de próximos eventos.
-            </span>
-          </label>
-
-          <label className="adm-marcador">
-            <input
-              type="checkbox"
-              checked={campos.ativo}
-              onChange={(e) => alterar("ativo", e.target.checked)}
-            />
-            <span>
-              <strong>Visível no site</strong>
-              Desmarque para esconder sem apagar o cadastro.
-            </span>
-          </label>
-        </div>
-
-        {salvando && progresso > 0 && (
-          <div className="adm-progresso">
-            <span style={{ width: `${progresso}%` }} />
-          </div>
-        )}
-
-        <div style={{ display: "flex", gap: "0.6rem", marginTop: "1.5rem" }}>
-          <button type="submit" className="adm-botao" disabled={salvando}>
-            {salvando
-              ? progresso > 0 && progresso < 100
-                ? `Enviando... ${progresso}%`
-                : "Salvando..."
-              : editando
-                ? "Salvar alterações"
-                : "Publicar evento"}
-          </button>
-          <button
-            type="button"
-            className="adm-botao secundario"
-            disabled={salvando}
-            onClick={sairDoFormulario}
-          >
-            Cancelar
-          </button>
-        </div>
-      </form>
+        </aside>
+      </div>
     </>
   );
 }
