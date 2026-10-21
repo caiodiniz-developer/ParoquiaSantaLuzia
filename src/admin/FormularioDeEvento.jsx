@@ -39,6 +39,19 @@ const VAZIO = {
   ativo: true,
 };
 
+/**
+ * O mesmo que o servidor aceita no campo do Instagram (linkDoInstagram, em
+ * evento.schema.ts): link do instagram.com, com ou sem https, ou um @perfil.
+ * Aqui so serve para avisar cedo; quem decide de verdade e o servidor.
+ */
+function pareceInstagram(texto) {
+  const valor = texto.trim();
+  if (!valor) return true;
+  return (
+    /^@[\w.]{1,30}$/.test(valor) || /^(https?:\/\/)?(www\.)?instagr(am\.com|\.am)\//i.test(valor)
+  );
+}
+
 /** Meia-noite de hoje: o mesmo corte que o servidor usa para "Próximos". */
 function meiaNoite() {
   const data = new Date();
@@ -434,6 +447,12 @@ export default function FormularioDeEvento() {
             <p className="adm-dica">
               Cole o link do post sobre o evento. No site aparece o botão “Ver no Instagram”.
             </p>
+            {!pareceInstagram(campos.instagramUrl) && (
+              <p className="adm-aviso atencao" style={{ marginTop: "0.5rem", marginBottom: 0 }}>
+                Isto não parece um link do Instagram. Use o endereço do post (instagram.com/p/...)
+                ou o @ do perfil.
+              </p>
+            )}
           </div>
 
           <div className="adm-campo">
