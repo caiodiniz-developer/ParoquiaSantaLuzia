@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { useEventos } from "../hooks/useEventos.js";
 import { useRevelacaoScroll } from "../hooks/useRevelacaoScroll.js";
+import { useEventoDaUrl } from "../hooks/useEventoDaUrl.js";
 import { rotuloDoTipo } from "../lib/api.js";
 import TituloDeSecao from "./TituloDeSecao.jsx";
 import ModalDeEvento from "./ModalDeEvento.jsx";
@@ -126,7 +127,7 @@ function CardDeEvento({ evento, indice, aoAbrir }) {
 
 export default function Eventos() {
   const { eventos, carregando, acordando, erro } = useEventos({ escopo: "proximos" });
-  const [eventoAberto, setEventoAberto] = useState(null);
+  const { eventoAberto, abrir, fechar } = useEventoDaUrl();
 
   // Os cards chegam depois da primeira renderizacao, entao o observer de
   // revelacao precisa rodar de novo quando a lista muda.
@@ -170,14 +171,14 @@ export default function Eventos() {
                 key={evento.id}
                 evento={evento}
                 indice={indice}
-                aoAbrir={setEventoAberto}
+                aoAbrir={abrir}
               />
             ))}
         </div>
       </div>
 
       {eventoAberto && (
-        <ModalDeEvento evento={eventoAberto} aoFechar={() => setEventoAberto(null)} />
+        <ModalDeEvento evento={eventoAberto} aoFechar={fechar} />
       )}
     </section>
   );
