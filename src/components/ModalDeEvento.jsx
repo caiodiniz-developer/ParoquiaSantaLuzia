@@ -19,6 +19,17 @@ export default function ModalDeEvento({ evento, aoFechar }) {
     };
   }, [aoFechar]);
 
+  // Com o modal aberto, a aba mostra o nome do evento. E o que aparece quando
+  // alguem guarda nos favoritos ou compartilha o link direto (?evento=ID).
+  useEffect(() => {
+    if (!evento) return undefined;
+    const tituloAnterior = document.title;
+    document.title = `${evento.titulo} · Paróquia Santa Luzia`;
+    return () => {
+      document.title = tituloAnterior;
+    };
+  }, [evento]);
+
   if (!evento) return null;
 
   const paragrafos = (evento.descricao || "")
