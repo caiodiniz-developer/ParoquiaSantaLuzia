@@ -5,6 +5,23 @@ import { paraCampoDataHora } from "../lib/datas.js";
 
 // Precisa bater com o LIMITE_DE_VIDEO do servidor (evento.rotas.ts).
 const LIMITE_DO_VIDEO = 60 * 1024 * 1024;
+// Precisam bater com LIMITE_DE_IMAGEM, IMAGENS_ACEITAS e MAXIMO_NA_GALERIA do
+// servidor. Conferir aqui poupa o upload inteiro so para ouvir um "nao" no fim.
+const LIMITE_DA_IMAGEM = 8 * 1024 * 1024;
+const IMAGENS_ACEITAS = ["image/jpeg", "image/png", "image/webp", "image/avif", "image/gif"];
+const MAXIMO_NA_GALERIA = 6;
+
+/** Devolve o motivo de recusa da imagem, ou "" quando ela serve. */
+function problemaDaImagem(arquivo) {
+  if (!IMAGENS_ACEITAS.includes(arquivo.type)) {
+    return `"${arquivo.name}" não é uma imagem aceita. Use JPG, PNG, WEBP, AVIF ou GIF.`;
+  }
+  if (arquivo.size > LIMITE_DA_IMAGEM) {
+    const mb = (arquivo.size / 1024 / 1024).toFixed(1);
+    return `"${arquivo.name}" tem ${mb} MB e o limite é 8 MB. Reduza a foto antes de enviar.`;
+  }
+  return "";
+}
 
 const VAZIO = {
   titulo: "",
