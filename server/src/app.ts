@@ -57,6 +57,19 @@ export function criarApp() {
     }),
   );
 
+  // Em desenvolvimento, uma linha por requisicao com status e tempo: ajuda a
+  // ver o que o painel pediu quando algo nao aparece. Em producao o Render ja
+  // registra o acesso, e repetir aqui so dobraria o log. Nos testes, silencio.
+  if (env.NODE_ENV === "development") {
+    app.use((req, res, next) => {
+      const inicio = Date.now();
+      res.on("finish", () => {
+        console.log(`${req.method} ${req.originalUrl} -> ${res.statusCode} (${Date.now() - inicio}ms)`);
+      });
+      next();
+    });
+  }
+
   app.use(express.json({ limit: "1mb" }));
 
   // Só em desenvolvimento: em producao os arquivos moram no Supabase, porque
