@@ -5,7 +5,7 @@ import { useEventoDaUrl } from "../hooks/useEventoDaUrl.js";
 import { rotuloDoTipo } from "../lib/api.js";
 import TituloDeSecao from "./TituloDeSecao.jsx";
 import ModalDeEvento from "./ModalDeEvento.jsx";
-import { IconePlay } from "./Icones.jsx";
+import { IconePlay, Instagram } from "./Icones.jsx";
 
 const MESES = ["JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"];
 
@@ -89,6 +89,14 @@ function CardDeEvento({ evento, indice, aoAbrir }) {
             video continuam intocados. */}
         <div className="evento-card-texto cascata">
           <span className="evento-card-badge">{rotuloDoTipo(evento.tipo)}</span>
+          {/* So um sinal de que ha post: o link de verdade fica no modal, onde
+              a pessoa ja decidiu ver o evento. Um link dentro do card brigaria
+              com o clique que abre o modal. */}
+          {evento.instagramUrl && (
+            <span className="evento-card-instagram" title="Tem post no Instagram">
+              <Instagram />
+            </span>
+          )}
           <h3>{evento.titulo}</h3>
           <p>{evento.resumo}</p>
         </div>
