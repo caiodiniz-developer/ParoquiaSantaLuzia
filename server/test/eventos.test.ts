@@ -61,6 +61,12 @@ describe("eventos", () => {
     assert.match(r.json.erro, /ano/);
   });
 
+  it("recusa ano fora da faixa, como 2206", async () => {
+    const r = await criar({ comecaEm: "2206-12-13T19:30" });
+    assert.equal(r.status, 400);
+    assert.match(r.json.erro, /entre 2000 e 2100/);
+  });
+
   it("guarda o link do Instagram a partir do @", async () => {
     const r = await criar({ instagramUrl: "@santaluzia.paroquia" });
     assert.equal(r.status, 201);
