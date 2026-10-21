@@ -22,23 +22,31 @@ const esquema = z.object({
   mostrarRealizados: z.boolean().optional(),
 });
 
+/** Padroes com o que estiver salvo por cima. */
+async function lerConfiguracoes() {
+  const linhas = await prisma.setting.findMany();
+
+  const salvas: Record<string, unknown> = {};
+  for (const linha of linhas) {
+    // So chaves conhecidas: uma linha antiga, de um ajuste que deixou de
+    // existir, nao deve continuar vazando para o site.
+    if (!(linha.chave in PADROES)) continue;
+    try {
+      salvas[linha.chave] = JSON.parse(linha.valor);
+    } catch {
+      // Linha corrompida cai no padrao em vez de derrubar a rota.
+    }
+  }
+
+  return { ...PADROES, ...salvas };
+}
+
 export const rotasDeConfig = Router();
 
 rotasDeConfig.get(
   "/",
   assincrono(async (_req, res) => {
-    const linhas = await prisma.setting.findMany();
-
-    const salvas: Record<string, unknown> = {};
-    for (const linha of linhas) {
-      try {
-        salvas[linha.chave] = JSON.parse(linha.valor);
-      } catch {
-        // Linha corrompida cai no padrao em vez de derrubar a rota.
-      }
-    }
-
-    res.json({ ...PADROES, ...salvas });
+    res.json(await lerConfiguracoes());
   }),
 );
 
