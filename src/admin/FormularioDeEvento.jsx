@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { eventos as apiEventos, TIPOS_DE_EVENTO } from "../lib/api.js";
 import { paraCampoDataHora } from "../lib/datas.js";
 import PreviaDoCard from "./PreviaDoCard.jsx";
@@ -50,6 +50,8 @@ export default function FormularioDeEvento() {
   const { id } = useParams();
   const editando = Boolean(id);
   const navegar = useNavigate();
+  // Aviso deixado por quem trouxe ate aqui (a duplicacao, por exemplo).
+  const avisoDeChegada = useLocation().state?.aviso || "";
 
   const [campos, setCampos] = useState(VAZIO);
   // Retrato do formulario como veio do banco, para saber se houve alteracao.
@@ -282,6 +284,7 @@ export default function FormularioDeEvento() {
         </button>
       </div>
 
+      {avisoDeChegada && <div className="adm-aviso atencao">{avisoDeChegada}</div>}
       {erro && <div className="adm-aviso erro">{erro}</div>}
 
       <div className="adm-formulario-grade">
