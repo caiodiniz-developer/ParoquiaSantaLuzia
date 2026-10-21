@@ -95,6 +95,7 @@ type DadosDeCriacao = {
   bencao: string;
   local: string;
   inscricaoUrl?: string;
+  instagramUrl?: string;
   destaque: boolean;
   ativo: boolean;
   comecaEm: Date;
@@ -109,6 +110,7 @@ export async function criar(dados: DadosDeCriacao) {
     data: {
       ...dados,
       inscricaoUrl: dados.inscricaoUrl || null,
+      instagramUrl: dados.instagramUrl || null,
       terminaEm: dados.terminaEm ?? null,
       videoUrl: dados.videoUrl ?? null,
       galeria: JSON.stringify(dados.galeria),
@@ -130,6 +132,9 @@ export async function atualizar(id: string, dados: DadosDeEdicao) {
     data: {
       ...resto,
       ...(dados.inscricaoUrl !== undefined && { inscricaoUrl: dados.inscricaoUrl || null }),
+      // Mesma regra do link de inscricao: "" (campo apagado no formulario) vira
+      // null no banco, e ausente fica como esta.
+      ...(dados.instagramUrl !== undefined && { instagramUrl: dados.instagramUrl || null }),
       ...(dados.terminaEm !== undefined && { terminaEm: dados.terminaEm ?? null }),
       ...(coverUrl && { coverUrl }),
       // `undefined` aqui significa "nao mexeu" e por isso nem entra no update;
