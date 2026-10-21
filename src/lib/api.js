@@ -217,6 +217,9 @@ export const eventos = {
     }),
 
   remover: (id) => requisitar(`/eventos/${id}`, { metodo: "DELETE", autenticado: true }),
+
+  duplicar: (id) =>
+    requisitar(`/eventos/${id}/duplicar`, { metodo: "POST", autenticado: true }),
 };
 
 /* ===== Autenticacao ===== */
