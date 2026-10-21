@@ -75,6 +75,17 @@ describe("eventos", () => {
     assert.equal(r.json.instagramUrl, null);
   });
 
+  it("recusa link de inscricao com javascript:", async () => {
+    const r = await criar({ inscricaoUrl: "javascript:alert(1)" });
+    assert.equal(r.status, 400);
+  });
+
+  it("aceita link de inscricao https", async () => {
+    const r = await criar({ inscricaoUrl: "https://forms.gle/abc" });
+    assert.equal(r.status, 201);
+    assert.equal(r.json.inscricaoUrl, "https://forms.gle/abc");
+  });
+
   it("evento oculto some do site e do detalhe publico, mas nao do painel", async () => {
     const criado = await criar();
     const id = criado.json.id;
