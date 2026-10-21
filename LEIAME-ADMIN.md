@@ -343,18 +343,33 @@ dentro do bundle que o visitante baixa.
 src/
   Site.jsx                 monta a página pública
   components/              uma seção por arquivo
+    Eventos.jsx            cards de "Próximos Eventos"
+    ModalDeEvento.jsx      evento aberto (Instagram, inscrição, galeria)
     VideoDeFundoDoHero.jsx vídeo da primeira tela (ver a seção acima)
-  admin/                   Login, ListaDeEventos, FormularioDeEvento
-  hooks/                   scroll, revelação, liturgia, eventos
+  admin/
+    Admin.jsx              sessão, menu e rotas do painel
+    Login.jsx
+    ListaDeEventos.jsx     busca, copiar link, duplicar, ocultar, apagar
+    FormularioDeEvento.jsx cadastro e edição, com validação das fotos
+    PreviaDoCard.jsx       o card como vai ficar no site
+    Configuracoes.jsx      quantos eventos aparecem no site
+  hooks/
+    useEventos.js          lista de eventos (com aviso de servidor acordando)
+    useEventoDaUrl.js      o ?evento=ID que abre um evento direto
+    useConfiguracoes.js    ajustes salvos pelo painel
   lib/api.js               cliente único da API (site e painel)
   lib/datas.js             formatação no fuso de São Paulo
-  styles.css               o CSS original, intacto
+  estilos/                 o visual do site, um arquivo por seção
 
 server/src/
   env.ts                   validação da configuração na partida
   auth.ts                  token HMAC + middlewares
+  limitador.ts             limite de tentativas de login
   storage.ts               Supabase ou disco local, mesma interface
-  evento.schema.ts         validação com Zod
-  evento.service.ts        regras (corte por data, ordenação)
-  rotas/
+  evento.schema.ts         validação com Zod (datas, links, Instagram)
+  evento.service.ts        regras (corte por data, ordenação, duplicar)
+  rotas/                   auth, eventos, configurações
+
+server/test/               testes da API (npm test)
+.github/workflows/ci.yml   testes e build a cada push
 ```
