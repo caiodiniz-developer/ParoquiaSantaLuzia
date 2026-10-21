@@ -9,6 +9,12 @@ const SELETOR = ".reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-ro
  * A diferenca em relacao ao original e o `deps`: os cards de evento chegam da
  * API depois da primeira renderizacao, e o observer original so rodava uma vez
  * no DOMContentLoaded -- os cards ficariam invisiveis para sempre.
+ *
+ * REGRA para quem usar `.reveal*`: o className desse elemento nao pode mudar
+ * depois de montado. O `.visible` e posto direto no DOM, fora do React; se o
+ * className mudar (um `expanded`, um `ativo`), o React reescreve a lista
+ * inteira, apaga o `.visible` e o elemento some. Estado que muda a classe vai
+ * num elemento de dentro -- ver CartaoDaLiturgia, que caiu exatamente nisso.
  */
 export function useRevelacaoScroll(deps = []) {
   useEffect(() => {
