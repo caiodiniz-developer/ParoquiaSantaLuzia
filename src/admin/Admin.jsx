@@ -49,6 +49,17 @@ export default function Admin() {
     return () => window.removeEventListener(SESSAO_EXPIRADA, aoExpirar);
   }, []);
 
+  // Clicou em "Sair" numa aba? As outras abas do painel saem junto. O evento
+  // `storage` so dispara nas OUTRAS abas quando o localStorage muda, que e
+  // exatamente o caso.
+  useEffect(() => {
+    function aoMudarArmazenamento() {
+      if (!lerToken()) setSessao(null);
+    }
+    window.addEventListener("storage", aoMudarArmazenamento);
+    return () => window.removeEventListener("storage", aoMudarArmazenamento);
+  }, []);
+
   // Sai sozinho quando o token vence, para ninguem perder um formulario
   // inteiro descobrindo no "Publicar" que a sessao tinha acabado.
   useEffect(() => {
