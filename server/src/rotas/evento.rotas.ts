@@ -300,6 +300,14 @@ rotasDeEvento.patch(
   }),
 );
 
+rotasDeEvento.post(
+  "/:id/duplicar",
+  autenticar,
+  assincrono(async (req, res) => {
+    res.status(201).json(await servico.duplicar(req.params.id));
+  }),
+);
+
 rotasDeEvento.delete(
   "/:id",
   autenticar,
