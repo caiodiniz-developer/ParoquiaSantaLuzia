@@ -96,6 +96,26 @@ export function criarApp() {
         return;
       }
 
+      // JSON malformado no corpo e erro de quem chamou, nao do servidor. Sem
+      // isto ele caia no 500 generico e aparecia como "erro interno".
+      if (
+        typeof erro === "object" &&
+        erro !== null &&
+        (erro as { type?: string }).type === "entity.parse.failed"
+      ) {
+        res.status(400).json({ erro: "Corpo da requisicao invalido." });
+        return;
+      }
+
+      if (
+        typeof erro === "object" &&
+        erro !== null &&
+        (erro as { type?: string }).type === "entity.too.large"
+      ) {
+        res.status(413).json({ erro: "Dados grandes demais." });
+        return;
+      }
+
       if (erro instanceof multer.MulterError) {
         const mensagem =
           erro.code === "LIMIT_FILE_SIZE"
