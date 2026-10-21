@@ -224,7 +224,13 @@ rotasDeEvento.patch(
 
     // O formulario manda quais fotos da galeria continuam. As que sumiram da
     // lista sao removidas do armazenamento depois que o banco confirmar.
-    const mantidas = esquemaDeGaleriaMantida.parse(req.body.galeriaMantida);
+    //
+    // So valem URLs que ja eram deste evento. Sem o filtro, o corpo do PATCH
+    // poderia "manter" qualquer endereco da internet, e o site passaria a
+    // exibir uma imagem que nunca foi enviada pelo painel.
+    const pedidas = esquemaDeGaleriaMantida.parse(req.body.galeriaMantida);
+    const mantidas = pedidas && pedidas.filter((url) => anterior.galeria.includes(url));
+
     const novas = await Promise.all(
       (arquivos.galeria ?? []).map((arquivo) => armazenamento.salvar(arquivo)),
     );
