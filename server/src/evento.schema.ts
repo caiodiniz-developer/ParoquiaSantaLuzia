@@ -122,6 +122,12 @@ const camposComuns = {
     .string()
     .trim()
     .url("O link de inscricao precisa comecar com http:// ou https://")
+    // `.url()` aceita QUALQUER esquema, inclusive "javascript:alert(1)". Como
+    // este link vira o href do botao "Fazer inscricao" no site, so http e
+    // https podem passar.
+    .refine((url) => /^https?:\/\//i.test(url), {
+      message: "O link de inscricao precisa comecar com http:// ou https://",
+    })
     .optional()
     .or(z.literal("")),
   instagramUrl: linkDoInstagram,
