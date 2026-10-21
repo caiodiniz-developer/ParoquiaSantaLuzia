@@ -44,6 +44,18 @@ export function limparToken() {
   }
 }
 
+/**
+ * Evento disparado quando a API recusa o token. O painel escuta e volta para a
+ * tela de login -- sem isto, a pessoa continuava "dentro" do painel com cada
+ * botao respondendo "sessao expirada", sem entender o que fazer.
+ */
+export const SESSAO_EXPIRADA = "paroquia:sessao-expirada";
+
+function avisarSessaoExpirada() {
+  limparToken();
+  window.dispatchEvent(new Event(SESSAO_EXPIRADA));
+}
+
 export class ErroDaApi extends Error {
   constructor(mensagem, status) {
     super(mensagem);
@@ -104,7 +116,7 @@ async function requisitar(caminho, opcoes = {}) {
   });
 
   if (resposta.status === 401 && autenticado) {
-    limparToken();
+    avisarSessaoExpirada();
     throw new ErroDaApi("Sessao expirada. Entre de novo.", 401);
   }
 
@@ -161,7 +173,7 @@ function enviarComProgresso(caminho, { metodo, formData, aoProgredir }) {
         resolver(corpo);
         return;
       }
-      if (xhr.status === 401) limparToken();
+      if (xhr.status === 401) avisarSessaoExpirada();
       rejeitar(new ErroDaApi(corpo?.erro || `Erro ${xhr.status}`, xhr.status));
     });
 
