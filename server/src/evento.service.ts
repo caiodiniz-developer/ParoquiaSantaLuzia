@@ -156,6 +156,53 @@ export async function atualizar(id: string, dados: DadosDeEdicao) {
   return paraResposta(evento);
 }
 
+/**
+ * Cria uma copia do evento -- para o terco de toda quarta, a missa de todo dia
+ * 13 -- com arquivos proprios.
+ *
+ * A copia nasce OCULTA e sem destaque: ela ainda tem a data do original, e
+ * publicada assim apareceria duplicada no site. O painel abre a copia para
+ * edicao logo em seguida, e a pessoa so precisa trocar a data e mostrar.
+ */
+export async function duplicar(id: string) {
+  const original = await buscarPorId(id);
+
+  const copiados: string[] = [];
+  const copiar = async (url: string) => {
+    const nova = await armazenamento.copiar(url);
+    copiados.push(nova);
+    return nova;
+  };
+
+  try {
+    const coverUrl = await copiar(original.coverUrl);
+    const videoUrl = original.videoUrl ? await copiar(original.videoUrl) : null;
+    const galeria = await Promise.all(original.galeria.map(copiar));
+
+    return await criar({
+      titulo: `${original.titulo} (cópia)`.slice(0, 160),
+      tipo: original.tipo,
+      resumo: original.resumo,
+      descricao: original.descricao,
+      bencao: original.bencao,
+      local: original.local,
+      inscricaoUrl: original.inscricaoUrl ?? undefined,
+      instagramUrl: original.instagramUrl ?? undefined,
+      destaque: false,
+      ativo: false,
+      comecaEm: original.comecaEm,
+      terminaEm: original.terminaEm,
+      coverUrl,
+      videoUrl,
+      galeria,
+    });
+  } catch (falha) {
+    // Copia pela metade nao fica para tras ocupando espaco.
+    await Promise.allSettled(copiados.map((url) => armazenamento.remover(url)));
+    throw falha;
+  }
+}
+
 export async function definirAtivo(id: string, ativo: boolean) {
   try {
     return paraResposta(await prisma.evento.update({ where: { id }, data: { ativo } }));
