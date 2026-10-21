@@ -403,6 +403,7 @@ export default function FormularioDeEvento() {
               onChange={(e) => alterar("bencao", e.target.value)}
               placeholder="Ex.: Que a oração transforme seu coração."
             />
+            <p className="adm-dica">{campos.bencao.length}/300 caracteres.</p>
           </div>
 
           <div className="adm-campo">
