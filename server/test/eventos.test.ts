@@ -55,6 +55,12 @@ describe("eventos", () => {
     assert.equal(r.status, 400);
   });
 
+  it("recusa ano digitado errado, como 20266", async () => {
+    const r = await criar({ comecaEm: "20266-12-13T19:30" });
+    assert.equal(r.status, 400);
+    assert.match(r.json.erro, /ano/);
+  });
+
   it("guarda o link do Instagram a partir do @", async () => {
     const r = await criar({ instagramUrl: "@santaluzia.paroquia" });
     assert.equal(r.status, 201);
