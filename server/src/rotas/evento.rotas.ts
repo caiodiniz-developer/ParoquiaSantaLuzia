@@ -1,4 +1,5 @@
 import os from "node:os";
+import fs from "node:fs/promises";
 import { Router, type NextFunction, type Request, type Response } from "express";
 import multer from "multer";
 import { autenticar, autenticacaoOpcional } from "../auth.js";
@@ -62,10 +63,35 @@ function conferirTamanhos(req: Request, _res: Response, next: NextFunction) {
   next();
 }
 
+/**
+ * Apaga os temporarios do multer quando a resposta termina, de qualquer jeito.
+ *
+ * No caminho feliz o storage ja os removeu e este unlink falha calado. O que
+ * ele pega e o resto: titulo invalido, imagem grande demais, evento que nao
+ * existe. Sem isto cada formulario recusado deixava a capa e o video
+ * esquecidos na pasta temporaria, e um disco de 512 MB enche rapido com videos
+ * de 60 MB.
+ */
+function limparTemporariosAoTerminar(req: Request, res: Response, next: NextFunction) {
+  let limpo = false;
+  const limpar = () => {
+    if (limpo) return;
+    limpo = true;
+    const arquivos = Object.values((req.files ?? {}) as ArquivosRecebidos).flat();
+    for (const arquivo of arquivos) {
+      if (arquivo?.path) fs.unlink(arquivo.path).catch(() => {});
+    }
+  };
+  res.on("finish", limpar);
+  res.on("close", limpar);
+  next();
+}
+
 // `autenticar` vem ANTES do multer de proposito: sem sessao valida, o arquivo
 // e recusado antes de ocupar disco e banda.
 const receberArquivos = [
   autenticar,
+  limparTemporariosAoTerminar,
   upload.fields([
     { name: "capa", maxCount: 1 },
     { name: "video", maxCount: 1 },
