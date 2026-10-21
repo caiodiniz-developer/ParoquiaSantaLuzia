@@ -187,7 +187,9 @@ export const eventos = {
     return requisitar(`/eventos?${busca}`, { autenticado: incluirInativos, sinal });
   },
 
-  buscar: (id) => requisitar(`/eventos/${id}`),
+  // Com token quando houver: o painel precisa abrir para edicao um evento
+  // oculto, que sem sessao a API responde como inexistente.
+  buscar: (id) => requisitar(`/eventos/${id}`, { autenticado: Boolean(lerToken()) }),
 
   criar: (formData, aoProgredir) =>
     enviarComProgresso("/eventos", { metodo: "POST", formData, aoProgredir }),
