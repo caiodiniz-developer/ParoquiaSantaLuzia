@@ -58,7 +58,7 @@ const ANO_MAXIMO = 2100;
 const dataHora = z.preprocess(
   (valor) => (typeof valor === "string" && SEM_FUSO.test(valor) ? valor + FUSO_DE_BRASILIA : valor),
   z.coerce
-    .date({ errorMap: () => ({ message: "Data invalida." }) })
+    .date({ errorMap: () => ({ message: "Data invalida: confira o dia, o mes e o ano." }) })
     .refine(
       (data) => data.getUTCFullYear() >= ANO_MINIMO && data.getUTCFullYear() <= ANO_MAXIMO,
       { message: `Confira o ano da data: ele precisa estar entre ${ANO_MINIMO} e ${ANO_MAXIMO}.` },
