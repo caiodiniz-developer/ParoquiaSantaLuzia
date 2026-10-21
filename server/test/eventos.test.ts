@@ -159,6 +159,33 @@ describe("eventos", () => {
     assert.equal(depois, antes);
   });
 
+  it("duplicar cria copia oculta com arquivos proprios", async () => {
+    const original = await criar({ instagramUrl: "@santaluzia.paroquia" }, (form) => {
+      form.append("galeria", imagem().blob, "g.png");
+    });
+    const r = await api.chamar("POST", `/eventos/${original.json.id}/duplicar`, { token });
+    assert.equal(r.status, 201);
+    criados.push(r.json.id);
+
+    assert.equal(r.json.ativo, false);
+    assert.equal(r.json.destaque, false);
+    assert.ok(r.json.titulo.endsWith("(cópia)"));
+    assert.equal(r.json.instagramUrl, original.json.instagramUrl);
+    assert.notEqual(r.json.coverUrl, original.json.coverUrl);
+    assert.notEqual(r.json.galeria[0], original.json.galeria[0]);
+
+    // Apagar a copia nao pode levar a capa do original junto.
+    await api.chamar("DELETE", `/eventos/${r.json.id}`, { token });
+    const capaOriginal = path.join(PASTA_LOCAL, path.basename(new URL(original.json.coverUrl).pathname));
+    assert.ok(fs.existsSync(capaOriginal));
+  });
+
+  it("duplicar exige sessao", async () => {
+    const original = await criar();
+    const r = await api.chamar("POST", `/eventos/${original.json.id}/duplicar`);
+    assert.equal(r.status, 401);
+  });
+
   it("apagar remove o evento e os arquivos", async () => {
     const criado = await criar();
     const arquivo = path.join(PASTA_LOCAL, path.basename(new URL(criado.json.coverUrl).pathname));
