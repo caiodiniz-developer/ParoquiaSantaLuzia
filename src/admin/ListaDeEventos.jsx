@@ -60,7 +60,7 @@ export default function ListaDeEventos() {
   const normalizar = (texto) =>
     (texto || "")
       .normalize("NFD")
-      .replace(/[0300-036f]/g, "")
+      .replace(/[̀-ͯ]/g, "")
       .toLowerCase();
   const termo = normalizar(busca.trim());
   const visiveis = termo
