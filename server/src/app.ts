@@ -11,6 +11,12 @@ import { rotasDeConfig } from "./rotas/config.rotas.js";
 export function criarApp() {
   const app = express();
 
+  // Em producao o Render fica na frente como proxy. Sem confiar no primeiro
+  // salto, `req.ip` seria sempre o IP do proxy: todo visitante dividiria o
+  // mesmo contador de tentativas de login, e um so atacante bloquearia o
+  // painel para o padre.
+  if (env.emProducao) app.set("trust proxy", 1);
+
   app.use(
     cors({
       /**
