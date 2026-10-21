@@ -23,11 +23,14 @@ rotasDeAutenticacao.post(
     }
 
     registrarSucesso(req);
-    res.json({ token: gerarToken(email), email });
+    // `expiraEm` deixa o painel sair sozinho na hora certa, em vez de a pessoa
+    // descobrir que a sessao acabou so ao tentar salvar um evento.
+    const { token, expiraEm } = gerarToken(email);
+    res.json({ token, email, expiraEm });
   }),
 );
 
 /** O painel chama isto ao abrir, para saber se o token guardado ainda vale. */
 rotasDeAutenticacao.get("/eu", autenticar, (req, res) => {
-  res.json({ email: req.admin!.email });
+  res.json({ email: req.admin!.email, expiraEm: req.admin!.expiraEm });
 });

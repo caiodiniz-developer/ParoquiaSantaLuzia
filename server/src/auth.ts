@@ -39,7 +39,7 @@ function iguaisEmTempoConstante(a: Buffer, b: Buffer) {
 export function gerarToken(email: string) {
   const conteudo: Conteudo = { email, expiraEm: Date.now() + DURACAO_EM_MS };
   const corpo = base64url(JSON.stringify(conteudo));
-  return `${corpo}.${base64url(assinar(corpo))}`;
+  return { token: `${corpo}.${base64url(assinar(corpo))}`, expiraEm: conteudo.expiraEm };
 }
 
 export function lerToken(token: string): Conteudo | null {
