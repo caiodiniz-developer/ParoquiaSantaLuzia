@@ -148,10 +148,24 @@ export default function FormularioDeEvento() {
   }
 
   function adicionarNaGaleria(evento) {
-    const arquivos = Array.from(evento.target.files || []);
+    const escolhidos = Array.from(evento.target.files || []);
+    const problemas = escolhidos.map(problemaDaImagem).filter(Boolean);
+    const validos = escolhidos.filter((arquivo) => !problemaDaImagem(arquivo));
+
+    // Cabe so o que falta para chegar a 6; o resto e avisado, nao descartado
+    // em silencio.
+    const vagas = MAXIMO_NA_GALERIA - galeriaMantida.length - galeriaNova.length;
+    const aceitos = validos.slice(0, Math.max(0, vagas));
+    if (validos.length > aceitos.length) {
+      problemas.push(
+        `A galeria aceita até ${MAXIMO_NA_GALERIA} fotos. ${validos.length - aceitos.length} ficaram de fora.`,
+      );
+    }
+
+    setErro(problemas.join(" "));
     setGaleriaNova((atuais) => [
       ...atuais,
-      ...arquivos.map((arquivo) => ({ arquivo, previa: criarPrevia(arquivo) })),
+      ...aceitos.map((arquivo) => ({ arquivo, previa: criarPrevia(arquivo) })),
     ]);
     // Limpa o input para dar para escolher o mesmo arquivo de novo se a pessoa
     // remover e mudar de ideia.
@@ -408,7 +422,10 @@ export default function FormularioDeEvento() {
           <label>Galeria de fotos (opcional)</label>
           <div className="adm-area-imagem">
             <input type="file" accept="image/*" multiple onChange={adicionarNaGaleria} />
-            <p className="adm-dica">Até 6 fotos. Aparecem dentro do evento, no site.</p>
+            <p className="adm-dica">
+              {galeriaMantida.length + galeriaNova.length} de {MAXIMO_NA_GALERIA} fotos. Aparecem
+              dentro do evento, no site.
+            </p>
 
             {(galeriaMantida.length > 0 || galeriaNova.length > 0) && (
               <div className="adm-galeria">
