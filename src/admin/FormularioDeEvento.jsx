@@ -117,6 +117,13 @@ export default function FormularioDeEvento() {
   function escolherCapa(evento) {
     const arquivo = evento.target.files?.[0];
     if (!arquivo) return;
+    const problema = problemaDaImagem(arquivo);
+    if (problema) {
+      setErro(problema);
+      evento.target.value = "";
+      return;
+    }
+    setErro("");
     setCapaNova({ arquivo, previa: criarPrevia(arquivo) });
   }
 
