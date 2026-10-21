@@ -162,22 +162,35 @@ rotasDeEvento.post(
     const capa = arquivos.capa?.[0];
     if (!capa) throw new DadosInvalidos("Escolha uma imagem de capa para o evento.");
 
-    const coverUrl = await armazenamento.salvar(capa);
-    const video = arquivos.video?.[0];
-    const videoUrl = video ? await armazenamento.salvar(video) : null;
-    const galeria = await Promise.all(
-      (arquivos.galeria ?? []).map((arquivo) => armazenamento.salvar(arquivo)),
-    );
+    // Tudo o que ja subiu para o armazenamento, para desfazer se algo falhar
+    // no meio: sem isto, um erro no banco deixaria capa e video orfaos no
+    // bucket, ocupando espaco sem evento nenhum apontando para eles.
+    const enviados: string[] = [];
+    const guardar = async (arquivo: Express.Multer.File) => {
+      const url = await armazenamento.salvar(arquivo);
+      enviados.push(url);
+      return url;
+    };
 
-    res.status(201).json(
-      await servico.criar({
-        ...analise.data,
-        terminaEm: analise.data.terminaEm ?? null,
-        coverUrl,
-        videoUrl,
-        galeria,
-      }),
-    );
+    try {
+      const coverUrl = await guardar(capa);
+      const video = arquivos.video?.[0];
+      const videoUrl = video ? await guardar(video) : null;
+      const galeria = await Promise.all((arquivos.galeria ?? []).map(guardar));
+
+      res.status(201).json(
+        await servico.criar({
+          ...analise.data,
+          terminaEm: analise.data.terminaEm ?? null,
+          coverUrl,
+          videoUrl,
+          galeria,
+        }),
+      );
+    } catch (falha) {
+      await Promise.allSettled(enviados.map((url) => armazenamento.remover(url)));
+      throw falha;
+    }
   }),
 );
 
