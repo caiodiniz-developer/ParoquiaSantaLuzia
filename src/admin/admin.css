@@ -538,7 +538,9 @@
 
 .adm-formulario-grade > aside {
   position: sticky;
-  top: 1.5rem;
+  /* Abaixo do topo do painel, que tambem e fixo; com 1.5rem a previa ficava
+     escondida atras dele ao rolar. */
+  top: 6rem;
 }
 
 @media (max-width: 900px) {
