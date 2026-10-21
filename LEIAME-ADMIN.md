@@ -63,6 +63,28 @@ Entre em <http://localhost:5173/admin> com `admin@paroquia.local` / `admin123`
    término — um tríduo em andamento continua na lista. Depois disso ele fica na
    aba "Já realizados" do painel.
 
+### Link de um evento (para o Instagram e o WhatsApp)
+
+Na lista do painel, **Copiar link** copia o endereço do evento, no formato
+`https://SEU_SITE/?evento=...`. Quem abre esse link cai direto no site com o
+evento aberto na tela — é o link para pôr na legenda do post ou mandar no grupo
+da comunidade. Evento oculto não tem link: o botão fica desligado.
+
+### Eventos que se repetem: Duplicar
+
+Terço de toda quarta, missa de todo dia 13: em vez de cadastrar de novo, use
+**Duplicar**. A cópia leva texto, fotos, vídeo e links, e nasce **oculta** e sem
+destaque, com "(cópia)" no título — senão ela apareceria repetida no site. O
+painel já abre a cópia para você trocar a data, ajustar o título e marcar
+"Visível no site". As fotos da cópia são arquivos próprios: apagar uma das
+versões não apaga as fotos da outra.
+
+### Configurações
+
+Em **Configurações**, no topo do painel, você escolhe quantos eventos aparecem
+em "Próximos Eventos" no site (de 1 a 24; o padrão é 6). Os que ficarem de fora
+continuam cadastrados e entram sozinhos conforme as datas passam.
+
 ### "Cadastrei e não apareceu no site"
 
 Quase sempre é a **data**, em geral o ano errado. O formulário avisa em amarelo
