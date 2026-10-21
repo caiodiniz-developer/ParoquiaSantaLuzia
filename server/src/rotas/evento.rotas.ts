@@ -207,6 +207,20 @@ rotasDeEvento.patch(
     const anterior = await servico.buscarPorId(req.params.id);
 
     const arquivos = (req.files ?? {}) as ArquivosRecebidos;
+
+    // Limite da galeria conferido ANTES de qualquer upload: recusar depois
+    // deixaria a capa e o video ja enviados sem dono no armazenamento.
+    const pedidasParaManter = esquemaDeGaleriaMantida.parse(req.body.galeriaMantida);
+    const quantasFicam = pedidasParaManter
+      ? pedidasParaManter.filter((url) => anterior.galeria.includes(url)).length
+      : anterior.galeria.length;
+    const totalNaGaleria = quantasFicam + (arquivos.galeria?.length ?? 0);
+    if (totalNaGaleria > MAXIMO_NA_GALERIA) {
+      throw new DadosInvalidos(
+        `A galeria aceita ate ${MAXIMO_NA_GALERIA} fotos. Remova ${totalNaGaleria - MAXIMO_NA_GALERIA} antes de enviar novas.`,
+      );
+    }
+
     const capa = arquivos.capa?.[0];
     const coverUrl = capa ? await armazenamento.salvar(capa) : undefined;
 
