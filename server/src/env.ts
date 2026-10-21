@@ -68,6 +68,24 @@ if (emProducao) {
   );
 }
 
+/**
+ * Senha fraca em producao derruba a subida, do mesmo jeito que variavel
+ * faltando. O painel fica exposto na internet com um unico usuario: com o
+ * limite de tentativas (limitador.ts) uma senha de 10+ caracteres que nao seja
+ * a do exemplo ja tira o ataque por adivinhacao do alcance pratico.
+ */
+const SENHAS_PROIBIDAS = ["admin123", "troque-esta-senha", "12345678910", "senha12345"];
+
+if (emProducao && bruto.ADMIN_PASSWORD) {
+  const senha = bruto.ADMIN_PASSWORD;
+  const problemas = [
+    senha.length < 10 && "ADMIN_PASSWORD precisa de pelo menos 10 caracteres",
+    SENHAS_PROIBIDAS.includes(senha.toLowerCase()) &&
+      "ADMIN_PASSWORD e uma senha de exemplo; troque por uma de verdade",
+  ].filter((item): item is string => Boolean(item));
+  exigirEmProducao(problemas);
+}
+
 // Em desenvolvimento os valores que faltam ganham padroes, com aviso na tela.
 // Nunca em producao -- la o processo ja morreu acima.
 function padraoDeDesenvolvimento(nome: string, valor: string) {
