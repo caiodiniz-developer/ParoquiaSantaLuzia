@@ -12,7 +12,8 @@
     "start": "node dist/index.js",
     "banco:dev": "prisma db push --schema prisma/schema.dev.prisma",
     "banco:prod": "prisma db push --schema prisma/schema.prisma",
-    "test": "tsx --test test/*.test.ts"
+    "test": "tsx --test test/*.test.ts",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",

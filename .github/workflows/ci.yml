@@ -31,7 +31,7 @@ jobs:
           cache-dependency-path: server/package-lock.json
       - run: npm ci
       - run: npm run banco:dev
-      - run: npx tsc --noEmit
+      - run: npm run typecheck
       - run: npm test
 
   site:
