@@ -52,6 +52,19 @@ type ArquivoRecebido = {
 interface Armazenamento {
   salvar(arquivo: ArquivoRecebido): Promise<string>;
   remover(url: string): Promise<void>;
+  /**
+   * Copia um arquivo ja guardado e devolve a URL da copia. Usado ao duplicar
+   * evento: as duas versoes nao podem apontar para o mesmo arquivo, senao
+   * apagar uma levaria a foto da outra junto.
+   */
+  copiar(url: string): Promise<string>;
+}
+
+/** Nome novo para a copia, com a mesma extensao (que fomos nos que demos). */
+function nomeDaCopia(nomeOriginal: string) {
+  const extensao = path.extname(nomeOriginal).toLowerCase();
+  const tipo = Object.entries(EXTENSOES).find(([, ext]) => ext === extensao)?.[0] ?? "";
+  return nomeDeArquivo(tipo);
 }
 
 const armazenamentoLocal: Armazenamento = {
@@ -67,6 +80,15 @@ const armazenamentoLocal: Armazenamento = {
   async remover(url) {
     const nome = path.basename(new URL(url).pathname);
     await fs.unlink(path.join(PASTA_LOCAL, nome)).catch(() => {});
+  },
+
+  async copiar(url) {
+    // basename descarta qualquer "../" vindo da URL: so copiamos de dentro
+    // da pasta de uploads.
+    const origem = path.basename(new URL(url).pathname);
+    const destino = nomeDaCopia(origem);
+    await fs.copyFile(path.join(PASTA_LOCAL, origem), path.join(PASTA_LOCAL, destino));
+    return `${env.PUBLIC_URL}/uploads/${destino}`;
   },
 };
 
@@ -100,6 +122,17 @@ function criarArmazenamentoSupabase(config: NonNullable<typeof env.supabase>): A
       // usuario de apagar o evento -- lixo custa menos que uma tela travada.
       const { error } = await cliente.storage.from(config.bucket).remove([nome]);
       if (error) console.warn(`Nao foi possivel remover ${nome} do bucket:`, error.message);
+    },
+
+    async copiar(url) {
+      const origem = path.basename(new URL(url).pathname);
+      const destino = nomeDaCopia(origem);
+      // A copia acontece dentro do proprio Supabase: o arquivo nao desce para
+      // o Render e sobe de novo, o que com um video de 60 MB faria diferenca.
+      const { error } = await cliente.storage.from(config.bucket).copy(origem, destino);
+      if (error) throw new Error(`Falha ao copiar o arquivo: ${error.message}`);
+      const { data } = cliente.storage.from(config.bucket).getPublicUrl(destino);
+      return data.publicUrl;
     },
   };
 }
