@@ -65,6 +65,50 @@ const dataHoraOpcional = z.preprocess(
   dataHora.optional(),
 );
 
+/**
+ * Link do Instagram, aceito do jeito que a pessoa costuma colar:
+ *
+ * - "https://www.instagram.com/p/ABC123/"  -> passa como esta
+ * - "instagram.com/santaluzia.paroquia"    -> ganha o https://
+ * - "@santaluzia.paroquia"                 -> vira o link do perfil
+ *
+ * Depois de normalizado, o endereco precisa ser do Instagram de verdade. Um
+ * campo "Instagram" que aceita qualquer site viraria porta para link de golpe
+ * com o nome da paroquia em volta.
+ */
+const DOMINIOS_DO_INSTAGRAM = ["instagram.com", "www.instagram.com", "instagr.am"];
+
+function normalizarInstagram(valor: unknown) {
+  if (typeof valor !== "string") return valor;
+  const texto = valor.trim();
+  if (!texto) return "";
+  if (/^@[\w.]{1,30}$/.test(texto)) return `https://www.instagram.com/${texto.slice(1)}/`;
+  if (/^(www\.)?instagr(am\.com|\.am)\//i.test(texto)) return `https://${texto}`;
+  return texto;
+}
+
+const linkDoInstagram = z.preprocess(
+  normalizarInstagram,
+  z
+    .string()
+    .url("Cole o link do Instagram (ex.: https://www.instagram.com/p/...) ou o @ do perfil.")
+    .refine(
+      (url) => {
+        // O Zod roda o refine mesmo depois de o `.url()` reprovar o texto; sem
+        // o try, um valor que nao e URL derrubaria o processo com TypeError.
+        try {
+          const { protocol, hostname } = new URL(url);
+          return protocol === "https:" && DOMINIOS_DO_INSTAGRAM.includes(hostname.toLowerCase());
+        } catch {
+          return false;
+        }
+      },
+      { message: "O link precisa ser do Instagram (instagram.com)." },
+    )
+    .optional()
+    .or(z.literal("")),
+);
+
 const camposComuns = {
   titulo: z.string().trim().min(3, "O titulo precisa de pelo menos 3 caracteres.").max(160),
   tipo: z.enum(TIPOS_DE_EVENTO).default("GERAL"),
@@ -78,6 +122,7 @@ const camposComuns = {
     .url("O link de inscricao precisa comecar com http:// ou https://")
     .optional()
     .or(z.literal("")),
+  instagramUrl: linkDoInstagram,
   destaque: booleanoDeTexto.optional().default(false),
   ativo: booleanoDeTexto.optional().default(true),
   comecaEm: dataHora,
