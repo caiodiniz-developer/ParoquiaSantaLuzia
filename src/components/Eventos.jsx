@@ -8,7 +8,7 @@ import { IconePlay } from "./Icones.jsx";
 
 const MESES = ["JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"];
 
-function SeloDeData({ iso }) {
+export function SeloDeData({ iso }) {
   // Dia e mes lidos no fuso de Sao Paulo, e nao com getDate()/getMonth(), que
   // usam o fuso de quem esta olhando: uma missa das 20h de sabado apareceria
   // como domingo para um visitante na Europa.
