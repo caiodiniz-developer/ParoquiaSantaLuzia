@@ -17,6 +17,27 @@ export function criarApp() {
   // painel para o padre.
   if (env.emProducao) app.set("trust proxy", 1);
 
+  // Nao anunciar "Express" no cabecalho: e informacao de graca para quem
+  // procura servidor com versao vulneravel.
+  app.disable("x-powered-by");
+
+  /**
+   * Cabecalhos de seguranca basicos, sem dependencia extra.
+   *
+   * - nosniff: o navegador nao "adivinha" que um upload .png e na verdade HTML.
+   * - frame DENY: a API nao pode ser embutida num iframe de outro site.
+   * - Referrer: o endereco da API nao vaza para links externos.
+   * - CORP cross-origin: as fotos de /uploads continuam carregando no site,
+   *   que mora em outra origem.
+   */
+  app.use((_req, res, next) => {
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    res.setHeader("X-Frame-Options", "DENY");
+    res.setHeader("Referrer-Policy", "no-referrer");
+    res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+    next();
+  });
+
   app.use(
     cors({
       /**
