@@ -117,10 +117,14 @@ export function criarApp() {
       }
 
       if (erro instanceof multer.MulterError) {
-        const mensagem =
-          erro.code === "LIMIT_FILE_SIZE"
-            ? "Imagem muito grande. O limite e 8 MB por arquivo."
-            : "Nao foi possivel receber os arquivos.";
+        // O limite de tamanho do multer e o do video (o maior); imagem grande
+        // demais e barrada depois, em `conferirTamanhos`, com mensagem propria.
+        const mensagens: Partial<Record<string, string>> = {
+          LIMIT_FILE_SIZE: "Arquivo muito grande. O video pode ter ate 60 MB e cada imagem ate 8 MB.",
+          LIMIT_FILE_COUNT: "Arquivos demais. Envie a capa, um video e ate 6 fotos na galeria.",
+          LIMIT_UNEXPECTED_FILE: "Envie no maximo uma capa, um video e 6 fotos na galeria.",
+        };
+        const mensagem = mensagens[erro.code] ?? "Nao foi possivel receber os arquivos.";
         res.status(400).json({ erro: mensagem });
         return;
       }
