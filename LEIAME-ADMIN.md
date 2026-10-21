@@ -44,7 +44,12 @@ Entre em <http://localhost:5173/admin> com `admin@paroquia.local` / `admin123`
 
 1. Abre `/admin` (também tem o link "Área restrita" no rodapé do site).
 2. **Novo evento**: título, categoria, data/hora, local, um resumo curto para o
-   card e o texto completo que aparece ao clicar. Capa é obrigatória.
+   card e o texto completo que aparece ao clicar. Capa é obrigatória. À direita
+   do formulário aparece a **prévia do card** exatamente como ficará no site.
+   **Instagram (opcional)**: cole o link do post sobre o evento — também vale
+   `instagram.com/...` sem o `https://` ou só o `@perfil`. No site, o card ganha
+   um selo do Instagram e o evento aberto mostra o botão "Ver no Instagram". Só
+   links do Instagram são aceitos.
 3. **Vídeo (opcional)**: MP4 ou WEBM até 60 MB. No site ele toca sozinho quando
    o visitante passa o mouse sobre o card e para assim que ele tira, voltando
    ao início. Toca **sem som** — não é escolha nossa, todo navegador bloqueia
