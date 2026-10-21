@@ -92,7 +92,28 @@ quando a data escolhida já passou. Se o aviso apareceu, o evento foi salvo, mas
 está em "Já realizados" — basta corrigir a data.
 
 Se o site estava aberto noutra aba, ele recarrega sozinho quando você volta
-para ela.
+para ela. Ao salvar, o painel também diz onde o evento foi parar: no site,
+oculto ou em "Já realizados".
+
+### "O painel me mandou entrar de novo"
+
+A sessão dura 12 horas. Quando ela vence, o painel volta sozinho para a tela de
+login com o aviso "Sua sessão expirou" — antes disso acontecer no meio de um
+cadastro, porque o formulário pede confirmação se você tentar sair com coisa
+não salva. Clicar em **Sair** numa aba encerra a sessão em todas as abas.
+
+### "Muitas tentativas de login"
+
+Depois de 8 senhas erradas seguidas, aquele computador espera 15 minutos para
+tentar de novo. É a proteção contra quem tenta adivinhar a senha. Acertar a
+senha zera a contagem.
+
+### "A foto foi recusada"
+
+Cada imagem pode ter até 8 MB (JPG, PNG, WEBP, AVIF ou GIF), e a galeria até 6
+fotos. O formulário avisa na hora em que a foto é escolhida, antes de enviar.
+Foto de celular costuma passar de 8 MB: mande pelo WhatsApp para você mesmo e
+use a versão que ele devolve, que já vem reduzida.
 
 ## Vídeo de fundo na primeira tela
 
