@@ -495,3 +495,58 @@
   background: #fbe7f0;
   color: #b0225f;
 }
+
+/* Previa do card: as classes .evento-card vem do site. Aqui so o tamanho e o
+   que no site depende de hover (o resumo aparece sempre na previa). */
+.adm-previa-card-moldura {
+  max-width: 300px;
+}
+
+.adm-previa-card {
+  cursor: default;
+}
+
+.adm-previa-card:hover {
+  transform: none;
+}
+
+.adm-previa-card .evento-card-texto p {
+  max-height: none;
+  opacity: 1;
+}
+
+.adm-previa-sem-capa {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding-bottom: 40%;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.85rem;
+  background: repeating-linear-gradient(45deg, #102a1b 0 12px, #0d2216 12px 24px);
+}
+
+/* Formulario em duas colunas no computador: campos a esquerda, previa fixa a
+   direita acompanhando a rolagem. */
+.adm-formulario-grade {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.adm-formulario-grade > aside {
+  position: sticky;
+  top: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .adm-formulario-grade {
+    grid-template-columns: 1fr;
+  }
+
+  .adm-formulario-grade > aside {
+    position: static;
+    order: -1;
+  }
+}
