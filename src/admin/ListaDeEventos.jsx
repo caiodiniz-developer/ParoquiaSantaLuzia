@@ -188,7 +188,12 @@ export default function ListaDeEventos() {
 
               <div>
                 <p className="adm-item-titulo">{evento.titulo}</p>
-                <p className="adm-item-meta">{dataComHora(evento.comecaEm)}</p>
+                <p className="adm-item-meta">
+                  {dataComHora(evento.comecaEm)}
+                  {/* Triduo, festa de varios dias: sem o termino na lista, so
+                      abrindo o evento para saber ate quando ele fica no site. */}
+                  {evento.terminaEm && <> até {dataComHora(evento.terminaEm)}</>}
+                </p>
                 {evento.local && <p className="adm-item-meta">{evento.local}</p>}
 
                 <div className="adm-etiquetas">
