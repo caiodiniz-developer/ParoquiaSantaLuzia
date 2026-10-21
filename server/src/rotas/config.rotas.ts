@@ -71,6 +71,8 @@ rotasDeConfig.put(
       ),
     );
 
-    res.json({ ...PADROES, ...analise.data });
+    // Relido do banco: devolver so PADROES + o que veio no pedido apagaria da
+    // resposta os ajustes salvos antes que nao vieram desta vez.
+    res.json(await lerConfiguracoes());
   }),
 );
