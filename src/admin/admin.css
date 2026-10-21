@@ -587,3 +587,18 @@
     margin-right: 0;
   }
 }
+
+.adm-busca {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card);
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+}
+
+.adm-busca:focus {
+  outline: none;
+  border-color: var(--primary);
+}

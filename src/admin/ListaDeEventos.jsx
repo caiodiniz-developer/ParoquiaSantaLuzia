@@ -54,6 +54,20 @@ export default function ListaDeEventos() {
   }
 
   const [copiado, setCopiado] = useState(null);
+  const [busca, setBusca] = useState("");
+
+  // Busca sem acento e sem diferenca de maiuscula: "sao jose" acha "São José".
+  const normalizar = (texto) =>
+    (texto || "")
+      .normalize("NFD")
+      .replace(/[̀-ͯ]/g, "")
+      .toLowerCase();
+  const termo = normalizar(busca.trim());
+  const visiveis = termo
+    ? eventos.filter((evento) =>
+        [evento.titulo, evento.local, evento.resumo].some((campo) => normalizar(campo).includes(termo)),
+      )
+    : eventos;
 
   /**
    * Copia o link publico do evento (/?evento=ID), pronto para colar na
@@ -110,6 +124,17 @@ export default function ListaDeEventos() {
         ))}
       </div>
 
+      <div className="adm-campo" style={{ marginBottom: "1rem" }}>
+        <input
+          type="search"
+          className="adm-busca"
+          placeholder="Buscar por título, local ou resumo..."
+          value={busca}
+          onChange={(e) => setBusca(e.target.value)}
+          aria-label="Buscar eventos"
+        />
+      </div>
+
       {sucesso && <div className="adm-aviso sucesso">{sucesso}</div>}
       {erro && <div className="adm-aviso erro">{erro}</div>}
 
@@ -130,6 +155,10 @@ export default function ListaDeEventos() {
         </div>
       )}
 
+      {!carregando && termo && eventos.length > 0 && visiveis.length === 0 && (
+        <p className="adm-vazio">Nenhum evento encontrado para “{busca.trim()}”.</p>
+      )}
+
       {!carregando && !erroAoCarregar && eventos.length === 0 && (
         <p className="adm-vazio">
           Nenhum evento nesta aba. Clique em "Novo evento" para cadastrar o primeiro.
@@ -138,7 +167,7 @@ export default function ListaDeEventos() {
 
       <div className="adm-lista">
         {!carregando &&
-          eventos.map((evento) => (
+          visiveis.map((evento) => (
             <div className={`adm-item${evento.ativo ? "" : " inativo"}`} key={evento.id}>
               <img className="adm-item-capa" src={evento.coverUrl} alt="" loading="lazy" />
 
