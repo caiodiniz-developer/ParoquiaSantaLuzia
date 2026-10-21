@@ -227,6 +227,29 @@ token devolve os ativos (site público), com token aceita `incluirInativos`
 **CORS com lista fechada e barra final normalizada.** Uma barra sobrando na
 variável do Render derruba o site inteiro por um caractere invisível.
 
+**Evento oculto é invisível de verdade.** O detalhe `GET /api/eventos/:id` sem
+token responde 404 para evento oculto — igual a um que não existe, para não
+confirmar que o id é válido.
+
+### Segurança do painel
+
+- **Limite de tentativas** (`server/src/limitador.ts`): 8 senhas erradas seguidas
+  bloqueiam o IP por 15 minutos. Em produção a API confia no proxy do Render
+  (`trust proxy`) para ler o IP real; sem isso todo visitante dividiria o mesmo
+  contador.
+- **Senha fraca não sobe**: em produção, `ADMIN_PASSWORD` com menos de 10
+  caracteres ou igual à do exemplo derruba a partida, como variável faltando.
+- **Senha comparada por resumo** SHA-256, de tamanho fixo: o tempo de resposta
+  não denuncia quantos caracteres ela tem.
+- **Links**: o de inscrição só aceita `http`/`https` (o `.url()` do Zod aceitaria
+  `javascript:`), e o do Instagram só domínios do Instagram.
+- **Extensão pelo tipo, não pelo nome**: um arquivo enviado como `foto.html` com
+  tipo `image/png` é gravado como `.png`. Junto com o `nosniff`, nenhum upload
+  vira página executável.
+- **Uploads desfeitos em caso de erro**: se o banco falhar depois do envio, as
+  fotos que já subiram são apagadas; temporários do multer também são limpos
+  quando o formulário é recusado.
+
 ## Publicar
 
 ### 1. Supabase (banco + fotos)
