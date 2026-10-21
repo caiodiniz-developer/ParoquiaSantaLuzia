@@ -17,7 +17,7 @@ export default function ListaDeEventos() {
   // a lista inteira.
   const [emOperacao, setEmOperacao] = useState(null);
 
-  const { eventos, carregando, acordando, recarregar } = useEventos({
+  const { eventos, carregando, acordando, erro: erroAoCarregar, recarregar } = useEventos({
     escopo,
     incluirInativos: true,
   });
@@ -81,7 +81,18 @@ export default function ListaDeEventos() {
         </p>
       )}
 
-      {!carregando && eventos.length === 0 && (
+      {/* Sem isto, a API fora do ar aparecia como "nenhum evento nesta aba" --
+          e a pessoa achava que os eventos tinham sumido. */}
+      {!carregando && erroAoCarregar && (
+        <div className="adm-aviso erro">
+          Não foi possível carregar os eventos: {erroAoCarregar.message}{" "}
+          <button type="button" className="adm-botao secundario pequeno" onClick={() => recarregar()}>
+            Tentar de novo
+          </button>
+        </div>
+      )}
+
+      {!carregando && !erroAoCarregar && eventos.length === 0 && (
         <p className="adm-vazio">
           Nenhum evento nesta aba. Clique em "Novo evento" para cadastrar o primeiro.
         </p>
