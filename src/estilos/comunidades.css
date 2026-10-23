@@ -477,3 +477,36 @@
   outline: 2px solid var(--accent);
   outline-offset: 4px;
 }
+
+/* "Aberta agora" (verde, ponto pulsando) ou "Fechada · abre ..." (neutro). */
+.secretaria-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  width: fit-content;
+  margin: 0.8rem auto 0;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  background: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted-fg);
+}
+
+.secretaria-status-ponto {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #a7a59f;
+}
+
+.secretaria-status.aberta {
+  background: rgba(46, 138, 85, 0.1);
+  color: #1f6b3f;
+}
+
+.secretaria-status.aberta .secretaria-status-ponto {
+  background: #2e8a55;
+  animation: pontoVivo 2s ease-out infinite;
+}
