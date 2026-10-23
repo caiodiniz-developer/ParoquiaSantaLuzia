@@ -1,9 +1,47 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { rotuloDoTipo } from "../lib/api.js";
 import { dataComHora } from "../lib/datas.js";
 import { Calendario, Fechar, Instagram, Local, Relogio } from "./Icones.jsx";
 
+const FOCAVEIS =
+  "a[href], button:not([disabled]), video[controls], [tabindex]:not([tabindex=\"-1\"])";
+
 export default function ModalDeEvento({ evento, aoFechar }) {
+  const caixa = useRef(null);
+
+  /**
+   * Foco de teclado dentro do modal enquanto ele esta aberto.
+   *
+   * Ao abrir, o foco vai para o botao de fechar; Tab e Shift+Tab giram so
+   * entre os botoes e links do modal; ao fechar, o foco volta para o card que
+   * abriu. Sem isto, quem usa teclado ou leitor de tela continuava navegando
+   * pela pagina escondida atras do fundo escuro.
+   */
+  useEffect(() => {
+    const anterior = document.activeElement;
+    caixa.current?.querySelector(".evento-modal-close")?.focus();
+
+    function prenderFoco(evento) {
+      if (evento.key !== "Tab" || !caixa.current) return;
+      const itens = [...caixa.current.querySelectorAll(FOCAVEIS)];
+      if (itens.length === 0) return;
+      const primeiro = itens[0];
+      const ultimo = itens[itens.length - 1];
+      if (evento.shiftKey && document.activeElement === primeiro) {
+        evento.preventDefault();
+        ultimo.focus();
+      } else if (!evento.shiftKey && document.activeElement === ultimo) {
+        evento.preventDefault();
+        primeiro.focus();
+      }
+    }
+
+    document.addEventListener("keydown", prenderFoco);
+    return () => {
+      document.removeEventListener("keydown", prenderFoco);
+      if (anterior instanceof HTMLElement) anterior.focus();
+    };
+  }, []);
   // ESC fecha e o fundo para de rolar. O listener e registrado so enquanto o
   // modal existe -- no site antigo ele ficava preso ao document para sempre.
   useEffect(() => {
@@ -55,6 +93,7 @@ export default function ModalDeEvento({ evento, aoFechar }) {
     <div className="evento-modal active" onClick={aoFechar}>
       <div
         className="evento-modal-content"
+        ref={caixa}
         onClick={(evt) => evt.stopPropagation()}
         // Leitor de tela anuncia "dialogo: <titulo do evento>" ao abrir.
         role="dialog"
