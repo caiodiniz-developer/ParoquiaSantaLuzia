@@ -76,6 +76,37 @@ export default function Admin() {
     return () => clearTimeout(relogio);
   }, [sessao]);
 
+  /**
+   * Sai sozinho depois de 30 minutos sem nenhum clique ou tecla.
+   *
+   * O painel costuma ser aberto no computador da secretaria, que outras
+   * pessoas usam. Quem esquece a aba aberta nao deixa o acesso da paroquia na
+   * mao de quem sentar depois. Mexer o mouse ou digitar reinicia a contagem.
+   */
+  useEffect(() => {
+    if (!sessao) return undefined;
+    const LIMITE_PARADO_EM_MS = 30 * 60 * 1000;
+    let relogio;
+
+    function reiniciar() {
+      clearTimeout(relogio);
+      relogio = setTimeout(() => {
+        limparToken();
+        setSessao(null);
+        setAviso("Você ficou 30 minutos sem usar o painel e saiu por segurança. Entre de novo.");
+      }, LIMITE_PARADO_EM_MS);
+    }
+
+    const eventos = ["pointerdown", "keydown", "scroll", "touchstart"];
+    eventos.forEach((nome) => window.addEventListener(nome, reiniciar, { passive: true }));
+    reiniciar();
+
+    return () => {
+      clearTimeout(relogio);
+      eventos.forEach((nome) => window.removeEventListener(nome, reiniciar));
+    };
+  }, [sessao]);
+
   function entrar(dados) {
     setAviso("");
     setSessao(dados);
