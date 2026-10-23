@@ -26,7 +26,7 @@ export default function Navbar({ rolou, secaoAtiva }) {
 
   return (
     <>
-      <nav className={`navbar${rolou ? " scrolled" : ""}`}>
+      <nav className={`navbar${rolou ? " scrolled" : ""}`} aria-label="Menu principal">
         <div className="inner">
           <a href="#inicio" className="logo-link">
             <img src="/assets/logo.png" alt="Logo Paróquia Santa Luzia" />
@@ -39,6 +39,9 @@ export default function Navbar({ rolou, secaoAtiva }) {
                 <a
                   href={`#${secao.id}`}
                   className={secaoAtiva === secao.id ? "active" : undefined}
+                  // Leitor de tela anuncia "local atual" no link da secao em que
+                  // a pessoa esta, o que o destaque visual sozinho nao faz.
+                  aria-current={secaoAtiva === secao.id ? "location" : undefined}
                 >
                   {secao.rotulo}
                 </a>
