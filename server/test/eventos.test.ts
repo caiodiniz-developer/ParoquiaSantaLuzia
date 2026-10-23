@@ -1,9 +1,10 @@
-import { after, before, describe, it } from "node:test";
+import { after, before, beforeEach, describe, it } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import { desconectar, formularioDeEvento, imagem, subirServidor } from "./apoio.js";
 import { PASTA_LOCAL } from "../src/storage.js";
+import { zerarLimitador } from "../src/limitador.js";
 
 describe("eventos", () => {
   let api: Awaited<ReturnType<typeof subirServidor>>;
@@ -23,7 +24,12 @@ describe("eventos", () => {
     token = await api.entrar();
   });
 
+  // Cada teste parte com os contadores zerados: a suite inteira grava bem mais
+  // que o limite de escrita por minuto, e isso nao e o que ela testa.
+  beforeEach(() => zerarLimitador());
+
   after(async () => {
+    zerarLimitador();
     // Limpa o que os testes deixaram, inclusive os arquivos no disco.
     for (const id of criados) await api.chamar("DELETE", `/eventos/${id}`, { token });
     await api.fechar();
