@@ -466,3 +466,14 @@
 .secretaria-grid > div:hover {
   box-shadow: var(--sombra-2);
 }
+
+/* A esteira para enquanto um cartao tem o foco do teclado: com ela andando,
+   o cartao focado fugia da tela antes de a pessoa ler. */
+.carousel-wrapper:focus-within .carousel-track {
+  animation-play-state: paused;
+}
+
+.community-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
