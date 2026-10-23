@@ -50,17 +50,21 @@ export default function Site() {
 
       <Navbar rolou={rolou} secaoAtiva={secaoAtiva} />
 
-      <Hero />
-      <Estatisticas />
-      <SantaLuzia />
-      <Comunidades />
-      <Liturgia />
-      <Eventos />
-      <Horarios />
-      <Doe />
-      <Contato />
-      <Padroeira />
-      <Redes />
+      {/* A area principal: leitores de tela pulam direto para ca, e o Google
+          entende o que e conteudo e o que e menu e rodape. */}
+      <main id="conteudo" tabIndex={-1}>
+        <Hero />
+        <Estatisticas />
+        <SantaLuzia />
+        <Comunidades />
+        <Liturgia />
+        <Eventos />
+        <Horarios />
+        <Doe />
+        <Contato />
+        <Padroeira />
+        <Redes />
+      </main>
       <Rodape />
 
       <BotaoVoltarAoTopo visivel={mostrarTopo} progresso={progresso} />
