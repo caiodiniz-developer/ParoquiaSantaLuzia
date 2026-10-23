@@ -120,6 +120,14 @@ login com o aviso "Sua sessão expirou" — antes disso acontecer no meio de um
 cadastro, porque o formulário pede confirmação se você tentar sair com coisa
 não salva. Clicar em **Sair** numa aba encerra a sessão em todas as abas.
 
+Ele também sai sozinho depois de **30 minutos sem uso** (nenhum clique nem
+tecla), para o painel não ficar aberto no computador da secretaria. E se a
+senha for trocada no Render, todo mundo que estava logado precisa entrar de
+novo — de propósito.
+
+Na tela de login, **Mostrar** revela a senha digitada, e um aviso aparece se o
+**Caps Lock** estiver ligado: cada senha errada conta para o bloqueio.
+
 ### "Muitas tentativas de login"
 
 Depois de 8 senhas erradas seguidas, aquele computador espera 15 minutos para
