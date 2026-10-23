@@ -71,10 +71,16 @@ export default function Estatisticas() {
             <Fragment key={numero.rotulo}>
               {indice > 0 && <div className={`stat-divider reveal delay-${indice * 2}`} />}
               <div className={`stat-item reveal cascata delay-${indice * 2 + 1}`}>
-                <div className="stat-number">
+                {/* O numero que conta de 0 ate o alvo e so visual; o leitor de
+                    tela le direto o valor final, sem a contagem. */}
+                <div className="stat-number" aria-hidden="true">
                   {valores[indice]}
                   {numero.sufixo || ""}
                 </div>
+                <span className="sr-only">
+                  {numero.alvo}
+                  {numero.sufixo || ""}
+                </span>
                 <div className="stat-label">{numero.rotulo}</div>
               </div>
             </Fragment>
