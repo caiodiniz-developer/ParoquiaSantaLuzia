@@ -213,6 +213,23 @@ describe("eventos", () => {
     assert.match(r.json.coverUrl, /.png$/);
   });
 
+  it("recusa HTML disfarcado de PNG pelo tipo declarado", async () => {
+    const form = formularioDeEvento();
+    form.delete("capa");
+    const falso = new Blob(["<script>alert(1)</script>"], { type: "image/png" });
+    form.append("capa", falso, "foto.png");
+    const r = await api.chamar("POST", "/eventos", { token, form });
+    assert.equal(r.status, 400);
+    assert.match(r.json.erro, /nao e um arquivo de imagem/);
+  });
+
+  it("recusa foto da galeria com conteudo falso", async () => {
+    const form = formularioDeEvento();
+    form.append("galeria", new Blob(["MZ executavel"], { type: "image/jpeg" }), "g.jpg");
+    const r = await api.chamar("POST", "/eventos", { token, form });
+    assert.equal(r.status, 400);
+  });
+
   it("recusa arquivo que nao e imagem na capa", async () => {
     const form = formularioDeEvento();
     form.delete("capa");
