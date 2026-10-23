@@ -78,6 +78,8 @@ export default function Contato() {
                   id="nome"
                   required
                   minLength={3}
+                  maxLength={80}
+                  autoComplete="name"
                   placeholder="Digite seu nome completo"
                   value={nome}
                   onChange={(e) => setNome(e.target.value)}
