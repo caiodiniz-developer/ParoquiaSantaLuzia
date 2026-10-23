@@ -17,6 +17,16 @@ function StatusDaSecretaria() {
   );
 }
 
+/**
+ * Busca do endereco no Google Maps. Uma busca, e nao coordenadas fixas: o
+ * Maps acha o endereco escrito e oferece a rota a partir de onde a pessoa
+ * esta, no app do celular ou no navegador.
+ */
+function linkDoMapa(endereco) {
+  const busca = `${endereco}, Campinas - SP`;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(busca)}`;
+}
+
 function CartaoDaComunidade({ comunidade, expandido, aoClicar, copia = false }) {
   const { nome, endereco, destaque, horarios, extra } = comunidade;
 
@@ -43,6 +53,17 @@ function CartaoDaComunidade({ comunidade, expandido, aoClicar, copia = false }) 
               <Local />
               {endereco}
             </p>
+            <a
+              className="card-mapa"
+              href={linkDoMapa(endereco)}
+              target="_blank"
+              rel="noopener noreferrer"
+              tabIndex={copia ? -1 : undefined}
+              // Abrir o mapa nao deve abrir e fechar o cartao junto.
+              onClick={(evento) => evento.stopPropagation()}
+            >
+              Como chegar →
+            </a>
           </div>
         </div>
         {destaque && <span className="card-badge">Sede da Paroquia</span>}
