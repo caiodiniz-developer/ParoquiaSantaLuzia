@@ -1,0 +1,5 @@
+# Como avisar de uma falha de segurança neste site (RFC 9116).
+Contact: https://caiodiniz.dev.br
+Expires: 2027-10-23T00:00:00.000Z
+Preferred-Languages: pt, en
+Policy: https://github.com/caiodiniz-developer/ParoquiaSantaLuzia/blob/main/SECURITY.md
