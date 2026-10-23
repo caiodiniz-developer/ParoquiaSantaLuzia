@@ -132,7 +132,17 @@ export default function Comunidades() {
               <p className="label">Atendimento (Murilo ou Lurdinha)</p>
               <p>Rua René Fernandes, n. 71</p>
               <p>Bairro: Jardim dos Oliveiras</p>
-              <p>Tel.: (19) 3271-4495 / (19) 99241-0546</p>
+              {/* No celular, um toque liga. O texto na tela continua o mesmo. */}
+              <p>
+                Tel.:{" "}
+                <a className="secretaria-telefone" href="tel:+551932714495">
+                  (19) 3271-4495
+                </a>{" "}
+                /{" "}
+                <a className="secretaria-telefone" href="tel:+5519992410546">
+                  (19) 99241-0546
+                </a>
+              </p>
               <p className="label" style={{ marginTop: "0.75rem" }}>
                 Horários:
               </p>

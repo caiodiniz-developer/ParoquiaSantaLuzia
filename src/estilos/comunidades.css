@@ -510,3 +510,13 @@
   background: #2e8a55;
   animation: pontoVivo 2s ease-out infinite;
 }
+
+.secretaria-telefone {
+  color: var(--primary);
+  font-weight: 700;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
+}
+
+.secretaria-telefone:hover {
+  color: var(--accent-escuro);
+}
