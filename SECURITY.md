@@ -23,6 +23,8 @@ Ajuda muito mandar:
 | Uploads | tipo e **conteúdo** conferidos (assinatura binária), extensão pelo tipo, 8 MB por imagem, temporários sempre apagados |
 | Configuração | em produção a API não sobe com senha fraca ou variável faltando |
 | Dependências | Dependabot semanal e `npm audit` no CI |
+| Painel | sai sozinho após 30 min parado, respostas com `no-store`, `noindex` |
+| Links | o site só renderiza link `http(s)` vindo da API, mesmo que o banco seja alterado por fora |
 
 Os detalhes de cada decisão estão em `LEIAME-ADMIN.md`, na seção
 "Segurança do painel".
