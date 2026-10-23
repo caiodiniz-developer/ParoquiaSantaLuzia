@@ -68,7 +68,14 @@ function CartaoDaLiturgia({
         </div>
 
         <div className="liturgia-card-footer">
-          <button type="button" className="liturgia-btn" onClick={() => setExpandido((v) => !v)}>
+          <button
+            type="button"
+            className="liturgia-btn"
+            onClick={() => setExpandido((v) => !v)}
+            aria-expanded={expandido}
+            // Dois cartoes tem o mesmo "Ler mais": o rotulo diz de qual se trata.
+            aria-label={expandido ? `Recolher: ${titulo}` : `Ler mais: ${titulo}`}
+          >
             <span>{expandido ? "Recolher" : "Ler mais"}</span>
             <Seta tamanho={16} />
           </button>
