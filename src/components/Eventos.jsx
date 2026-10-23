@@ -3,6 +3,7 @@ import { useEventos } from "../hooks/useEventos.js";
 import { useRevelacaoScroll } from "../hooks/useRevelacaoScroll.js";
 import { useEventoDaUrl } from "../hooks/useEventoDaUrl.js";
 import { useConfiguracoes } from "../hooks/useConfiguracoes.js";
+import { useDadosEstruturadosDeEventos } from "../hooks/useDadosEstruturadosDeEventos.js";
 import { rotuloDoTipo } from "../lib/api.js";
 import TituloDeSecao from "./TituloDeSecao.jsx";
 import ModalDeEvento from "./ModalDeEvento.jsx";
@@ -152,6 +153,7 @@ export default function Eventos() {
   // Os cards chegam depois da primeira renderizacao, entao o observer de
   // revelacao precisa rodar de novo quando a lista muda.
   useRevelacaoScroll([eventos]);
+  useDadosEstruturadosDeEventos(eventos);
 
   return (
     <section className="eventos-section" id="eventos">
