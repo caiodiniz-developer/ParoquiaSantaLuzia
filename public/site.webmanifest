@@ -1,0 +1,19 @@
+{
+  "name": "Paróquia Santa Luzia",
+  "short_name": "Santa Luzia",
+  "description": "Horários de missa, liturgia do dia e eventos da Paróquia Santa Luzia, Campinas/SP.",
+  "lang": "pt-BR",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#08160e",
+  "theme_color": "#08160e",
+  "icons": [
+    {
+      "src": "/assets/logo.png",
+      "sizes": "474x526",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
