@@ -7,6 +7,7 @@ import { assincrono } from "../assincrono.js";
 import { DadosInvalidos, NaoEncontrado } from "../erros.js";
 import { armazenamento } from "../storage.js";
 import * as servico from "../evento.service.js";
+import { limitarRequisicoes } from "../limitador.js";
 import {
   esquemaDeAtivo,
   esquemaDeCriacao,
@@ -87,9 +88,23 @@ function limparTemporariosAoTerminar(req: Request, res: Response, next: NextFunc
   next();
 }
 
+/**
+ * Limite mais estreito para o que grava: cadastro, edicao, upload, apagar. Um
+ * administrador de verdade nao passa de algumas alteracoes por minuto; o
+ * limite existe para um token roubado nao virar uma maquina de encher o
+ * armazenamento. Vem antes ate da autenticacao, para conter tambem quem tenta
+ * sem token.
+ */
+const limiteDeEscrita = limitarRequisicoes({
+  maximo: 60,
+  janelaEmMs: 60_000,
+  mensagem: "Muitas alteracoes seguidas. Espere um minuto e tente de novo.",
+});
+
 // `autenticar` vem ANTES do multer de proposito: sem sessao valida, o arquivo
 // e recusado antes de ocupar disco e banda.
 const receberArquivos = [
+  limiteDeEscrita,
   autenticar,
   limparTemporariosAoTerminar,
   upload.fields([
@@ -291,6 +306,7 @@ rotasDeEvento.patch(
 
 rotasDeEvento.patch(
   "/:id/ativo",
+  limiteDeEscrita,
   autenticar,
   assincrono(async (req, res) => {
     const analise = esquemaDeAtivo.safeParse(req.body);
@@ -302,6 +318,7 @@ rotasDeEvento.patch(
 
 rotasDeEvento.post(
   "/:id/duplicar",
+  limiteDeEscrita,
   autenticar,
   assincrono(async (req, res) => {
     res.status(201).json(await servico.duplicar(req.params.id));
@@ -310,6 +327,7 @@ rotasDeEvento.post(
 
 rotasDeEvento.delete(
   "/:id",
+  limiteDeEscrita,
   autenticar,
   assincrono(async (req, res) => {
     await servico.remover(req.params.id);
