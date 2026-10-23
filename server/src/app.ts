@@ -60,6 +60,13 @@ export function criarApp() {
         }
         callback(new Error(`Origem nao permitida: ${origem}`));
       },
+      // So o que o site e o painel usam. Qualquer outro metodo ou cabecalho
+      // de outra origem e barrado ja no preflight.
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+      allowedHeaders: ["Content-Type", "Authorization"],
+      // O navegador guarda a resposta do preflight por 10 minutos: menos uma
+      // ida e volta antes de cada upload do painel.
+      maxAge: 600,
     }),
   );
 
