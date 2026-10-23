@@ -3,6 +3,19 @@ import { comunidades } from "../data/comunidades.js";
 import { usePrefereMenosMovimento } from "../hooks/usePrefereMenosMovimento.js";
 import TituloDeSecao from "./TituloDeSecao.jsx";
 import { CruzDoCard, Local } from "./Icones.jsx";
+import { useRelogio } from "../hooks/useRelogio.js";
+import { statusDaSecretaria } from "../lib/secretaria.js";
+
+/** "Aberta agora · fecha as 18h" ou "Fechada · abre amanha as 9h". */
+function StatusDaSecretaria() {
+  const { aberta, texto } = statusDaSecretaria(useRelogio());
+  return (
+    <p className={`secretaria-status${aberta ? " aberta" : ""}`} role="status">
+      <span className="secretaria-status-ponto" aria-hidden="true" />
+      {texto}
+    </p>
+  );
+}
 
 function CartaoDaComunidade({ comunidade, expandido, aoClicar, copia = false }) {
   const { nome, endereco, destaque, horarios, extra } = comunidade;
@@ -112,6 +125,7 @@ export default function Comunidades() {
       <div className="container">
         <div className="secretaria-box reveal">
           <h3>Secretaria Paroquial</h3>
+          <StatusDaSecretaria />
           <div className="gold-divider" />
           <div className="secretaria-grid">
             <div>
