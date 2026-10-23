@@ -258,3 +258,76 @@
   color: var(--accent);
   opacity: 0.5;
 }
+
+/* PIX Copia e Cola: bloco em destaque, com borda dourada, logo abaixo da chave. */
+.pix-copia-cola {
+  margin-top: 1.2rem;
+  padding: 1.4rem 1.5rem;
+  text-align: left;
+  border-radius: var(--raio);
+  border: 1px solid rgba(198, 160, 74, 0.55);
+  background:
+    radial-gradient(120% 140% at 100% 0%, rgba(198, 160, 74, 0.12), transparent 60%),
+    var(--bg);
+}
+
+.pix-copia-cola .label {
+  font-family: var(--font-label);
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-escuro);
+}
+
+.pix-copia-cola .sub {
+  margin-top: 0.35rem;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--muted-fg);
+}
+
+.pix-copia-cola-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.pix-qr-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.65rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(29, 90, 52, 0.35);
+  color: var(--primary);
+  font-size: 0.8rem;
+  font-weight: 700;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pix-qr-btn:hover:not(:disabled) {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* QR com moldura branca: leitores de QR precisam de margem clara em volta. */
+.pix-qr {
+  margin: 1.2rem auto 0;
+  text-align: center;
+  animation: modalSobe 0.7s var(--ease-out);
+}
+
+.pix-qr img {
+  margin: 0 auto;
+  padding: 10px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: var(--sombra-2);
+}
+
+.pix-qr figcaption {
+  margin-top: 0.7rem;
+  font-size: 0.82rem;
+  color: var(--muted-fg);
+}
