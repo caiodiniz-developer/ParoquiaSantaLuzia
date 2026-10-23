@@ -23,7 +23,7 @@ jobs:
       ADMIN_PASSWORD: senha-do-ci-apenas
       AUTH_SECRET: segredo-do-ci-com-mais-de-16
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -40,7 +40,7 @@ jobs:
     name: Site (build)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with:
           node-version: 22
