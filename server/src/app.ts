@@ -76,7 +76,10 @@ export function criarApp() {
     });
   }
 
-  app.use(express.json({ limit: "1mb" }));
+  // O maior JSON legitimo e o login e a configuracao: poucas centenas de
+  // bytes. Os eventos vao em multipart, com limites proprios. Aceitar 1 MB de
+  // JSON so dava a quem quisesse um jeito barato de ocupar CPU parseando lixo.
+  app.use(express.json({ limit: "100kb" }));
 
   // Só em desenvolvimento: em producao os arquivos moram no Supabase, porque
   // o disco do Render e apagado a cada deploy.
