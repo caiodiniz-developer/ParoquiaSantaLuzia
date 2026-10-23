@@ -141,6 +141,42 @@ fotos. O formulário avisa na hora em que a foto é escolhida, antes de enviar.
 Foto de celular costuma passar de 8 MB: mande pelo WhatsApp para você mesmo e
 use a versão que ele devolve, que já vem reduzida.
 
+## O que o site faz sozinho
+
+Tudo no relógio de Campinas, para quem visita de qualquer lugar.
+
+- **Horários Rápidos** destaca o cartão do dia de hoje com o selo "Hoje".
+- **Secretaria Paroquial** mostra "Aberta agora · fecha às 18h" ou "Fechada ·
+  abre amanhã às 9h", respeitando o intervalo de almoço. Os telefones ligam com
+  um toque no celular.
+- **Padroeira** conta os dias até a festa de 13 de dezembro e, no próprio dia,
+  mostra "Hoje é dia de Santa Luzia!".
+- **Comunidades**: cada cartão tem **Como chegar**, que abre o endereço no
+  Google Maps.
+- **Doe**: além da chave, o **PIX Copia e Cola** (o banco já preenche chave e
+  nome; a pessoa só escolhe o valor) e o **QR Code**, gerado na hora.
+
+**Mudou um horário?** Atualize nos dois lugares:
+
+| O que mudou | Texto da página | Regra automática |
+|---|---|---|
+| Horário da secretaria | `src/components/Comunidades.jsx` | `src/lib/secretaria.js` |
+| Dias da Matriz em "Horários Rápidos" | `src/components/Horarios.jsx` | (o mesmo arquivo) |
+| Chave PIX | `src/components/Doe.jsx` | o Copia e Cola é gerado da mesma constante |
+
+Depois de mexer, `npm test` na raiz confere as regras (PIX, secretaria, festa).
+
+## Para o Google achar a paróquia
+
+- `index.html` tem descrição, cartão de compartilhamento (WhatsApp, Facebook) e
+  **dados estruturados** de igreja católica: endereço, telefone e horário da
+  secretaria. É o que alimenta o painel lateral da busca e o Maps.
+- Os próximos eventos também viram dados estruturados (`schema.org/Event`).
+- `public/robots.txt` libera o site e bloqueia o painel; `site.webmanifest`
+  permite "adicionar à tela inicial" no celular.
+- Vale cadastrar a paróquia no **Google Search Console** e no **Perfil da
+  Empresa no Google** apontando para o endereço do site.
+
 ## Vídeo de fundo na primeira tela
 
 A primeira tela do site (o "hero") está preparada para receber um vídeo de fundo
