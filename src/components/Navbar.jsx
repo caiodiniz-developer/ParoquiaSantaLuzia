@@ -24,6 +24,16 @@ export default function Navbar({ rolou, secaoAtiva }) {
     };
   }, [menuAberto]);
 
+  // Esc fecha o menu do celular, como todo menu que cobre a tela.
+  useEffect(() => {
+    if (!menuAberto) return undefined;
+    function aoTeclar(evento) {
+      if (evento.key === "Escape") setMenuAberto(false);
+    }
+    document.addEventListener("keydown", aoTeclar);
+    return () => document.removeEventListener("keydown", aoTeclar);
+  }, [menuAberto]);
+
   return (
     <>
       <nav className={`navbar${rolou ? " scrolled" : ""}`} aria-label="Menu principal">
