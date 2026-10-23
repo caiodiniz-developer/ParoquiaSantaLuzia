@@ -34,6 +34,73 @@
       href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Dados estruturados: dizem ao Google que isto e uma igreja catolica, com
+         endereco, telefone, horario da secretaria e redes. E o que alimenta o
+         painel lateral da busca e o Maps. Nao e script executavel: a CSP do
+         vercel.json nao o bloqueia. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "CatholicChurch",
+        "name": "Paróquia Santa Luzia",
+        "alternateName": "Igreja Matriz de Santa Luzia",
+        "description": "Paróquia da Arquidiocese de Campinas no Jardim dos Oliveiras, com 9 comunidades.",
+        "image": "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-5F44UQeX0bss6xkLio6DwBZrdjuY26.png",
+        "telephone": "+55-19-3271-4495",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Rua René Fernandes, 71",
+          "addressLocality": "Campinas",
+          "addressRegion": "SP",
+          "addressCountry": "BR"
+        },
+        "parentOrganization": {
+          "@type": "Organization",
+          "name": "Arquidiocese de Campinas"
+        },
+        "sameAs": [
+          "https://www.instagram.com/santaluzia.paroquia",
+          "https://www.facebook.com/ParoquiaSantaLuziaJardimDasOliveiras"
+        ],
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": "Monday",
+            "opens": "13:00",
+            "closes": "18:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday"
+            ],
+            "opens": "09:00",
+            "closes": "12:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday"
+            ],
+            "opens": "13:00",
+            "closes": "18:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": "Saturday",
+            "opens": "08:00",
+            "closes": "12:00"
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
