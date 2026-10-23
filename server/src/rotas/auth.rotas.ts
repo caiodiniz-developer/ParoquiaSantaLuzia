@@ -7,6 +7,14 @@ import { barrarSeBloqueado, registrarFalha, registrarSucesso } from "../limitado
 
 export const rotasDeAutenticacao = Router();
 
+/**
+ * Pausa em toda senha errada. Para quem errou digitando, 0,4s nao se nota;
+ * para um script testando senhas, junto com o limite de 8 por IP, e mais um
+ * freio. Fixa, e nao aleatoria: o tempo da resposta continua sem dizer nada.
+ */
+const PAUSA_APOS_FALHA_EM_MS = 400;
+const esperar = (ms: number) => new Promise((resolver) => setTimeout(resolver, ms));
+
 rotasDeAutenticacao.post(
   "/login",
   barrarSeBloqueado,
@@ -17,6 +25,7 @@ rotasDeAutenticacao.post(
     const { email, senha } = analise.data;
     if (!credenciaisValidas(email, senha)) {
       registrarFalha(req);
+      await esperar(PAUSA_APOS_FALHA_EM_MS);
       // Mensagem unica para e-mail errado e senha errada: dizer qual dos dois
       // falhou entrega a quem tenta invadir que o e-mail existe.
       throw new NaoAutorizado("E-mail ou senha incorretos.");
