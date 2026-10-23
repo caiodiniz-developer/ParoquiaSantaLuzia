@@ -30,6 +30,8 @@ jobs:
           cache: npm
           cache-dependency-path: server/package-lock.json
       - run: npm ci
+      # Dependencia de producao com falha alta ou critica deixa o CI vermelho.
+      - run: npm audit --omit=dev --audit-level=high
       - run: npm run banco:dev
       - run: npm run typecheck
       - run: npm test
@@ -44,4 +46,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # So o que vai para o navegador do visitante (--omit=dev): as falhas do
+      # Vite atingem o servidor de desenvolvimento, nao o site publicado.
+      - run: npm audit --omit=dev --audit-level=high
       - run: npm run build
