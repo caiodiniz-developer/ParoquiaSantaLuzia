@@ -38,6 +38,22 @@ export default function Admin() {
     return () => controle.abort();
   }, []);
 
+  // O painel nao pode ir parar no Google. O robots.txt e o cabecalho da
+  // Vercel ja pedem isso; a meta tag cobre buscador que ignore os dois e
+  // hospedagem que nao seja a Vercel.
+  useEffect(() => {
+    const meta = document.createElement("meta");
+    meta.name = "robots";
+    meta.content = "noindex, nofollow";
+    document.head.appendChild(meta);
+    const tituloAnterior = document.title;
+    document.title = "Painel · Paróquia Santa Luzia";
+    return () => {
+      meta.remove();
+      document.title = tituloAnterior;
+    };
+  }, []);
+
   // Qualquer chamada recusada por token vencido traz a pessoa de volta ao
   // login, com o motivo escrito -- em vez de deixar o painel aberto e mudo.
   useEffect(() => {
