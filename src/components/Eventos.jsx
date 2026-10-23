@@ -136,7 +136,9 @@ function CardDeEvento({ evento, indice, aoAbrir }) {
 }
 
 export default function Eventos() {
-  const { eventos: todos, carregando, acordando, erro } = useEventos({ escopo: "proximos" });
+  const { eventos: todos, carregando, acordando, erro, recarregar } = useEventos({
+    escopo: "proximos",
+  });
   const { configuracoes } = useConfiguracoes();
   // O corte e feito aqui, e nao pedindo `limite` a API, para as duas buscas
   // correrem juntas: com o Render acordando, esperar a configuracao para so
@@ -176,6 +178,9 @@ export default function Eventos() {
             <p className="eventos-estado">
               <strong>Não conseguimos carregar os eventos agora.</strong>
               Tente atualizar a página em alguns instantes.
+              <button type="button" className="eventos-tentar" onClick={() => recarregar()}>
+                Tentar de novo
+              </button>
             </p>
           )}
 

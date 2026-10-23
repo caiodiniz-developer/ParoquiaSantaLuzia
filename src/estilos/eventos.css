@@ -640,3 +640,21 @@
   border-radius: 10px;
   overflow: hidden;
 }
+
+/* "Tentar de novo" quando a API falha: busca de novo sem recarregar o site. */
+.eventos-tentar {
+  display: block;
+  margin: 1.2rem auto 0;
+  padding: 0.7rem 1.4rem;
+  border-radius: 999px;
+  background: var(--primary);
+  color: #fff;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 0.88rem;
+  transition: background-color 0.3s ease;
+}
+
+.eventos-tentar:hover {
+  background: var(--primary-dark);
+}
