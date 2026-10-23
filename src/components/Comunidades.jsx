@@ -100,6 +100,7 @@ export default function Comunidades() {
               key={`${comunidade.nome}-${indice}`}
               comunidade={comunidade}
               expandido={indiceExpandido === indice}
+              copia={indice >= comunidades.length}
               aoClicar={() =>
                 setIndiceExpandido((atual) => (atual === indice ? null : indice))
               }
