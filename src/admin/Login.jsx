@@ -5,6 +5,9 @@ export default function Login({ aoEntrar, aviso = "" }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [mostrarSenha, setMostrarSenha] = useState(false);
+  // Caps Lock ligado e a causa numero um de "senha errada" -- e agora cada
+  // erro conta para o bloqueio de 15 minutos. Avisar antes poupa tentativas.
+  const [capsLigado, setCapsLigado] = useState(false);
   const [erro, setErro] = useState("");
   const [enviando, setEnviando] = useState(false);
 
@@ -64,6 +67,8 @@ export default function Login({ aoEntrar, aviso = "" }) {
               autoComplete="current-password"
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
+              onKeyUp={(e) => setCapsLigado(e.getModifierState?.("CapsLock") ?? false)}
+              onBlur={() => setCapsLigado(false)}
             />
             <button
               type="button"
@@ -75,6 +80,11 @@ export default function Login({ aoEntrar, aviso = "" }) {
               {mostrarSenha ? "Ocultar" : "Mostrar"}
             </button>
           </div>
+          {capsLigado && (
+            <p className="adm-dica" role="status" style={{ color: "#8a6d18" }}>
+              Atenção: o Caps Lock está ligado.
+            </p>
+          )}
         </div>
 
         <button type="submit" className="adm-botao" style={{ width: "100%" }} disabled={enviando}>
