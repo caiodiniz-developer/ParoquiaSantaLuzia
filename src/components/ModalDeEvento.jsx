@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { rotuloDoTipo } from "../lib/api.js";
 import { dataComHora } from "../lib/datas.js";
 import { Calendario, Fechar, Instagram, Local, Relogio } from "./Icones.jsx";
+import { linkSeguro } from "../lib/links.js";
 
 const FOCAVEIS =
   "a[href], button:not([disabled]), video[controls], [tabindex]:not([tabindex=\"-1\"])";
@@ -69,6 +70,10 @@ export default function ModalDeEvento({ evento, aoFechar }) {
   }, [evento]);
 
   if (!evento) return null;
+
+  // So viram botao se forem http(s) de verdade -- ver lib/links.js.
+  const inscricao = linkSeguro(evento.inscricaoUrl);
+  const instagram = linkSeguro(evento.instagramUrl);
 
   const paragrafos = (evento.descricao || "")
     .split(/\n+/)
@@ -165,22 +170,22 @@ export default function ModalDeEvento({ evento, aoFechar }) {
               </div>
             )}
 
-            {(evento.inscricaoUrl || evento.instagramUrl) && (
+            {(inscricao || instagram) && (
               <div className="evento-modal-acoes">
-                {evento.inscricaoUrl && (
+                {inscricao && (
                   <a
                     className="evento-modal-inscricao"
-                    href={evento.inscricaoUrl}
+                    href={inscricao}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     Fazer inscrição
                   </a>
                 )}
-                {evento.instagramUrl && (
+                {instagram && (
                   <a
                     className="evento-modal-instagram"
-                    href={evento.instagramUrl}
+                    href={instagram}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
