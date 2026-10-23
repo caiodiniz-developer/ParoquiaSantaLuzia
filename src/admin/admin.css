@@ -602,3 +602,29 @@
   outline: none;
   border-color: var(--primary);
 }
+
+/* Campo de senha com o botao Mostrar/Ocultar dentro, a direita. */
+.adm-senha {
+  position: relative;
+}
+
+.adm-senha input {
+  padding-right: 5.5rem !important;
+}
+
+.adm-senha-olho {
+  position: absolute;
+  top: 50%;
+  right: 0.4rem;
+  transform: translateY(-50%);
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--primary);
+  background: var(--muted);
+}
+
+.adm-senha-olho:hover {
+  background: var(--border);
+}

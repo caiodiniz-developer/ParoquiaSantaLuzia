@@ -4,6 +4,7 @@ import { autenticacao, salvarToken } from "../lib/api.js";
 export default function Login({ aoEntrar, aviso = "" }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [mostrarSenha, setMostrarSenha] = useState(false);
   const [erro, setErro] = useState("");
   const [enviando, setEnviando] = useState(false);
 
@@ -55,14 +56,25 @@ export default function Login({ aoEntrar, aviso = "" }) {
 
         <div className="adm-campo">
           <label htmlFor="senha">Senha</label>
-          <input
-            id="senha"
-            type="password"
-            required
-            autoComplete="current-password"
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
-          />
+          <div className="adm-senha">
+            <input
+              id="senha"
+              type={mostrarSenha ? "text" : "password"}
+              required
+              autoComplete="current-password"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+            />
+            <button
+              type="button"
+              className="adm-senha-olho"
+              onClick={() => setMostrarSenha((atual) => !atual)}
+              aria-label={mostrarSenha ? "Ocultar senha" : "Mostrar senha"}
+              aria-pressed={mostrarSenha}
+            >
+              {mostrarSenha ? "Ocultar" : "Mostrar"}
+            </button>
+          </div>
         </div>
 
         <button type="submit" className="adm-botao" style={{ width: "100%" }} disabled={enviando}>
