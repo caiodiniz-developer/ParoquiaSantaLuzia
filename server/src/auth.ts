@@ -19,8 +19,21 @@ function base64url(dados: Buffer | string) {
   return Buffer.from(dados).toString("base64url");
 }
 
+/**
+ * A chave da assinatura mistura o AUTH_SECRET com o e-mail e a senha atuais
+ * do administrador. Efeito pratico: trocar ADMIN_PASSWORD no Render derruba
+ * na hora todas as sessoes abertas -- inclusive a de quem tenha descoberto a
+ * senha antiga. Sem isto, um token roubado continuaria valendo ate expirar.
+ */
+function chaveDeAssinatura() {
+  return crypto
+    .createHash("sha256")
+    .update(`${env.AUTH_SECRET}\u0000${env.ADMIN_EMAIL.trim().toLowerCase()}\u0000${env.ADMIN_PASSWORD}`)
+    .digest();
+}
+
 function assinar(corpo: string) {
-  return crypto.createHmac("sha256", env.AUTH_SECRET).update(corpo).digest();
+  return crypto.createHmac("sha256", chaveDeAssinatura()).update(corpo).digest();
 }
 
 /**
