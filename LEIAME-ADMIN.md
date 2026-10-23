@@ -51,7 +51,7 @@ build do Render já roda o `banco:prod`.
 
 ```bash
 cd server
-npm test        # 33 testes: login, bloqueio, eventos, Instagram, galeria, config
+npm test        # 46 testes: login, limites, uploads, eventos, Instagram, config
 ```
 
 Os testes sobem a API numa porta livre, usam o `dev.db` e apagam tudo o que
