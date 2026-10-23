@@ -23,18 +23,11 @@ function CartaoDaComunidade({ comunidade, expandido, aoClicar, copia = false }) 
   return (
     <div
       className={`community-card${destaque ? " featured" : ""}${expandido ? " expanded" : ""}`}
+      // Clicar em qualquer parte do cartao abre e fecha (atalho do mouse). Para
+      // teclado e leitor de tela, quem faz isso e o botao do rodape: o cartao
+      // nao e um botao inteiro porque tem link dentro (o "Como chegar"), e link
+      // dentro de botao fica inalcancavel para o leitor de tela.
       onClick={aoClicar}
-      // Abre e fecha tambem pelo teclado (Enter ou espaco), e o leitor de tela
-      // anuncia se os horarios estao abertos.
-      role="button"
-      tabIndex={copia ? -1 : 0}
-      aria-expanded={expandido}
-      onKeyDown={(evento) => {
-        if (evento.key === "Enter" || evento.key === " ") {
-          evento.preventDefault();
-          aoClicar();
-        }
-      }}
       // A segunda volta da esteira e so efeito visual: escondida do leitor de
       // tela e do Tab, senao cada comunidade seria lida e visitada duas vezes.
       aria-hidden={copia || undefined}
@@ -70,9 +63,20 @@ function CartaoDaComunidade({ comunidade, expandido, aoClicar, copia = false }) 
         {extra && <div className="card-extra">{extra}</div>}
       </div>
 
-      <div className="card-footer">
+      <button
+        type="button"
+        className="card-footer"
+        aria-expanded={expandido}
+        tabIndex={copia ? -1 : undefined}
+        onClick={(evento) => {
+          // O clique ja abre pelo cartao; sem isto, ele abriria e fecharia na
+          // mesma hora (botao + cartao).
+          evento.stopPropagation();
+          aoClicar();
+        }}
+      >
         {expandido ? "Clique para recolher" : "Clique para ver todos os horarios"}
-      </div>
+      </button>
     </div>
   );
 }

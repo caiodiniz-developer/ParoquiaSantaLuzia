@@ -520,3 +520,16 @@
 .secretaria-telefone:hover {
   color: var(--accent-escuro);
 }
+
+/* O rodape virou um <button>: ocupa a largura toda e alinha a esquerda,
+   como quando era um <div>. */
+button.card-footer {
+  width: 100%;
+  text-align: left;
+}
+
+button.card-footer:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -4px;
+  border-radius: 0 0 24px 24px;
+}
