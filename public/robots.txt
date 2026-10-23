@@ -1,0 +1,4 @@
+# Buscadores podem ler o site todo, menos o painel da paroquia.
+User-agent: *
+Allow: /
+Disallow: /admin
