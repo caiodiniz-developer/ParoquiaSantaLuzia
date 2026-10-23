@@ -49,4 +49,5 @@ jobs:
       # So o que vai para o navegador do visitante (--omit=dev): as falhas do
       # Vite atingem o servidor de desenvolvimento, nao o site publicado.
       - run: npm audit --omit=dev --audit-level=high
+      - run: npm test
       - run: npm run build
