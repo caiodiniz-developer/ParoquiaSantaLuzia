@@ -38,6 +38,20 @@ export default function Contato() {
     let texto = `Ola, meu nome e *${nome.trim()}*.\nGostaria de: *${assunto}*`;
     if (mensagem.trim()) texto += `\n\nMensagem: ${mensagem.trim()}`;
 
+    const destino = `https://wa.me/${TELEFONE}?text=${encodeURIComponent(texto)}`;
+
+    /**
+     * A aba e aberta AGORA, dentro do clique, e so recebe o endereco depois.
+     *
+     * O Safari do iPhone (e outros navegadores) so deixa abrir aba nova no
+     * instante do clique. Aberta 800ms depois, dentro de um setTimeout, ela era
+     * bloqueada: a pessoa via "Redirecionando..." e nada acontecia. Se mesmo
+     * assim o navegador recusar a aba, a pagina atual vai para o WhatsApp.
+     */
+    const aba = window.open("", "_blank");
+    // A aba nova nao pode controlar esta pagina (o mesmo que noopener faz).
+    if (aba) aba.opener = null;
+
     setEnviado(true);
 
     // A pausa de 800ms deixa a confirmacao aparecer antes da aba do WhatsApp
@@ -45,7 +59,8 @@ export default function Contato() {
     // fechar o WhatsApp e voltar ao site.
     relogios.current.push(
       setTimeout(() => {
-        window.open(`https://wa.me/${TELEFONE}?text=${encodeURIComponent(texto)}`, "_blank");
+        if (aba && !aba.closed) aba.location.href = destino;
+        else window.location.href = destino;
 
         relogios.current.push(
           setTimeout(() => {
