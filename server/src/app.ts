@@ -7,6 +7,7 @@ import { PASTA_LOCAL, usandoDiscoLocal } from "./storage.js";
 import { rotasDeAutenticacao } from "./rotas/auth.rotas.js";
 import { rotasDeEvento } from "./rotas/evento.rotas.js";
 import { rotasDeConfig } from "./rotas/config.rotas.js";
+import { limitarRequisicoes } from "./limitador.js";
 
 export function criarApp() {
   const app = express();
@@ -86,6 +87,12 @@ export function criarApp() {
   app.get("/api/saude", (_req, res) => {
     res.json({ ok: true, ambiente: env.NODE_ENV, agora: new Date().toISOString() });
   });
+
+  // Depois da rota de saude (o monitor de uptime nao gasta cota) e antes de
+  // todo o resto. Fica depois do CORS para a resposta 429 tambem levar os
+  // cabecalhos de CORS -- sem eles o navegador mostraria "erro de rede" em vez
+  // da mensagem.
+  app.use("/api", limitarRequisicoes({ maximo: 300, janelaEmMs: 60_000 }));
 
   app.use("/api/auth", rotasDeAutenticacao);
   app.use("/api/eventos", rotasDeEvento);
