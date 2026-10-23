@@ -1,9 +1,13 @@
 import TextoRevelado from "./TextoRevelado.jsx";
+import { useRelogio } from "../hooks/useRelogio.js";
+import { diasAteAFesta, textoDaContagem } from "../lib/festa.js";
 
 const IMAGEM_DA_PADROEIRA =
   "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-m9RMsrbUIy6r3VS2TDmJavPZkGLCYJ.png";
 
 export default function Padroeira() {
+  const dias = diasAteAFesta(useRelogio());
+
   return (
     <section className="padroeira-section">
       <div className="container">
@@ -30,6 +34,20 @@ export default function Padroeira() {
               possamos enxergar a presença de Deus em todas as coisas."
             </TextoRevelado>
             <p className="festa">&#128197; Festa: 13 de dezembro</p>
+            {/* O numero em destaque e visual; o leitor de tela le a frase
+                inteira do aria-label ("Faltam 51 dias para a festa"). */}
+            <p
+              className={`festa-contagem${dias === 0 ? " hoje" : ""}`}
+              aria-label={textoDaContagem(dias)}
+            >
+              {dias === 0 ? (
+                textoDaContagem(0)
+              ) : (
+                <>
+                  <strong>{dias}</strong> {dias === 1 ? "dia para a festa" : "dias para a festa"}
+                </>
+              )}
+            </p>
           </div>
         </div>
       </div>
