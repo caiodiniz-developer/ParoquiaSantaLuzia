@@ -213,3 +213,37 @@
   border-color: rgba(232, 211, 154, 0.75);
   box-shadow: 0 0 30px -6px rgba(232, 211, 154, 0.45);
 }
+
+/* Contagem para a festa: numero grande em ouro ao lado da data. */
+.festa-contagem {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-top: 1.1rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.2rem;
+  color: rgba(251, 246, 236, 0.8);
+}
+
+.festa-contagem strong {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 2.6rem;
+  line-height: 1;
+  font-variant-numeric: lining-nums;
+  background: var(--ouro-gradiente);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: ouroCorre 6s linear infinite;
+}
+
+/* No proprio dia 13 a frase inteira acende em ouro. */
+.festa-contagem.hoje {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--accent-claro);
+  text-shadow: 0 0 24px rgba(232, 211, 154, 0.45);
+}
