@@ -329,6 +329,13 @@ start `npm start`. As variáveis são estas:
 Importe o repositório na raiz. Uma variável: `VITE_API_URL` = a URL do Render,
 sem barra no final.
 
+> **Atenção à CSP.** O `vercel.json` manda uma política de segurança (CSP) que
+> só deixa o site buscar dados em endereços conhecidos: `*.onrender.com`,
+> `*.supabase.co` e as duas APIs da liturgia. Se um dia a API for para um
+> domínio próprio (ex.: `api.paroquia.com.br`), acrescente esse domínio no
+> `connect-src` do `vercel.json` — senão o site não carrega os eventos e o
+> painel não consegue entrar, com "Refused to connect" no console.
+
 Sobre o `vercel.json` — ele é validado por um schema estrito, e **qualquer chave
 a mais faz o deploy falhar antes do build**, com "Invalid request". Não dá para
 deixar comentário dentro dele; por isso a explicação está aqui:
