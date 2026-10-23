@@ -1,0 +1,33 @@
+# O GitHub confere as dependencias toda semana e abre um pull request quando
+# sai versao nova -- em especial correcao de seguranca. O CI roda os testes no
+# PR, entao da para aceitar com um clique quando ele ficar verde.
+version: 2
+updates:
+  # Site (React + Vite)
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      # Atualizacoes pequenas juntas num PR so, para nao virar uma pilha.
+      menores:
+        update-types: [minor, patch]
+
+  # API (Express + Prisma)
+  - package-ecosystem: npm
+    directory: /server
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      menores:
+        update-types: [minor, patch]
+
+  # As proprias acoes do CI (checkout, setup-node)
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
