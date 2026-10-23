@@ -99,3 +99,158 @@ footer::before {
 footer .dev a[href="/admin"] {
   color: rgba(251, 246, 236, 0.7);
 }
+
+/* ===== Rodape em colunas: marca, endereco, secretaria e atalhos ===== */
+.rodape-grade {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 0.8fr;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  max-width: 1240px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.rodape-marca img {
+  margin: 0;
+}
+
+.rodape-nome {
+  margin-top: 1rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: #fbf6ec;
+}
+
+.rodape-lema {
+  margin-top: 0.2rem;
+  font-family: var(--font-label);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-claro);
+}
+
+.rodape-titulo {
+  margin-bottom: 0.9rem;
+  font-family: var(--font-label);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-claro);
+}
+
+.rodape-texto {
+  font-style: normal;
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: rgba(251, 246, 236, 0.75);
+}
+
+.rodape-texto a {
+  color: #fbf6ec;
+  transition: color 0.3s ease;
+}
+
+.rodape-texto a:hover,
+.rodape-atalhos a:hover {
+  color: var(--accent-claro);
+}
+
+.rodape-pequeno {
+  margin-top: 0.6rem;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: rgba(251, 246, 236, 0.55);
+}
+
+.rodape-link {
+  display: inline-block;
+  margin-top: 0.7rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent-claro);
+}
+
+.rodape-atalhos {
+  display: grid;
+  gap: 0.45rem;
+  list-style: none;
+}
+
+.rodape-atalhos a {
+  font-size: 0.9rem;
+  color: rgba(251, 246, 236, 0.75);
+  transition: color 0.3s ease;
+}
+
+/* Redes sociais em circulos dourados. */
+.rodape-redes {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1.2rem;
+}
+
+.rodape-redes a {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid rgba(232, 211, 154, 0.35);
+  color: var(--accent-claro);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    transform 0.5s var(--ease-mola);
+}
+
+.rodape-redes a svg {
+  width: 19px;
+  height: 19px;
+}
+
+.rodape-redes a:hover {
+  background: var(--accent-claro);
+  color: var(--noite);
+  transform: translateY(-3px);
+}
+
+/* Creditos centralizados abaixo das colunas, separados por um filete. */
+.rodape-base {
+  max-width: 1240px;
+  margin: clamp(2.5rem, 5vw, 3.5rem) auto 0;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(232, 211, 154, 0.15);
+  text-align: center;
+}
+
+.rodape-base .rights {
+  margin-top: 0;
+}
+
+@media (max-width: 900px) {
+  .rodape-grade {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .rodape-grade {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .rodape-marca img {
+    margin: 0 auto;
+  }
+
+  .rodape-redes {
+    justify-content: center;
+  }
+
+  .rodape-atalhos {
+    grid-template-columns: 1fr 1fr;
+  }
+}
