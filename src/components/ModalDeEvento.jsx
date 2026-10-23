@@ -53,7 +53,14 @@ export default function ModalDeEvento({ evento, aoFechar }) {
 
   return (
     <div className="evento-modal active" onClick={aoFechar}>
-      <div className="evento-modal-content" onClick={(evt) => evt.stopPropagation()}>
+      <div
+        className="evento-modal-content"
+        onClick={(evt) => evt.stopPropagation()}
+        // Leitor de tela anuncia "dialogo: <titulo do evento>" ao abrir.
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="evento-modal-titulo"
+      >
         <button type="button" className="evento-modal-close" onClick={aoFechar} aria-label="Fechar">
           <Fechar />
         </button>
@@ -65,7 +72,9 @@ export default function ModalDeEvento({ evento, aoFechar }) {
 
           <div className="evento-modal-info">
             <div className="evento-modal-badge">{rotuloDoTipo(evento.tipo)}</div>
-            <h3 className="evento-modal-titulo">{evento.titulo}</h3>
+            <h3 className="evento-modal-titulo" id="evento-modal-titulo">
+              {evento.titulo}
+            </h3>
 
             <div className="evento-modal-texto">
               {paragrafos.map((paragrafo, indice) => (
