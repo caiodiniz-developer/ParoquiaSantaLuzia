@@ -21,7 +21,9 @@ function limpar(texto, maximo) {
     .replace(/[^A-Za-z0-9 ]/g, "")
     .toUpperCase()
     .trim()
-    .slice(0, maximo);
+    .slice(0, maximo)
+    // Aparar de novo: o corte pode parar logo depois de um espaco.
+    .trimEnd();
 }
 
 /** CRC16-CCITT (polinomio 0x1021, inicio 0xFFFF), em 4 digitos hexadecimais. */
