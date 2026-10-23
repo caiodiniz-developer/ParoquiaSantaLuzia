@@ -36,6 +36,11 @@ export function criarApp() {
     res.setHeader("X-Frame-Options", "DENY");
     res.setHeader("Referrer-Policy", "no-referrer");
     res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+    // Em producao a API so fala HTTPS. O HSTS faz o navegador nunca mais
+    // tentar HTTP com ela, nem no primeiro clique de um link antigo.
+    if (env.emProducao) {
+      res.setHeader("Strict-Transport-Security", "max-age=63072000; includeSubDomains");
+    }
     next();
   });
 
