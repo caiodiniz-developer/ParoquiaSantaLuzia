@@ -48,6 +48,12 @@ export default function Site() {
       <div className="cursor-anel" aria-hidden="true" />
       <div className="scroll-progress" style={{ width: `${progresso}%` }} />
 
+      {/* Primeiro item do Tab: quem navega pelo teclado nao precisa passar
+          pelos oito links do menu em toda visita. */}
+      <a className="pular-conteudo" href="#conteudo">
+        Pular para o conteúdo
+      </a>
+
       <Navbar rolou={rolou} secaoAtiva={secaoAtiva} />
 
       {/* A area principal: leitores de tela pulam direto para ca, e o Google

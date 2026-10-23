@@ -116,3 +116,27 @@ section {
   position: relative;
   isolation: isolate;
 }
+
+/* Link "Pular para o conteudo": fora da tela ate receber foco pelo Tab. */
+.pular-conteudo {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 6000;
+  padding: 0.75rem 1.2rem;
+  border-radius: 999px;
+  background: var(--accent-claro);
+  color: var(--noite);
+  font-weight: 700;
+  transform: translateY(-200%);
+  transition: transform 0.3s var(--ease-out);
+}
+
+.pular-conteudo:focus {
+  transform: none;
+}
+
+/* O main recebe foco ao pular, mas nao precisa do anel: o salto ja e o aviso. */
+main:focus {
+  outline: none;
+}
