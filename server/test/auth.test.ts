@@ -2,6 +2,7 @@ import { after, before, beforeEach, describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { desconectar, subirServidor } from "./apoio.js";
 import { zerarLimitador } from "../src/limitador.js";
+import { env } from "../src/env.js";
 
 describe("autenticacao", () => {
   let api: Awaited<ReturnType<typeof subirServidor>>;
@@ -60,6 +61,21 @@ describe("autenticacao", () => {
     const adulterado = token.slice(0, -2) + (token.endsWith("A") ? "BB" : "AA");
     const r = await api.chamar("GET", "/auth/eu", { token: adulterado });
     assert.equal(r.status, 401);
+  });
+
+  it("trocar a senha do admin derruba as sessoes abertas", async () => {
+    const token = await api.entrar();
+    const senhaOriginal = env.ADMIN_PASSWORD;
+    try {
+      env.ADMIN_PASSWORD = senhaOriginal + "-trocada";
+      const r = await api.chamar("GET", "/auth/eu", { token });
+      assert.equal(r.status, 401);
+    } finally {
+      env.ADMIN_PASSWORD = senhaOriginal;
+    }
+    // Com a senha de volta, o mesmo token volta a valer: a assinatura depende
+    // so da configuracao atual, nada fica guardado.
+    assert.equal((await api.chamar("GET", "/auth/eu", { token })).status, 200);
   });
 
   it("JSON malformado responde 400 e nao 500", async () => {
