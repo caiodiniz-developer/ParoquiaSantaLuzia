@@ -473,11 +473,6 @@
   animation-play-state: paused;
 }
 
-.community-card:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 4px;
-}
-
 /* "Aberta agora" (verde, ponto pulsando) ou "Fechada · abre ..." (neutro). */
 .secretaria-status {
   display: flex;
