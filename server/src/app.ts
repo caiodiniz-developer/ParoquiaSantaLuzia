@@ -31,11 +31,16 @@ export function criarApp() {
    * - CORP cross-origin: as fotos de /uploads continuam carregando no site,
    *   que mora em outra origem.
    */
-  app.use((_req, res, next) => {
+  app.use((req, res, next) => {
     res.setHeader("X-Content-Type-Options", "nosniff");
     res.setHeader("X-Frame-Options", "DENY");
     res.setHeader("Referrer-Policy", "no-referrer");
     res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+    // Resposta para quem esta logado (lista com eventos ocultos, sessao) nunca
+    // fica guardada em cache de navegador ou de proxy no caminho.
+    if (req.headers.authorization || req.path.startsWith("/api/auth")) {
+      res.setHeader("Cache-Control", "no-store");
+    }
     // Em producao a API so fala HTTPS. O HSTS faz o navegador nunca mais
     // tentar HTTP com ela, nem no primeiro clique de um link antigo.
     if (env.emProducao) {
