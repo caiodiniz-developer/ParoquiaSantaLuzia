@@ -39,7 +39,9 @@ export default function Navbar({ rolou, secaoAtiva }) {
       <nav className={`navbar${rolou ? " scrolled" : ""}`} aria-label="Menu principal">
         <div className="inner">
           <a href="#inicio" className="logo-link">
-            <img src="/assets/logo.png" alt="Logo Paróquia Santa Luzia" />
+            {/* width/height reservam o espaco antes de o logo chegar: o menu nao
+                "pula" quando a imagem termina de baixar. */}
+            <img src="/assets/logo.png" alt="Logo Paróquia Santa Luzia" width={474} height={526} />
             <span className="logo-text">Paróquia Santa Luzia</span>
           </a>
 
