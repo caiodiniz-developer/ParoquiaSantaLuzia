@@ -8,6 +8,7 @@ import { DadosInvalidos, NaoEncontrado } from "../erros.js";
 import { armazenamento } from "../storage.js";
 import * as servico from "../evento.service.js";
 import { limitarRequisicoes } from "../limitador.js";
+import { conteudoConfereComTipo } from "../assinaturas.js";
 import {
   esquemaDeAtivo,
   esquemaDeCriacao,
@@ -65,6 +66,31 @@ function conferirTamanhos(req: Request, _res: Response, next: NextFunction) {
 }
 
 /**
+ * O tipo declarado pode ser mentira; os primeiros bytes nao. Um arquivo cujo
+ * conteudo nao e o formato que diz ser e recusado antes de subir para o
+ * armazenamento -- e o temporario e apagado pelo limparTemporariosAoTerminar.
+ */
+async function conferirConteudo(req: Request, _res: Response, next: NextFunction) {
+  try {
+    const arquivos = Object.values((req.files ?? {}) as ArquivosRecebidos).flat();
+    for (const arquivo of arquivos) {
+      if (!arquivo) continue;
+      if (!(await conteudoConfereComTipo(arquivo.path, arquivo.mimetype))) {
+        next(
+          new DadosInvalidos(
+            `"${arquivo.originalname}" nao e um arquivo de imagem ou video valido.`,
+          ),
+        );
+        return;
+      }
+    }
+    next();
+  } catch (falha) {
+    next(falha);
+  }
+}
+
+/**
  * Apaga os temporarios do multer quando a resposta termina, de qualquer jeito.
  *
  * No caminho feliz o storage ja os removeu e este unlink falha calado. O que
@@ -113,6 +139,7 @@ const receberArquivos = [
     { name: "galeria", maxCount: MAXIMO_NA_GALERIA },
   ]),
   conferirTamanhos,
+  conferirConteudo,
 ];
 
 type ArquivosRecebidos = Record<string, Express.Multer.File[] | undefined>;
