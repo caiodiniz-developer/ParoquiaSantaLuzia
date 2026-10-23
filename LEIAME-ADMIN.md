@@ -458,6 +458,11 @@ src/
     useEventoDaUrl.js      o ?evento=ID que abre um evento direto
     useConfiguracoes.js    ajustes salvos pelo painel
   lib/api.js               cliente único da API (site e painel)
+  lib/agora.js             dia e hora em Campinas
+  lib/secretaria.js        "aberta agora" da secretaria
+  lib/festa.js             contagem até 13 de dezembro
+  lib/pix.js               PIX Copia e Cola (padrão do Banco Central)
+  lib/links.js             só deixa passar link http(s)
   lib/datas.js             formatação no fuso de São Paulo
   estilos/                 o visual do site, um arquivo por seção
 
@@ -471,5 +476,7 @@ server/src/
   rotas/                   auth, eventos, configurações
 
 server/test/               testes da API (npm test)
+test/                      testes das regras do site (npm test na raiz)
+SECURITY.md                como avisar de falha e o que já existe de proteção
 .github/workflows/ci.yml   testes e build a cada push
 ```
