@@ -70,7 +70,54 @@ export function registrarSucesso(req: Request) {
   registros.delete(chaveDe(req));
 }
 
-/** So para os testes: cada teste comeca com o contador zerado. */
+/**
+ * Limite geral de requisicoes por IP, numa janela fixa.
+ *
+ * Diferente do de login (que conta so FALHAS), este conta tudo. Os numeros
+ * sao folgados para quem usa o site de verdade -- um visitante faz meia duzia
+ * de chamadas por pagina -- e apertados para um robo martelando a API, que no
+ * plano gratuito do Render tem pouca CPU e um disco temporario pequeno para os
+ * uploads.
+ */
+type Janela = { contagem: number; terminaEm: number };
+const janelasPorLimite: Map<string, Janela>[] = [];
+
+export function limitarRequisicoes({
+  maximo,
+  janelaEmMs,
+  mensagem = "Muitas requisicoes. Espere um minuto e tente de novo.",
+}: {
+  maximo: number;
+  janelaEmMs: number;
+  mensagem?: string;
+}) {
+  const janelas = new Map<string, Janela>();
+  janelasPorLimite.push(janelas);
+
+  return function (req: Request, res: Response, next: NextFunction) {
+    const agora = Date.now();
+    if (janelas.size > 5000) {
+      for (const [chave, janela] of janelas) if (janela.terminaEm <= agora) janelas.delete(chave);
+    }
+
+    const chave = chaveDe(req);
+    const atual = janelas.get(chave);
+    const janela =
+      atual && atual.terminaEm > agora ? atual : { contagem: 0, terminaEm: agora + janelaEmMs };
+    janela.contagem += 1;
+    janelas.set(chave, janela);
+
+    if (janela.contagem > maximo) {
+      res.setHeader("Retry-After", String(Math.ceil((janela.terminaEm - agora) / 1000)));
+      next(new ErroHttp(429, mensagem));
+      return;
+    }
+    next();
+  };
+}
+
+/** So para os testes: cada teste comeca com os contadores zerados. */
 export function zerarLimitador() {
   registros.clear();
+  janelasPorLimite.forEach((janelas) => janelas.clear());
 }
