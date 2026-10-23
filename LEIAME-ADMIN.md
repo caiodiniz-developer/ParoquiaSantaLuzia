@@ -284,6 +284,38 @@ confirmar que o id é válido.
 - **Uploads desfeitos em caso de erro**: se o banco falhar depois do envio, as
   fotos que já subiram são apagadas; temporários do multer também são limpos
   quando o formulário é recusado.
+- **Conteúdo conferido, não só o rótulo** (`server/src/assinaturas.ts`): os
+  primeiros bytes de cada arquivo precisam ser de JPG, PNG, WEBP, AVIF, GIF,
+  MP4 ou WEBM. Um HTML ou executável com o rótulo `image/png` é recusado.
+- **Limite geral de requisições**: 300 por minuto por IP em toda a API e 60 por
+  minuto no que grava (cadastro, edição, upload, apagar). A rota `/api/saude`
+  fica fora da conta, para o monitor de uptime.
+- **Sessão amarrada à senha**: a assinatura do token usa o `AUTH_SECRET` junto
+  com o e-mail e a senha do admin. Trocar `ADMIN_PASSWORD` no Render derruba
+  na hora todas as sessões abertas — o remédio certo se a senha vazar.
+- **Login mais lento para quem erra**: cada senha errada espera 0,4 s, e toda
+  tentativa vai para o log do Render (`[auth] login-falhou ip=... email=...`),
+  sem a senha.
+- **Painel parado sai sozinho** em 30 minutos sem clique ou tecla, pensando no
+  computador da secretaria usado por outras pessoas.
+- **Cabeçalhos**: HSTS em produção, `Cache-Control: no-store` em toda resposta
+  para quem está logado, JSON de até 100 KB e CORS só com os métodos e
+  cabeçalhos usados.
+
+### Segurança do site (Vercel)
+
+O `vercel.json` manda, em toda página: CSP (só scripts do próprio domínio;
+imagens, vídeos e dados só das origens que o site usa), HSTS, `X-Frame-Options:
+DENY` (o site não pode ser embutido em outra página para golpe de clique),
+`nosniff`, `Referrer-Policy` e `Permissions-Policy` (sem câmera, microfone,
+localização nem pagamento). O `/admin` vai com `X-Robots-Tag: noindex`.
+
+### Dependências
+
+O Dependabot (`.github/dependabot.yml`) abre um pull request por semana com as
+atualizações, e o CI roda `npm audit` nas dependências de produção: falha alta
+ou crítica deixa o CI vermelho. As falhas que restam no Vite atingem só o
+servidor de desenvolvimento, não o site publicado.
 
 ## Publicar
 
