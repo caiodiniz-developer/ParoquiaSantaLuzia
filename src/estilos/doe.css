@@ -331,3 +331,30 @@
   font-size: 0.82rem;
   color: var(--muted-fg);
 }
+
+.pix-codigo {
+  margin-top: 0.9rem;
+}
+
+.pix-codigo summary {
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* Quebra em qualquer ponto e seleciona tudo num toque: e um codigo sem
+   espacos, que estouraria a caixa no celular. */
+.pix-codigo code {
+  display: block;
+  margin-top: 0.6rem;
+  padding: 0.8rem;
+  border-radius: 10px;
+  border: 1px dashed var(--border);
+  background: var(--card);
+  font-size: 0.74rem;
+  line-height: 1.5;
+  word-break: break-all;
+  user-select: all;
+  color: var(--fg);
+}

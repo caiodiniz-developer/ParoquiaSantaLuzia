@@ -124,6 +124,11 @@ function PixCopiaECola() {
           </button>
         )}
       </div>
+      {/* O codigo a mostra, para copiar a mao se o botao nao conseguir. */}
+      <details className="pix-codigo">
+        <summary>Ver o código</summary>
+        <code>{CODIGO_PIX}</code>
+      </details>
       {falhou && <p className="sub">Não foi possível gerar o QR agora. Use o Copia e Cola.</p>}
       {qr && (
         <figure className="pix-qr">
