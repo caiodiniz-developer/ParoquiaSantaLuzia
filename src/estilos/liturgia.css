@@ -315,3 +315,19 @@
 .liturgia-text p:hover sup {
   color: var(--secondary);
 }
+
+/* Linhas cinzentas que pulsam enquanto a leitura do dia chega da API. */
+.liturgia-esqueleto {
+  display: grid;
+  gap: 0.85rem;
+  padding: 0.3rem 0 1.2rem;
+}
+
+.liturgia-esqueleto span {
+  display: block;
+  height: 0.95rem;
+  border-radius: 6px;
+  background: linear-gradient(100deg, #ece4d5 30%, #f7f1e6 50%, #ece4d5 70%);
+  background-size: 200% 100%;
+  animation: esqueletoBrilha 1.5s ease-in-out infinite;
+}

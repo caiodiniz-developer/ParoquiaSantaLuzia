@@ -53,7 +53,13 @@ function CartaoDaLiturgia({
                 Não foi possível carregar agora. Tente novamente mais tarde.
               </p>
             ) : paragrafos.length === 0 ? (
-              <p>Carregando...</p>
+              // Linhas que pulsam no lugar do texto: a pessoa ve que o
+              // Evangelho esta chegando, e o cartao ja nasce no tamanho certo.
+              <div className="liturgia-esqueleto" role="status" aria-label="Carregando a leitura">
+                {[92, 100, 86, 97, 64].map((largura, indice) => (
+                  <span key={indice} style={{ width: `${largura}%` }} />
+                ))}
+              </div>
             ) : (
               paragrafos.map((paragrafo, indice) => <p key={indice}>{comVersiculos(paragrafo)}</p>)
             )}
