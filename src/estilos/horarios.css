@@ -191,3 +191,27 @@
     background-position: -150% 0;
   }
 }
+
+/* O cartao do dia de hoje: borda dourada acesa e selo "Hoje" ao lado do dia.
+   Quem abre o site no domingo de manha ve logo os horarios de domingo. */
+.horario-card[data-hoje] {
+  background: rgba(198, 160, 74, 0.1);
+  border-color: rgba(232, 211, 154, 0.75);
+  box-shadow: 0 0 0 1px rgba(232, 211, 154, 0.35), 0 24px 60px -24px rgba(198, 160, 74, 0.55);
+}
+
+.h-hoje {
+  display: inline-block;
+  margin-left: 0.55rem;
+  padding: 0.2rem 0.6rem;
+  vertical-align: middle;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #e8d39a, #c6a04a);
+  color: var(--noite);
+  font-family: var(--font-label);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  animation: seloPulsa 3s ease-in-out infinite;
+}
