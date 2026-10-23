@@ -78,6 +78,12 @@ describe("autenticacao", () => {
     assert.equal((await api.chamar("GET", "/auth/eu", { token })).status, 200);
   });
 
+  it("respostas autenticadas nao ficam em cache", async () => {
+    const token = await api.entrar();
+    const r = await fetch(`${api.base}/auth/eu`, { headers: { Authorization: `Bearer ${token}` } });
+    assert.equal(r.headers.get("cache-control"), "no-store");
+  });
+
   it("JSON malformado responde 400 e nao 500", async () => {
     const r = await fetch(`${api.base}/auth/login`, {
       method: "POST",
