@@ -4,13 +4,27 @@ import { usePrefereMenosMovimento } from "../hooks/usePrefereMenosMovimento.js";
 import TituloDeSecao from "./TituloDeSecao.jsx";
 import { CruzDoCard, Local } from "./Icones.jsx";
 
-function CartaoDaComunidade({ comunidade, expandido, aoClicar }) {
+function CartaoDaComunidade({ comunidade, expandido, aoClicar, copia = false }) {
   const { nome, endereco, destaque, horarios, extra } = comunidade;
 
   return (
     <div
       className={`community-card${destaque ? " featured" : ""}${expandido ? " expanded" : ""}`}
       onClick={aoClicar}
+      // Abre e fecha tambem pelo teclado (Enter ou espaco), e o leitor de tela
+      // anuncia se os horarios estao abertos.
+      role="button"
+      tabIndex={copia ? -1 : 0}
+      aria-expanded={expandido}
+      onKeyDown={(evento) => {
+        if (evento.key === "Enter" || evento.key === " ") {
+          evento.preventDefault();
+          aoClicar();
+        }
+      }}
+      // A segunda volta da esteira e so efeito visual: escondida do leitor de
+      // tela e do Tab, senao cada comunidade seria lida e visitada duas vezes.
+      aria-hidden={copia || undefined}
     >
       <div className="card-header">
         <div className="card-header-inner">
