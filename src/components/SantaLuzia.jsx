@@ -13,6 +13,12 @@ export default function SantaLuzia() {
               <img
                 src="/assets/santa-luzia.png"
                 alt="Santa Luzia segurando uma palma e um prato com olhos"
+                width={500}
+                height={500}
+                // Fica abaixo da primeira tela: baixa so quando a pessoa chega
+                // perto, sem disputar banda com o hero.
+                loading="lazy"
+                decoding="async"
               />
             </div>
           </div>

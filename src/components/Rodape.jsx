@@ -3,7 +3,14 @@ import { Link } from "react-router-dom";
 export default function Rodape() {
   return (
     <footer>
-      <img src="/assets/logo.png" alt="Logo Paróquia Santa Luzia" />
+      <img
+        src="/assets/logo.png"
+        alt="Logo Paróquia Santa Luzia"
+        width={474}
+        height={526}
+        loading="lazy"
+        decoding="async"
+      />
       <p className="rights">Todos os direitos reservados | Paróquia Santa Luzia</p>
       <p className="dev">
         Desenvolvido por{" "}

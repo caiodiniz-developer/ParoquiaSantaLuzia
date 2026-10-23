@@ -14,7 +14,12 @@ export default function Padroeira() {
         <div className="padroeira-grid">
           <div className="padroeira-img reveal-left">
             <div className="img-wrap">
-              <img src={IMAGEM_DA_PADROEIRA} alt="Estátua de Santa Luzia na igreja" />
+              <img
+                src={IMAGEM_DA_PADROEIRA}
+                alt="Estátua de Santa Luzia na igreja"
+                loading="lazy"
+                decoding="async"
+              />
               <div className="overlay" />
             </div>
           </div>
