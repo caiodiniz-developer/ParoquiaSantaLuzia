@@ -7,30 +7,62 @@ import { codigoPix } from "../lib/pix.js";
 const CNPJ = "44.588.960/0133-30";
 const CHAVE_PIX = "44588960013330";
 
+/**
+ * Copia pelo jeito antigo: um campo de texto escondido, selecionado, e o
+ * comando "copiar" do navegador. Funciona onde a API moderna falha -- site
+ * aberto sem https, iPhone antigo, navegador embutido no app do Instagram.
+ */
+function copiarPeloJeitoAntigo(texto) {
+  const campo = document.createElement("textarea");
+  campo.value = texto;
+  campo.setAttribute("readonly", "");
+  campo.style.position = "fixed";
+  campo.style.opacity = "0";
+  document.body.appendChild(campo);
+  campo.select();
+  campo.setSelectionRange(0, texto.length);
+  let deuCerto = false;
+  try {
+    deuCerto = document.execCommand("copy");
+  } catch {
+    deuCerto = false;
+  }
+  campo.remove();
+  return deuCerto;
+}
+
 function BotaoCopiar({ valor }) {
   const [copiado, setCopiado] = useState(false);
+  const [falhou, setFalhou] = useState(false);
   const relogio = useRef(null);
 
   // Limpa o timer se o componente sair da tela antes dos 2 segundos.
   useEffect(() => () => clearTimeout(relogio.current), []);
 
   async function copiar() {
+    let deuCerto = false;
     try {
       await navigator.clipboard.writeText(valor);
-      setCopiado(true);
-      relogio.current = setTimeout(() => setCopiado(false), 2000);
+      deuCerto = true;
     } catch {
-      // Navegador sem permissao de area de transferencia (http, iOS antigo):
-      // o valor esta visivel na tela para copiar a mao, entao so nao damos o
-      // retorno visual de sucesso.
-      console.warn("Não foi possível copiar automaticamente.");
+      deuCerto = copiarPeloJeitoAntigo(valor);
     }
+
+    clearTimeout(relogio.current);
+    setCopiado(deuCerto);
+    // Se nem o jeito antigo funcionou, a pessoa precisa saber: com o PIX Copia
+    // e Cola, achar que copiou e colar o nada no banco e o pior desfecho.
+    setFalhou(!deuCerto);
+    relogio.current = setTimeout(() => {
+      setCopiado(false);
+      setFalhou(false);
+    }, deuCerto ? 2000 : 5000);
   }
 
   return (
     <button type="button" className={`pix-copy-btn${copiado ? " copied" : ""}`} onClick={copiar}>
       {copiado ? <Confirmado /> : <Copiar />}
-      {copiado ? "Copiado!" : "Copiar"}
+      {copiado ? "Copiado!" : falhou ? "Copie à mão" : "Copiar"}
     </button>
   );
 }
