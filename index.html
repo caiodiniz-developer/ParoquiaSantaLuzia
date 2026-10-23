@@ -31,6 +31,15 @@
     />
     <meta property="og:image:alt" content="Fachada da Igreja Matriz de Santa Luzia" />
     <meta name="twitter:card" content="summary_large_image" />
+    <!-- A foto do hero e o maior elemento da primeira tela. Por ser fundo de
+         CSS, o navegador so a descobriria depois de ler o CSS; o preload
+         adianta o download e a primeira tela aparece inteira mais cedo. -->
+    <link
+      rel="preload"
+      as="image"
+      href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-5F44UQeX0bss6xkLio6DwBZrdjuY26.png"
+      fetchpriority="high"
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
