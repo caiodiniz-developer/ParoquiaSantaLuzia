@@ -64,6 +64,7 @@ export default function Navbar({ rolou, secaoAtiva }) {
             className={`hamburger${menuAberto ? " open" : ""}`}
             aria-label={menuAberto ? "Fechar menu" : "Abrir menu"}
             aria-expanded={menuAberto}
+            aria-controls="menu-celular"
             onClick={() => setMenuAberto((aberto) => !aberto)}
           >
             <span />
@@ -73,7 +74,14 @@ export default function Navbar({ rolou, secaoAtiva }) {
         </div>
       </nav>
 
-      <div className={`mobile-menu${menuAberto ? " open" : ""}`}>
+      {/* Fechado, o menu continua no DOM (para a animacao de abrir), mas sai da
+          navegacao: `inert` tira os links do Tab e do leitor de tela. Sem isto,
+          quem usa teclado passava por oito links invisiveis. */}
+      <div
+        id="menu-celular"
+        className={`mobile-menu${menuAberto ? " open" : ""}`}
+        inert={menuAberto ? undefined : ""}
+      >
         <div className="menu-cross">&#10016;</div>
         {SECOES.map((secao) => (
           <a
